@@ -10,7 +10,10 @@ lecture-%: lectures/%/slides.tex
 
 all: $(patsubst lectures/%/,lecture-%,$(LECTURES))
 
+update-links:
+	uv run python scripts/tools/update_colab_links.py
+
 clean:
 	rm -rf lectures/*/output
 
-.PHONY: all clean
+.PHONY: all clean update-links
