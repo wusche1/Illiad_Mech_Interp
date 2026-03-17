@@ -1,7 +1,6 @@
 
-# Ignore everything in output folder except main.pdf
-output/
-!output/main.pdf
+# Ignore lecture build outputs
+lectures/*/output/
 
 # Ignore all PDF files in bib folder
 bib/**/*.pdf
@@ -26,3 +25,6 @@ bib/*/chapters/
 
 # Ignore cloned experiment repos (contents only, keep the folder)
 experiments/**
+
+# Jupyter checkpoints
+.ipynb_checkpoints/

@@ -15,7 +15,7 @@ echo "Removing local scripts folder..."
 rm -rf scripts/
 
 # Copy everything except excluded directories
-rsync -av --exclude='content/' --exclude='bib/' --exclude='figures/' --exclude='lib/' --exclude='main.tex' --exclude='README.md' --exclude='.git/' "$TEMP_DIR/" ./
+rsync -av --exclude='lectures/' --exclude='bib/' --exclude='figures/' --exclude='lib/' --exclude='README.md' --exclude='.git/' "$TEMP_DIR/" ./
 
 # Cleanup
 rm -rf "$TEMP_DIR"
