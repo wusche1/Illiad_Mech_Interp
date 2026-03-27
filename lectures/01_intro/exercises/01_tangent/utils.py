@@ -1,4 +1,4 @@
-"""Test functions for Lecture 1."""
+"""Test functions for the tangent exercise."""
 
 import math
 

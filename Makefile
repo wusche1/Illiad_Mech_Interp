@@ -16,4 +16,7 @@ update-links:
 clean:
 	rm -rf lectures/*/output
 
-.PHONY: all clean update-links
+test:
+	uv run pytest tests/ -v
+
+.PHONY: all clean update-links test

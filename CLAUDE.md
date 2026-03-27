@@ -10,20 +10,12 @@ Each lecture is a standalone Beamer presentation with an accompanying Jupyter no
 ## Build Commands
 
 ```bash
-# Compile a single lecture (e.g., 01_intro)
-make lecture-01_intro
-
-# Compile all lectures
-make all
-
-# Clean build artifacts
-make clean
-
-# Run Zotero sync daemon (extracts papers, creates embeddings)
-uv run python scripts/syncing/main.py
-
-# Search literature with RAG
-uv run python scripts/tools/rag.py "your query"
+make lecture-01_intro                    # Compile a single lecture
+make all                                 # Compile all lectures
+make clean                               # Clean build artifacts
+uv run pytest tests/ -v                  # Test all exercise notebooks with solutions
+uv run python scripts/syncing/main.py    # Run Zotero sync daemon
+uv run python scripts/tools/rag.py "query"  # Search literature with RAG
 ```
 
 ## Architecture
@@ -31,7 +23,7 @@ uv run python scripts/tools/rag.py "your query"
 ### Lecture Structure
 - `lectures/XX_name/notes.md` - User's draft notes and source material
 - `lectures/XX_name/slides.tex` - Standalone Beamer presentation (AI writes from notes)
-- `lectures/XX_name/notebook.ipynb` - Jupyter notebook with Google Colab badge
+- `lectures/XX_name/exercises/YY_name/{notebook.ipynb, utils.py}` - Exercises
 - `lectures/XX_name/claude_notes.md` - AI's research notes (only when explicitly instructed)
 
 ### Shared LaTeX Config
@@ -57,6 +49,51 @@ nohup uv run python scripts/syncing/main.py > /dev/null 2>&1 &
 ### Configuration
 `scripts/config.yaml` controls Zotero sync, text extraction, chapter splitting, and embeddings settings.
 
+## Exercise System
+
+### File structure
+
+Each exercise lives in `lectures/XX_name/exercises/YY_name/` with two files:
+- `notebook.ipynb` — the notebook students open (single source of truth)
+- `utils.py` — test/check functions (print PASS/FAIL)
+
+### Notebook cell pattern
+
+Per exercise within a notebook, cells appear in this order:
+1. **Markdown** — explanation + instructions
+2. **Code cell** — skeleton with `# TODO`. Cell metadata must include `"exercise_id": "some_id"`
+3. **Test cell** — calls check function from `utils.py` (e.g. `test_tangent(tangent)`)
+4. **Hint/Solution markdown** — collapsible `<details>` blocks with the full standalone solution in a ` ```python ``` ` block. Cell metadata must include `"solution_id": "some_id"` matching the exercise
+
+The solution code block must be a complete, standalone replacement for the exercise cell (full function/class definition, not just the body).
+
+The notebook also needs at the top:
+1. **Colab badge** as first markdown cell (REQUIRED)
+2. **Setup cell** — fetches `utils.py` from GitHub raw URL on Colab, uses importlib reload
+
+### Testing
+
+`tests/test_notebooks.py` auto-discovers every `notebook.ipynb` under `lectures/*/exercises/*/`. For each one it:
+1. Finds all cells with `exercise_id` metadata and all cells with `solution_id` metadata
+2. Extracts the python code from each solution cell's ` ```python ``` ` block
+3. Asserts every exercise has a matching solution
+4. Swaps the solution code into the exercise cell
+5. Executes the entire notebook
+6. Fails if any cell errors or any output contains "FAIL"
+
+No separate solutions file needed. The notebook is the single source of truth.
+
+Run with: `uv run pytest tests/ -v`
+
+### Adding a new exercise
+
+1. Create `lectures/XX_name/exercises/YY_name/`
+2. Author `notebook.ipynb` directly in Jupyter/Colab following the cell pattern above
+3. Write `utils.py` with test functions that print PASS/FAIL
+4. Tag exercise code cells with `exercise_id` and solution markdown cells with `solution_id` in cell metadata
+5. Run `make update-links` to fix Colab badge and raw GitHub URLs
+6. Verify: `uv run pytest tests/ -v` should pick it up automatically
+
 ## Key Rules
 
 1. **Never modify `_fulltext.md` files** - Read-only source material
@@ -74,3 +111,4 @@ nohup uv run python scripts/syncing/main.py > /dev/null 2>&1 &
 13. **New lectures**: Copy an existing lecture folder, update the title and Colab badge URL
 14. **Notebooks must have the Colab badge** as the first markdown cell
 15. **Shared metadata** lives in `lib/metadata.tex` - update there, not per-lecture
+16. **Exercises are the main value prop** - Participants can read slides on their own
