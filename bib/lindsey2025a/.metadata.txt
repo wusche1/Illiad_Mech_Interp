@@ -1,0 +1,7 @@
+Title: On the Biology of a Large Language Model
+Author: Lindsey
+Year: 2025
+Type: webpage
+Citation Key: lindsey2025a
+Zotero Key: VJQ3FSQN
+URL: https://transformer-circuits.pub/2025/attribution-graphs/biology.html

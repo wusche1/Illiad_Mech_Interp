@@ -1,0 +1,8 @@
+Title: Curve Detectors
+Author: Cammarata
+Year: 2020
+Type: journalArticle
+Citation Key: cammarata2020
+Zotero Key: GABJCUBX
+URL: https://distill.pub/2020/circuits/curve-detectors
+Abstract: Part one of a three part deep dive into the curve neuron family.

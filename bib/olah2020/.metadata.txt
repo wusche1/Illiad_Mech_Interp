@@ -1,0 +1,8 @@
+Title: Zoom In: An Introduction to Circuits
+Author: Olah
+Year: 2020
+Type: journalArticle
+Citation Key: olah2020
+Zotero Key: WYINAE23
+URL: https://distill.pub/2020/circuits/zoom-in
+Abstract: By studying the connections between neurons, we can find meaningful algorithms in the weights of neural networks.

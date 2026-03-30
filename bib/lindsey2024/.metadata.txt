@@ -1,0 +1,7 @@
+Title: Sparse Crosscoders for Cross-Layer Features and Model Diffing
+Author: Lindsey
+Year: 2024
+Type: report
+Citation Key: lindsey2024
+Zotero Key: B7R5GXAS
+URL: https://transformer-circuits.pub/2024/crosscoders/index.html

@@ -1,0 +1,8 @@
+Title: The Misguided Quest for Mechanistic AI Interpretability
+Author: Hendrycks
+Year: 2025
+Type: webpage
+Citation Key: hendrycks2025
+Zotero Key: EFWZL6Y8
+URL: https://ai-frontiers.org/articles/the-misguided-quest-for-mechanistic-ai-interpretability
+Abstract: Dan Hendrycks, May 15, 2025 — Despite years of effort, mechanistic interpretability has failed to provide insight into AI behavior — the result of a flawed foundational assumption.

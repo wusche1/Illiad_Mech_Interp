@@ -1,0 +1,8 @@
+Title: Against Almost Every Theory of Impact of Interpretability — LessWrong
+Author: Segerie
+Year: 2023
+Type: journalArticle
+Citation Key: segerie2023
+Zotero Key: HGI93F5S
+URL: https://www.lesswrong.com/posts/LNA8mubrByG7SFacm/against-almost-every-theory-of-impact-of-interpretability-1
+Abstract: Charbel-Raphaël argues that interpretability research has poor theories of impact. It's not good for predicting future AI systems, can't actually aud…

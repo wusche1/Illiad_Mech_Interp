@@ -1,0 +1,7 @@
+Title: Towards Monosemanticity: Decomposing Language Models With Dictionary Learning
+Author: Bricken
+Year: 2023
+Type: report
+Citation Key: bricken2023
+Zotero Key: PP6H9X6K
+URL: https://transformer-circuits.pub/2023/monosemantic-features

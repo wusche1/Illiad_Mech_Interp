@@ -1,0 +1,8 @@
+Title: A is for Absorption: Studying Feature Splitting and Absorption in Sparse Autoencoders
+Author: Chanin
+Year: 2024
+Type: preprint
+Citation Key: chanin2024
+Zotero Key: NUASZNJK
+URL: https://arxiv.org/abs/2409.14507
+Abstract: Sparse Autoencoders (SAEs) aim to decompose the activation space of large language models (LLMs) into human-interpretable latent directions or features. As we increase the number of features in the SAE, hierarchical features tend to split into finer features ("math" may split into "algebra", "geometry", etc.), a phenomenon referred to as feature splitting. However, we show that sparse decomposition and splitting of hierarchical features is not robust. Specifically, we show that seemingly monosemantic features fail to fire where they should, and instead get "absorbed" into their children features. We coin this phenomenon feature absorption, and show that it is caused by optimizing for sparsity in SAEs whenever the underlying features form a hierarchy. We introduce a metric to detect absorption in SAEs, and validate our findings empirically on hundreds of LLM SAEs. Our investigation suggests that varying SAE sizes or sparsity is insufficient to solve this issue. We discuss the implications of feature absorption in SAEs and some potential approaches to solve the fundamental theoretical issues before SAEs can be used for interpreting LLMs robustly and at scale.

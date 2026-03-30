@@ -1,0 +1,6 @@
+Title: Refusal in Language Models Is Mediated by a Single Direction
+Author: Arditi
+Year: 2024
+Type: journalArticle
+Citation Key: arditi2024
+Zotero Key: 27RVY6CX

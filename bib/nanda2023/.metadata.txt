@@ -1,0 +1,7 @@
+Title: Emergent Linear Representations in World Models of Self-Supervised Sequence Models
+Author: Nanda
+Year: 2023
+Type: conferencePaper
+Citation Key: nanda2023
+Zotero Key: UA2W5MMK
+URL: https://aclanthology.org/2023.blackboxnlp-1.2

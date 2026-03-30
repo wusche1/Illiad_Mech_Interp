@@ -1,0 +1,8 @@
+Title: Robust Uncertainty Principles: Exact Signal Reconstruction from Highly Incomplete Frequency Information
+Author: Candes
+Year: 2004
+Type: preprint
+Citation Key: candes2004
+Zotero Key: JTQGQ5QW
+URL: http://arxiv.org/abs/math/0409186
+Abstract: This paper considers the model problem of reconstructing an object from incomplete frequency samples. Consider a discrete-time signal $f \in \C^N$ and a randomly chosen set of frequencies $Ω$ of mean size $τN$. Is it possible to reconstruct $f$ from the partial knowledge of its Fourier coefficients on the set $Ω$? A typical result of this paper is as follows: for each $M > 0$, suppose that $f$ obeys $$ # \{t, f(t) \neq 0 \} \le α(M) \cdot (\log N)^{-1} \cdot # Ω, $$ then with probability at least $1-O(N^{-M})$, $f$ can be reconstructed exactly as the solution to the $\ell_1$ minimization problem $$ \min_g \sum_{t = 0}^{N-1} |g(t)|, \quad \text{s.t.} \hat g(ω) = \hat f(ω) \text{for all} ω\in Ω. $$ In short, exact recovery may be obtained by solving a convex optimization problem. We give numerical values for $α$ which depends on the desired probability of success; except for the logarithmic factor, the condition on the size of the support is sharp. The methodology extends to a variety of other setups and higher dimensions. For example, we show how one can reconstruct a piecewise constant (one or two-dimensional) object from incomplete frequency samples--provided that the number of jumps (discontinuities) obeys the condition above--by minimizing other convex functionals such as the total-variation of $f$.

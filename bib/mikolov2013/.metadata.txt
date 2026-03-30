@@ -1,0 +1,7 @@
+Title: Linguistic Regularities in Continuous Space Word Representations
+Author: Mikolov
+Year: 2013
+Type: conferencePaper
+Citation Key: mikolov2013
+Zotero Key: Y2LS96A8
+URL: https://aclanthology.org/N13-1090/

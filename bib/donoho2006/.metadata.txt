@@ -1,0 +1,8 @@
+Title: Compressed sensing
+Author: Donoho
+Year: 2006
+Type: journalArticle
+Citation Key: donoho2006
+Zotero Key: 8Z8325J9
+URL: http://ieeexplore.ieee.org/document/1614066/
+Abstract: Suppose is an unknown vector in (a digital image or signal); we plan to measure general linear functionals of and then reconstruct. If is known to be compressible by transform coding with a known transform, and we reconstruct via the nonlinear procedure deﬁned here, the number of measurements can be dramatically smaller than the size . Thus, certain natural classes of images with pixels need only = ( 1 4 log5 2( )) nonadaptive nonpixel samples for faithful recovery, as opposed to the usual pixel samples.

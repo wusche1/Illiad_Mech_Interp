@@ -1,0 +1,7 @@
+Title: Causal Scrubbing: a method for rigorously testing interpretability hypotheses
+Author: Chan
+Year: 2022
+Type: webpage
+Citation Key: chan2022
+Zotero Key: 9NA7AWFP
+URL: https://www.lesswrong.com/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing

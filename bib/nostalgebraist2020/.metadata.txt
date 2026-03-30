@@ -1,0 +1,7 @@
+Title: interpreting GPT: the logit lens
+Author: nostalgebraist
+Year: 2020
+Type: webpage
+Citation Key: nostalgebraist2020
+Zotero Key: CRPZUHAA
+URL: https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens

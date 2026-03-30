@@ -1,0 +1,7 @@
+Title: Mechanistically Eliciting Latent Behaviors in Language Models
+Author: Mack
+Year: 2024
+Type: webpage
+Citation Key: mack2024
+Zotero Key: EIE36M56
+URL: https://www.lesswrong.com/posts/ioPnHKFyy4Cw2Gr2x/mechanistically-eliciting-latent-behaviors-in-language-1

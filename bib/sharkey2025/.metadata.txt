@@ -1,0 +1,8 @@
+Title: Open Problems in Mechanistic Interpretability
+Author: Sharkey
+Year: 2025
+Type: preprint
+Citation Key: sharkey2025
+Zotero Key: P6JHCQUE
+URL: http://arxiv.org/abs/2501.16496
+Abstract: Mechanistic interpretability aims to understand the computational mechanisms underlying neural networks' capabilities in order to accomplish concrete scientific and engineering goals. Progress in this field thus promises to provide greater assurance over AI system behavior and shed light on exciting scientific questions about the nature of intelligence. Despite recent progress toward these goals, there are many open problems in the field that require solutions before many scientific and practical benefits can be realized: Our methods require both conceptual and practical improvements to reveal deeper insights; we must figure out how best to apply our methods in pursuit of specific goals; and the field must grapple with socio-technical challenges that influence and are influenced by our work. This forward-facing review discusses the current frontier of mechanistic interpretability and the open problems that the field may benefit from prioritizing.

@@ -1,0 +1,7 @@
+Title: A Mathematical Framework for Transformer Circuits
+Author: Elhage
+Year: 2021
+Type: webpage
+Citation Key: elhage2021
+Zotero Key: GNQ2ZA35
+URL: https://transformer-circuits.pub/2021/framework/index.html

@@ -1,0 +1,7 @@
+Title: Claude Opus 4.5 System Card
+Author: Anthropic
+Year: 2025
+Type: report
+Citation Key: anthropic2025b
+Zotero Key: 73FDZQC3
+URL: https://www.anthropic.com/claude-opus-4-5-system-card
