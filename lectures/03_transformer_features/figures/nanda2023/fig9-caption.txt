@@ -1,0 +1,1 @@
+Figure 10: Example of 'minimum set' of tiles that make move G2 legal.

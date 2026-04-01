@@ -25,6 +25,24 @@
   file = {/Users/julianschulz/Zotero/storage/7IW99J9B/Claude-Opus-4-5-System-Card.pdf}
 }
 
+@misc{arditi2024,
+  title = {Refusal in {{Language Models Is Mediated}} by a {{Single Direction}}},
+  author = {Arditi, Andy and Obeso, Oscar and Syed, Aaquib and Paleka, Daniel and Panickssery, Nina and Gurnee, Wes and Nanda, Neel},
+  year = 2024,
+  month = oct,
+  number = {arXiv:2406.11717},
+  eprint = {2406.11717},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2406.11717},
+  url = {http://arxiv.org/abs/2406.11717},
+  urldate = {2026-03-31},
+  abstract = {Conversational large language models are fine-tuned for both instruction-following and safety, resulting in models that obey benign requests but refuse harmful ones. While this refusal behavior is widespread across chat models, its underlying mechanisms remain poorly understood. In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size. Specifically, for each model, we find a single direction such that erasing this direction from the model's residual stream activations prevents it from refusing harmful instructions, while adding this direction elicits refusal on even harmless instructions. Leveraging this insight, we propose a novel white-box jailbreak method that surgically disables refusal with minimal effect on other capabilities. Finally, we mechanistically analyze how adversarial suffixes suppress propagation of the refusal-mediating direction. Our findings underscore the brittleness of current safety fine-tuning methods. More broadly, our work showcases how an understanding of model internals can be leveraged to develop practical methods for controlling model behavior.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computation and Language,Computer Science - Machine Learning},
+  file = {/Users/julianschulz/Zotero/storage/5AL9H3B2/Arditi et al. - 2024 - Refusal in Language Models Is Mediated by a Single Direction.pdf;/Users/julianschulz/Zotero/storage/B38BKP59/2406.html}
+}
+
 @techreport{bricken2023,
   title = {Towards {{Monosemanticity}}: {{Decomposing Language Models With Dictionary Learning}}},
   author = {Bricken, Trenton and Templeton, Adly and Batson, Joshua and Chen, Brian and Jermyn, Adam and Conerly, Tom and Turner, Nick and Anil, Cem and Denison, Carson and Askell, Amanda and Lasenby, Robert and Wu, Yifan and Kravec, Shauna and Schiefer, Nicholas and Maxwell, Tim and Joseph, Nicholas and Tamkin, Alex and Nguyen, Karina and McLean, Brayden and Burke, Josiah E and Hume, Tristan and Carter, Shan and Henighan, Tom and Olah, Chris},
@@ -69,6 +87,18 @@
   archiveprefix = {arXiv},
   keywords = {Mathematics - Classical Analysis and ODEs,Mathematics - Numerical Analysis},
   file = {/Users/julianschulz/Zotero/storage/54V84FT4/Candes et al. - 2004 - Robust Uncertainty Principles Exact Signal Reconstruction from Highly Incomplete Frequency Informat.pdf;/Users/julianschulz/Zotero/storage/L3VYAD83/0409186.html}
+}
+
+@article{chan2023,
+  title = {Natural {{Abstractions}}: {{Key Claims}}, {{Theorems}}, and {{Critiques}} --- {{AI Alignment Forum}}},
+  shorttitle = {Natural {{Abstractions}}},
+  author = {Chan, Lawrence and Lang, Leon and Jenner, Erik},
+  year = 2023,
+  month = mar,
+  url = {https://www.alignmentforum.org/posts/gvzW46Z3BsaZsLc25/natural-abstractions-key-claims-theorems-and-critiques-1},
+  urldate = {2026-03-31},
+  abstract = {Lawrence, Erik, and Leon attempt to summarize the key claims of John Wentworth's natural abstractions agenda, formalize some of the mathematical proo\dots},
+  file = {/Users/julianschulz/Zotero/storage/C4KDX48G/natural-abstractions-key-claims-theorems-and-critiques-1.html}
 }
 
 @misc{chanin2024,
@@ -182,6 +212,25 @@
   file = {/Users/julianschulz/Zotero/storage/W9EY7SLJ/Karvonen et al. - 2026 - Activation Oracles Training and Evaluating LLMs as General-Purpose Activation Explainers.pdf;/Users/julianschulz/Zotero/storage/5MTNLYKG/2512.html}
 }
 
+@misc{li2024b,
+  title = {Inference-{{Time Intervention}}: {{Eliciting Truthful Answers}} from a {{Language Model}}},
+  shorttitle = {Inference-{{Time Intervention}}},
+  author = {Li, Kenneth and Patel, Oam and Vi{\'e}gas, Fernanda and Pfister, Hanspeter and Wattenberg, Martin},
+  year = 2024,
+  month = jun,
+  number = {arXiv:2306.03341},
+  eprint = {2306.03341},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2306.03341},
+  url = {http://arxiv.org/abs/2306.03341},
+  urldate = {2026-03-31},
+  abstract = {We introduce Inference-Time Intervention (ITI), a technique designed to enhance the "truthfulness" of large language models (LLMs). ITI operates by shifting model activations during inference, following a set of directions across a limited number of attention heads. This intervention significantly improves the performance of LLaMA models on the TruthfulQA benchmark. On an instruction-finetuned LLaMA called Alpaca, ITI improves its truthfulness from 32.5\% to 65.1\%. We identify a tradeoff between truthfulness and helpfulness and demonstrate how to balance it by tuning the intervention strength. ITI is minimally invasive and computationally inexpensive. Moreover, the technique is data efficient: while approaches like RLHF require extensive annotations, ITI locates truthful directions using only few hundred examples. Our findings suggest that LLMs may have an internal representation of the likelihood of something being true, even as they produce falsehoods on the surface.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Computation and Language,Computer Science - Machine Learning},
+  file = {/Users/julianschulz/Zotero/storage/4K38TUN8/Li et al. - 2024 - Inference-Time Intervention Eliciting Truthful Answers from a Language Model.pdf;/Users/julianschulz/Zotero/storage/M6CKIVR5/2306.html}
+}
+
 @techreport{lindsey2024,
   title = {Sparse {{Crosscoders}} for {{Cross-Layer Features}} and {{Model Diffing}}},
   author = {Lindsey, Jack and Templeton, Adly and Marcus, Jonathan and Conerly, Thomas and Batson, Joshua and Olah, Christopher},
@@ -225,6 +274,17 @@
   file = {/Users/julianschulz/Zotero/storage/CGF6I9AX/Mikolov et al. - 2013 - Linguistic Regularities in Continuous Space Word Representations.pdf}
 }
 
+@article{nanda2022,
+  title = {A {{Longlist}} of {{Theories}} of {{Impact}} for {{Interpretability}}},
+  author = {Nanda, Neel},
+  year = 2022,
+  month = mar,
+  url = {https://www.lesswrong.com/posts/uK6sQCNMw8WKzJeCQ/a-longlist-of-theories-of-impact-for-interpretability},
+  urldate = {2026-03-31},
+  abstract = {I hear a lot of different arguments floating around for exactly how mechanistically interpretability research will reduce x-risk. As an interpretabil\dots},
+  file = {/Users/julianschulz/Zotero/storage/67SJF8DE/a-longlist-of-theories-of-impact-for-interpretability.html}
+}
+
 @inproceedings{nanda2023,
   title = {Emergent {{Linear Representations}} in {{World Models}} of {{Self-Supervised Sequence Models}}},
   booktitle = {Proceedings of the 6th {{BlackboxNLP Workshop}}: {{Analyzing}} and {{Interpreting Neural Networks}} for {{NLP}}},
@@ -252,6 +312,18 @@
   abstract = {Neural networks often exhibit emergent behavior, where qualitatively new capabilities arise from scaling up the amount of parameters, training data, or training steps. One approach to understanding emergence is to find continuous \textbackslash textit\textbraceleft progress measures\textbraceright{} that underlie the seemingly discontinuous qualitative changes. We argue that progress measures can be found via mechanistic interpretability: reverse-engineering learned behaviors into their individual components. As a case study, we investigate the recently-discovered phenomenon of ``grokking'' exhibited by small transformers trained on modular addition tasks. We fully reverse engineer the algorithm learned by these networks, which uses discrete Fourier transforms and trigonometric identities to convert addition to rotation about a circle. We confirm the algorithm by analyzing the activations and weights and by performing ablations in Fourier space. Based on this understanding, we define progress measures that allow us to study the dynamics of training and split training into three continuous phases: memorization, circuit formation, and cleanup. Our results show that grokking, rather than being a sudden shift, arises from the gradual amplification of structured mechanisms encoded in the weights, followed by the later removal of memorizing components.},
   archiveprefix = {arXiv},
   file = {/Users/julianschulz/Zotero/storage/FRRSQR2W/2301_05217.pdf}
+}
+
+@article{nanda2023b,
+  title = {Othello-{{GPT}}: {{Future Work I Am Excited About}} --- {{AI Alignment Forum}}},
+  shorttitle = {Othello-{{GPT}}},
+  author = {Nanda, Neel},
+  year = 2023,
+  month = mar,
+  url = {https://www.alignmentforum.org/posts/qgK7smTvJ4DB8rZ6h/othello-gpt-future-work-i-am-excited-about},
+  urldate = {2026-03-31},
+  abstract = {This is the second in a three post sequence about interpreting Othello-GPT. See the first post for context. \dots},
+  file = {/Users/julianschulz/Zotero/storage/953N8VTY/othello-gpt-future-work-i-am-excited-about.html}
 }
 
 @article{nanda2025,
@@ -362,6 +434,17 @@
   abstract = {Research in mechanistic interpretability seeks to explain behaviors of machine learning models in terms of their internal components. However, most previous work either focuses on simple behaviors in small models, or describes complicated behaviors in larger models with broad strokes. In this work, we bridge this gap by presenting an explanation for how GPT-2 small performs a natural language task called indirect object identification (IOI). Our explanation encompasses 26 attention heads grouped into 7 main classes, which we discovered using a combination of interpretability approaches relying on causal interventions. To our knowledge, this investigation is the largest end-to-end attempt at reverse-engineering a natural behavior \&\#34;in the wild\&\#34; in a language model. We evaluate the reliability of our explanation using three quantitative criteria--faithfulness, completeness and minimality. Though these criteria support our explanation, they also point to remaining gaps in our understanding. Our work provides evidence that a mechanistic understanding of large ML models is feasible, opening opportunities to scale our understanding to both larger models and more complex tasks.},
   archiveprefix = {arXiv},
   file = {/Users/julianschulz/Zotero/storage/KG9PNZER/2211_00593.pdf}
+}
+
+@article{wentworth2020,
+  title = {Alignment {{By Default}} --- {{LessWrong}}},
+  author = {Wentworth, John},
+  year = 2020,
+  month = aug,
+  url = {https://www.lesswrong.com/posts/Nwgdq6kHke5LY692J/alignment-by-default},
+  urldate = {2026-03-31},
+  abstract = {What if we don't need to solve AI alignment? What if AI systems will just naturally learn human values as they get more capable? John Wentworth explo\dots},
+  file = {/Users/julianschulz/Zotero/storage/WMR7VPEI/alignment-by-default.html}
 }
 
 @misc{zotero-item-704,

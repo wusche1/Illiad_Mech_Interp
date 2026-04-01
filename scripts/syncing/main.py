@@ -8,6 +8,7 @@ from text_extraction import extract_text
 from label_sync import sync_labels
 from create_chapters import create_chapters
 from embeddings import create_embeddings
+from figure_extraction import extract_figures as extract_paper_figures
 
 
 def main():
@@ -31,6 +32,9 @@ def main():
         print("\n--- Chapter creation ---")
         create_chapters(config)
         
+        print("\n--- Figure extraction ---")
+        extract_paper_figures(config)
+
         print("\n--- Embeddings creation ---")
         create_embeddings(config)
         

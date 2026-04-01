@@ -1,0 +1,1 @@
+Figure 9: Percentage of times the 'minimum set' of necessary board state is computed before/after move predictions are made.

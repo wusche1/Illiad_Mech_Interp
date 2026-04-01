@@ -1,0 +1,1 @@
+Figure 5: Effect of CAA on GPT-rated behavioral evaluation score on open-ended questions in Llama 2 7B and 13B Chat. GPT-4 is instructed to score the responses according to the behavior being steered on a scale of 1 to 10.

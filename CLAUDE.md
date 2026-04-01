@@ -10,8 +10,7 @@ Each lecture is a standalone Beamer presentation with an accompanying Jupyter no
 ## Build Commands
 
 ```bash
-make lecture-01_intro                    # Compile a single lecture
-make all                                 # Compile all lectures
+make slides                              # Compile all slides into lectures/output/main.pdf
 make clean                               # Clean build artifacts
 uv run pytest tests/ -v                  # Test all exercise notebooks with solutions
 uv run python scripts/syncing/main.py    # Run Zotero sync daemon
@@ -21,10 +20,31 @@ uv run python scripts/tools/rag.py "query"  # Search literature with RAG
 ## Architecture
 
 ### Lecture Structure
-- `lectures/XX_name/notes.md` - User's draft notes and source material
-- `lectures/XX_name/slides.tex` - Standalone Beamer presentation (AI writes from notes)
+- `lectures/main.tex` - Top-level LaTeX file that `\input`s all chapter slides into one PDF
+- `lectures/output/main.pdf` - Compiled output (single PDF with all chapters + speaker notes)
+- `lectures/XX_name/notes.md` - User's draft notes (source of truth, `--` = new slide, `s:` = speaker notes)
+- `lectures/XX_name/slides.tex` - Chapter slides (no `\documentclass`, included by main.tex)
+- `lectures/XX_name/figures/` - Extracted figures for this chapter
 - `lectures/XX_name/exercises/YY_name/{notebook.ipynb, utils.py}` - Exercises
 - `lectures/XX_name/claude_notes.md` - AI's research notes (only when explicitly instructed)
+
+### Figure Extraction
+The sync pipeline auto-extracts figures and tables from paper PDFs using Docling into `bib/{key}/figures/`. Each figure gets:
+- `fig0.png`, `fig1.png`, ... (pictures)
+- `table0.png`, `table1.png`, ... (tables)
+- `fig0_caption.txt`, `table0_caption.txt`, ... (captions, when available)
+
+When slides need a figure from a paper, use the ones in `bib/{key}/figures/`. Inspect the numbered files to find the right one.
+
+Do NOT use manual page cropping or PyMuPDF `get_images()` — those produce bad results.
+
+### Presenter Mode
+Use `dspdfviewer` to present with speaker notes on Mac:
+```bash
+brew install dspdfviewer
+dspdfviewer lectures/output/main.pdf
+```
+This splits the Beamer dual-screen PDF automatically (slides on projector, notes on laptop).
 
 ### Shared LaTeX Config
 - `lib/preamble.tex` - Shared preamble included by all lectures

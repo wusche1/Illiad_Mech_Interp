@@ -1,22 +1,19 @@
 TEXBIN = /Library/TeX/texbin
-LECTURES = $(sort $(wildcard lectures/*/))
 
-lecture-%: lectures/%/slides.tex
-	cd lectures/$* && mkdir -p output && \
-	$(TEXBIN)/pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=output slides.tex && \
-	$(TEXBIN)/biber --output-directory=output slides && \
-	$(TEXBIN)/pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=output slides.tex && \
-	$(TEXBIN)/pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=output slides.tex
+slides:
+	cd lectures && mkdir -p output && \
+	$(TEXBIN)/pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=output main.tex && \
+	$(TEXBIN)/biber --output-directory=output main && \
+	$(TEXBIN)/pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=output main.tex && \
+	$(TEXBIN)/pdflatex -synctex=1 -interaction=nonstopmode -file-line-error -output-directory=output main.tex
 
-all: $(patsubst lectures/%/,lecture-%,$(LECTURES))
+clean:
+	rm -rf lectures/output
 
 update-links:
 	uv run python scripts/tools/update_colab_links.py
 
-clean:
-	rm -rf lectures/*/output
-
 test:
 	uv run pytest tests/ -v
 
-.PHONY: all clean update-links test
+.PHONY: slides clean update-links test

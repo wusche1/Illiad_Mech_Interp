@@ -1,0 +1,1 @@
+Table 7: Attack success rate (ASR) on HARMBENCH using different system prompts. The QWEN CHAT system prompt is minimal, while the LLAMA-2 CHAT system prompt contains explicit safety guidelines. Orthogonalized QWEN CHAT models maintain high ASR even with the more restrictive LLAMA-2 CHAT system prompt. See Figure 17 and Figure 18 for the full system prompts.

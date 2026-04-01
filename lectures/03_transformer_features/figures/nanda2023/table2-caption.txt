@@ -1,0 +1,1 @@
+Table 3: F 1 score for probing on FLIPPED tiles. In addition to the board state, the model also linearly encodes concepts such as flipped tiles per timestep.

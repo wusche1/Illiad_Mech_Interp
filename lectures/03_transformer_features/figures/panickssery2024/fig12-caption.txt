@@ -1,0 +1,1 @@
+Figure 9: Cosine similarity between steering vectors generated from Llama 2 7B Chat and Llama 2 7B base models.

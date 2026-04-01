@@ -1,0 +1,8 @@
+Title: Alignment By Default — LessWrong
+Author: Wentworth
+Year: 2020
+Type: journalArticle
+Citation Key: wentworth2020
+Zotero Key: H5ITJM7Z
+URL: https://www.lesswrong.com/posts/Nwgdq6kHke5LY692J/alignment-by-default
+Abstract: What if we don't need to solve AI alignment? What if AI systems will just naturally learn human values as they get more capable? John Wentworth explo…

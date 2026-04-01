@@ -1,0 +1,1 @@
+Table 13: Test set accuracy reached by Llama 2 7B Chat after one epoch of finetuning on the same contrastive dataset used for CAA, split into positive and negative settings.

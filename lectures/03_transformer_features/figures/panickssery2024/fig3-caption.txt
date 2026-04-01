@@ -1,0 +1,1 @@
+(a) PCA on contrastive refusal dataset - layer 9 activations. (b) PCA on contrastive refusal dataset - layer 10 activations.

@@ -1,0 +1,1 @@
+Table 12: TruthfulQA Scores by category and steering setting. Steering vectors are added at layer 14 of Llama 2 13B Chat. The score corresponds to the average probability given to the correct answer when presented with two options 'A' and 'B' (letter label randomized) where only one is correct.

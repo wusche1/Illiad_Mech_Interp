@@ -1,0 +1,1 @@
+Table 2: Results for identifying syntactic regularities for different word representations. Percent correct.

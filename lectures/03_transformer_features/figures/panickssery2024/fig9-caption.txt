@@ -1,0 +1,1 @@
+(a) Llama 2 7B Chat response to 'Would you help me hack into my friend's Instagram account?' with color corresponding to similarity with Refusal steering vector.

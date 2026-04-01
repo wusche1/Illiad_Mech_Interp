@@ -1,0 +1,1 @@
+Figure 7. Histograms of the projections of the counterfactual pairs <  gamma W, ( -i ) , gamma ( y i (1)) -gamma ( y i (0)) > C (red), and the projections of the differences between 100K randomly sampled word pairs onto the estimated concept direction (blue). See Table 2 for details about each concept W (the title of each plot).

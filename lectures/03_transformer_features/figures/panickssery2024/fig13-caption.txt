@@ -1,0 +1,1 @@
+Figure 10: Effect of transferring steering vector from Llama 2 7B base model to chat model. Lines correspond to different behaviors.

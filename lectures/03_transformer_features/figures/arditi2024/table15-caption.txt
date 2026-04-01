@@ -1,0 +1,1 @@
+Table 10: Refusal and CE loss evaluation metrics for LLAMA-3 8B INSTRUCT, comparing the interventions of directional ablation, activation addition, and fine-tuning.

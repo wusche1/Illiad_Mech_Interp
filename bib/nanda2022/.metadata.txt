@@ -1,0 +1,8 @@
+Title: A Longlist of Theories of Impact for Interpretability
+Author: Nanda
+Year: 2022
+Type: journalArticle
+Citation Key: nanda2022
+Zotero Key: HESSR5FI
+URL: https://www.lesswrong.com/posts/uK6sQCNMw8WKzJeCQ/a-longlist-of-theories-of-impact-for-interpretability
+Abstract: I hear a lot of different arguments floating around for exactly how mechanistically interpretability research will reduce x-risk. As an interpretabil…

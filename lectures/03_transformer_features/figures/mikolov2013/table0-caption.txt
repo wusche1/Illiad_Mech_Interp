@@ -1,0 +1,1 @@
+Table 1: Test set patterns. For a given pattern and word-pair, both orderings occur in the test set. For example, if 'see:saw return: ' occurs, so will 'saw:see returned: '.

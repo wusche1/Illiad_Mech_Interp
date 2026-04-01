@@ -17,4 +17,5 @@ dependencies = [
     "nbconvert>=7.17.0",
     "ipykernel>=7.2.0",
     "pytest>=8.0",
+    "pypdfium2>=4.30.0",
 ]

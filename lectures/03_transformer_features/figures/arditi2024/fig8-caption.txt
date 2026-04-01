@@ -1,0 +1,1 @@
+Figure 11: The bypass_score (left) and induce_score (right) of each candidate direction for LLAMA-3 8B INSTRUCT. Each candidate direction r ( l ) i corresponds to source position i and source layer l .

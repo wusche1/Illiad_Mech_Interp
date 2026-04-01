@@ -1,0 +1,1 @@
+Figure 6: Iterative refinements: the top row shows each layer projected using our linear probes. The bottom row shows the model's predictions for legal moves at each layer, by applying the unembedding layer on each layer.

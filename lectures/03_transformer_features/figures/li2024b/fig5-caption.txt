@@ -1,0 +1,1 @@
+Figure 6: (A) How training set size affects model truthfulness and direction similarity, in the 18 th head in the 14 th layer of LLaMA-7B. (B) How intervention strength controls the trade-off between truthfulness and helpfulness.

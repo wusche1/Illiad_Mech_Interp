@@ -1,0 +1,1 @@
+Figure 24: Cosine similarity of activations with the refusal direction, for base (dotted lines) and chat (solid lines) models. The refusal direction is expressed similarly in base and chat models.

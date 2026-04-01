@@ -1,6 +1,7 @@
 
-# Ignore lecture build outputs
-lectures/*/output/
+# Ignore lecture build artifacts (but keep PDFs)
+lectures/output/*
+!lectures/output/*.pdf
 
 # Ignore all PDF files in bib folder
 bib/**/*.pdf
@@ -17,8 +18,9 @@ embeddings/
 # Ignore python env
 .venv/
 
-# ignore chapters
+# ignore chapters and extracted figures
 bib/*/chapters/
+bib/*/figures/
 
 .secrets
 *.out

@@ -1,0 +1,1 @@
+Figure 12. Change in log( P ( 'queen' | x ) / P ( 'king' | x )) and log( P ( 'King' | x ) / P ( 'king' | x )) , after changing lambda ( x j ) to lambda C,alpha ( x j ) for alpha in [0 , 0 . 4] and any concept C . The starting point and ending point of each arrow correspond to the lambda ( x j ) and lambda C, 0 . 4 ( x j ) , respectively.

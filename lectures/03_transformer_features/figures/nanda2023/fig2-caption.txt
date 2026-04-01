@@ -1,0 +1,1 @@
+Figure 3: Difference in probability of A4 being empty, between our clean and corrupt sequences, measured in each attention head.

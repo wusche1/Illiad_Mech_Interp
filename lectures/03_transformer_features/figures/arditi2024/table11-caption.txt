@@ -1,0 +1,1 @@
+Table 6: Model families and their corresponding chat templates. The user instruction is denoted as {x} . Post-instruction tokens, as defined in 2.1, are labeled in red.

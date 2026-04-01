@@ -1,0 +1,1 @@
+Figure 10: The refusal metric separates harmful and harmless instructions for GEMMA 2B IT. Refusals generally begin with token 234285 (corresponding to 'I' ). Setting R GEMMA = { 234285 } yields a refusal metric that is an efficient proxy for assessing whether the model will refuse.

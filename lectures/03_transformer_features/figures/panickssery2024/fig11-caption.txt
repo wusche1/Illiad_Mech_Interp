@@ -1,0 +1,1 @@
+Figure 8: Effect of transferring steering vector from layer 13 to other layers of the same model. Lines correspond to different behaviors.

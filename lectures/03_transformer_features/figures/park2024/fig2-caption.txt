@@ -1,0 +1,1 @@
+Figure 3. Causally separable concepts are represented approximately orthogonally under the estimated causal inner product based on (3.3). The heatmap shows |<  gamma W ,  gamma Z > C | for the estimated unembedding representations of each concept pair ( W,Z ) . The detail for each concept is given in Table 2.

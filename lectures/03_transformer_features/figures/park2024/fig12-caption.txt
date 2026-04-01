@@ -1,0 +1,1 @@
+Figure 11. Histogram of  gamma T C lambda ( x en j ) vs  gamma T C lambda ( x fr j ) for all concepts C , where { x en j } are random contexts from English Wikipedia, and { x fr j } are random contexts from French Wikipedia.

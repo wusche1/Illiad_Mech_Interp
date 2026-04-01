@@ -1,0 +1,1 @@
+(a) Top-10 token probabilities for GEMMA 2B IT, averaged over 128 harmful instructions. (b) Top-10 token probabilities for GEMMA 2B IT, averaged over 128 harmless instructions.

@@ -1,0 +1,1 @@
+Table 5: Direction selection details for each model. Note that i * = -1 indicates that the direction is selected from the last token position, i * = -2 the second-to-last token position, and so on. Also note that the layer index l * starts from index 0, while L indicates the total number of layers.

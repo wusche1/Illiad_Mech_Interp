@@ -1,0 +1,45 @@
+\documentclass[aspectratio=169]{beamer}
+
+\input{../lib/packages}
+\input{../lib/settings}
+\input{../lib/metadata}
+\input{../lib/paperfig}
+\addbibresource{../bib/refs.bib}
+
+\usepackage{pgfpages}
+\setbeameroption{show notes on second screen=right}
+\hypersetup{pdfkeywords={SP-Right}}
+\setbeamerfont{note page}{size=\scriptsize}
+\setbeamertemplate{note page}{%
+  \insertnote%
+}
+
+\graphicspath{
+  {01_intro/}
+  {02_early_cnn_mechinterp/}
+  {03_transformer_features/}
+}
+
+\title{Mechanistic Interpretability}
+\subtitle{\coursetitle}
+\author{\instructor}
+\date{\today}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\input{01_intro/slides}
+
+\input{02_early_cnn_mechinterp/slides}
+\input{03_transformer_features/slides}
+
+% Future chapters:
+
+\begin{frame}[allowframebreaks]{References}
+\printbibliography[heading=none]
+\end{frame}
+
+\end{document}

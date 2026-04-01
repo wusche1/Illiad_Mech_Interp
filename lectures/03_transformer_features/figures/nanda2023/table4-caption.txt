@@ -1,0 +1,1 @@
+Table 5: Top-1 error rates when applying the unembedding layer to earlier layers. As a baseline we apply OthelloGPT's unembedding layer on a randomly initialized GPT model.

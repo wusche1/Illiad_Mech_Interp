@@ -1,0 +1,8 @@
+Title: Othello-GPT: Future Work I Am Excited About — AI Alignment Forum
+Author: Nanda
+Year: 2023
+Type: journalArticle
+Citation Key: nanda2023b
+Zotero Key: 6K95R5DR
+URL: https://www.alignmentforum.org/posts/qgK7smTvJ4DB8rZ6h/othello-gpt-future-work-i-am-excited-about
+Abstract: This is the second in a three post sequence about interpreting Othello-GPT. See the first post for context. …

@@ -1,0 +1,1 @@
+(a) Attention head outputs at last token position, projected onto refusal direction.

@@ -1,0 +1,1 @@
+Figure 23: Performing activation addition in the negative 'refusal direction', displayed in dots, reduces refusal rates and elicits unsafe completions. It is approximately as effective as directional ablation at bypassing refusal (Figure 1).

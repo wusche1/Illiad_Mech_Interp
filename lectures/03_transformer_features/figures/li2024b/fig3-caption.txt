@@ -1,0 +1,1 @@
+Figure 4: Results with varying intervention strength ( alpha and K ) on LLaMA-7B. 5% of questions used for training and validation, respectively. Metrics have been averaged over 5 random seeds.
