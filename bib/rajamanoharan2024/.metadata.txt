@@ -1,0 +1,6 @@
+Title: Improving Dictionary Learning with Gated Sparse Autoencoders
+Author: Rajamanoharan
+Year: 2024
+Type: journalArticle
+Citation Key: rajamanoharan2024
+Zotero Key: KCW33YL6

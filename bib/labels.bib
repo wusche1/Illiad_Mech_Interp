@@ -43,6 +43,20 @@
   file = {/Users/julianschulz/Zotero/storage/5AL9H3B2/Arditi et al. - 2024 - Refusal in Language Models Is Mediated by a Single Direction.pdf;/Users/julianschulz/Zotero/storage/B38BKP59/2406.html}
 }
 
+@misc{arora2013,
+  title = {New {{Algorithms}} for {{Learning Incoherent}} and {{Overcomplete Dictionaries}}},
+  author = {Arora, Sanjeev and Ge, Rong and Moitra, Ankur},
+  year = 2013,
+  month = aug,
+  number = {arXiv:1308.6273},
+  eprint = {1308.6273},
+  publisher = {arXiv},
+  url = {https://arxiv.org/abs/1308.6273},
+  abstract = {In sparse recovery we are given a matrix \$A\$ (the dictionary) and a vector of the form \$A X\$ where \$X\$ is sparse, and the goal is to recover \$X\$. This is a central notion in signal processing, statistics and machine learning. But in applications such as sparse coding, edge detection, compression and super resolution, the dictionary \$A\$ is unknown and has to be learned from random examples of the form \$Y = AX\$ where \$X\$ is drawn from an appropriate distribution --- this is the dictionary learning problem. In most settings, \$A\$ is overcomplete: it has more columns than rows. This paper presents a polynomial-time algorithm for learning overcomplete dictionaries; the only previously known algorithm with provable guarantees is the recent work of Spielman, Wang and Wright who gave an algorithm for the full-rank case, which is rarely the case in applications. Our algorithm applies to incoherent dictionaries which have been a central object of study since they were introduced in seminal work of Donoho and Huo. In particular, a dictionary is \$\textbackslash mu\$-incoherent if each pair of columns has inner product at most \$\textbackslash mu / \textbackslash sqrt\textbraceleft n\textbraceright\$. The algorithm makes natural stochastic assumptions about the unknown sparse vector \$X\$, which can contain \$k \textbackslash leq c \textbackslash min(\textbackslash sqrt\textbraceleft n\textbraceright/\textbackslash mu \textbackslash log n, m\textasciicircum\textbraceleft 1/2 -\textbackslash eta\textbraceright )\$ non-zero entries (for any \$\textbackslash eta \&gt; 0\$). This is close to the best \$k\$ allowable by the best sparse recovery algorithms even if one knows the dictionary \$A\$ exactly. Moreover, both the running time and sample complexity depend on \$\textbackslash log 1/\textbackslash epsilon\$, where \$\textbackslash epsilon\$ is the target accuracy, and so our algorithms converge very quickly to the true dictionary. Our algorithm can also tolerate substantial amounts of noise provided it is incoherent with respect to the dictionary (e.g., Gaussian). In the noisy setting, our running time and sample complexity depend polynomially on \$1/\textbackslash epsilon\$, and this is necessary.},
+  archiveprefix = {arXiv},
+  file = {/Users/julianschulz/Zotero/storage/GNMDJUXJ/1308_6273.pdf}
+}
+
 @techreport{bricken2023,
   title = {Towards {{Monosemanticity}}: {{Decomposing Language Models With Dictionary Learning}}},
   author = {Bricken, Trenton and Templeton, Adly and Batson, Joshua and Chen, Brian and Jermyn, Adam and Conerly, Tom and Turner, Nick and Anil, Cem and Denison, Carson and Askell, Amanda and Lasenby, Robert and Wu, Yifan and Kravec, Shauna and Schiefer, Nicholas and Maxwell, Tim and Joseph, Nicholas and Tamkin, Alex and Nguyen, Karina and McLean, Brayden and Burke, Josiah E and Hume, Tristan and Carter, Shan and Henighan, Tom and Olah, Chris},
@@ -51,6 +65,42 @@
   institution = {Anthropic},
   url = {https://transformer-circuits.pub/2023/monosemantic-features},
   file = {/Users/julianschulz/Zotero/storage/4VNZH66S/Bricken et al. - 2023 - Towards Monosemanticity.pdf}
+}
+
+@misc{bussmann2024,
+  title = {{{BatchTopK Sparse Autoencoders}}},
+  author = {Bussmann, Bart and Leask, Patrick and Nanda, Neel},
+  year = 2024,
+  month = dec,
+  number = {arXiv:2412.06410},
+  eprint = {2412.06410},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2412.06410},
+  url = {http://arxiv.org/abs/2412.06410},
+  urldate = {2026-04-02},
+  abstract = {Sparse autoencoders (SAEs) have emerged as a powerful tool for interpreting language model activations by decomposing them into sparse, interpretable features. A popular approach is the TopK SAE, that uses a fixed number of the most active latents per sample to reconstruct the model activations. We introduce BatchTopK SAEs, a training method that improves upon TopK SAEs by relaxing the top-k constraint to the batch-level, allowing for a variable number of latents to be active per sample. As a result, BatchTopK adaptively allocates more or fewer latents depending on the sample, improving reconstruction without sacrificing average sparsity. We show that BatchTopK SAEs consistently outperform TopK SAEs in reconstructing activations from GPT-2 Small and Gemma 2 2B, and achieve comparable performance to state-of-the-art JumpReLU SAEs. However, an advantage of BatchTopK is that the average number of latents can be directly specified, rather than approximately tuned through a costly hyperparameter sweep. We provide code for training and evaluating BatchTopK SAEs at https://github.com/bartbussmann/BatchTopK},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning,Statistics - Machine Learning},
+  file = {/Users/julianschulz/Zotero/storage/JRXRHCQW/Bussmann et al. - 2024 - BatchTopK Sparse Autoencoders.pdf;/Users/julianschulz/Zotero/storage/QG6NDVUM/2412.html}
+}
+
+@misc{bussmann2025,
+  title = {Learning {{Multi-Level Features}} with {{Matryoshka Sparse Autoencoders}}},
+  author = {Bussmann, Bart and Nabeshima, Noa and Karvonen, Adam and Nanda, Neel},
+  year = 2025,
+  month = mar,
+  number = {arXiv:2503.17547},
+  eprint = {2503.17547},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2503.17547},
+  url = {http://arxiv.org/abs/2503.17547},
+  urldate = {2026-04-02},
+  abstract = {Sparse autoencoders (SAEs) have emerged as a powerful tool for interpreting neural networks by extracting the concepts represented in their activations. However, choosing the size of the SAE dictionary (i.e. number of learned concepts) creates a tension: as dictionary size increases to capture more relevant concepts, sparsity incentivizes features to be split or absorbed into more specific features, leaving high-level features missing or warped. We introduce Matryoshka SAEs, a novel variant that addresses these issues by simultaneously training multiple nested dictionaries of increasing size, forcing the smaller dictionaries to independently reconstruct the inputs without using the larger dictionaries. This organizes features hierarchically - the smaller dictionaries learn general concepts, while the larger dictionaries learn more specific concepts, without incentive to absorb the high-level features. We train Matryoshka SAEs on Gemma-2-2B and TinyStories and find superior performance on sparse probing and targeted concept erasure tasks, more disentangled concept representations, and reduced feature absorption. While there is a minor tradeoff with reconstruction performance, we believe Matryoshka SAEs are a superior alternative for practical tasks, as they enable training arbitrarily large SAEs while retaining interpretable features at different levels of abstraction.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning},
+  file = {/Users/julianschulz/Zotero/storage/3SZCQ8NY/Bussmann et al. - 2025 - Learning Multi-Level Features with Matryoshka Sparse Autoencoders.pdf;/Users/julianschulz/Zotero/storage/QALUY3H2/2503.html}
 }
 
 @article{cammarata2020,
@@ -161,6 +211,34 @@
   file = {/Users/julianschulz/Zotero/storage/DUY6QPLI/Elhage et al. - 2022 - Toy Models of Superposition.pdf;/Users/julianschulz/Zotero/storage/RVARPP28/2209.html}
 }
 
+@article{engels2025,
+  title = {{{NOT ALL LANGUAGE MODEL FEATURES ARE ONE-DIMENSIONALLY LINEAR}}},
+  author = {Engels, Joshua and Michaud, Eric J and Liao, Isaac and Gurnee, Wes and Tegmark, Max},
+  year = 2025,
+  abstract = {Recent work has proposed that language models perform computation by manipulating one-dimensional representations of concepts (``features'') in activation space. In contrast, we explore whether some language model representations may be inherently multi-dimensional. We begin by developing a rigorous definition of irreducible multi-dimensional features based on whether they can be decomposed into either independent or non-co-occurring lower-dimensional features. Motivated by these definitions, we design a scalable method that uses sparse autoencoders to automatically find multi-dimensional features in GPT-2 and Mistral 7B. These auto-discovered features include strikingly interpretable examples, e.g. circular features representing days of the week and months of the year. We identify tasks where these exact circles are used to solve computational problems involving modular arithmetic in days of the week and months of the year. Next, we provide evidence that these circular features are indeed the fundamental unit of computation in these tasks with intervention experiments on Mistral 7B and Llama 3 8B, and we examine the continuity of the days of the week feature in Mistral 7B. Overall, our work argues that understanding multi-dimensional features is necessary to mechanistically decompose some model behaviors.},
+  langid = {english},
+  file = {/Users/julianschulz/Zotero/storage/IYSTKBSQ/Engels et al. - 2025 - NOT ALL LANGUAGE MODEL FEATURES ARE ONE-DIMENSIONALLY LINEAR.pdf}
+}
+
+@misc{fillingham2025,
+  title = {{{SCALAR}}: {{Benchmarking SAE Interaction Sparsity}} in {{Toy LLMs}}},
+  shorttitle = {{{SCALAR}}},
+  author = {Fillingham, Sean P. and Gordon, Andrew and Lai, Peter and Poncini, Xavier and Quarel, David and Heimersheim, Stefan},
+  year = 2025,
+  month = nov,
+  number = {arXiv:2511.07572},
+  eprint = {2511.07572},
+  primaryclass = {cs},
+  publisher = {arXiv},
+  doi = {10.48550/arXiv.2511.07572},
+  url = {http://arxiv.org/abs/2511.07572},
+  urldate = {2026-04-02},
+  abstract = {Mechanistic interpretability aims to decompose neural networks into interpretable features and map their connecting circuits. The standard approach trains sparse autoencoders (SAEs) on each layer's activations. However, SAEs trained in isolation don't encourage sparse cross-layer connections, inflating extracted circuits where upstream features needlessly affect multiple downstream features. Current evaluations focus on individual SAE performance, leaving interaction sparsity unexamined. We introduce SCALAR (Sparse Connectivity Assessment of Latent Activation Relationships), a benchmark measuring interaction sparsity between SAE features. We also propose "Staircase SAEs", using weight-sharing to limit upstream feature duplication across downstream features. Using SCALAR, we compare TopK SAEs, Jacobian SAEs (JSAEs), and Staircase SAEs. Staircase SAEs improve relative sparsity over TopK SAEs by \$59.67\textbackslash\% \textbackslash pm 1.83\textbackslash\%\$ (feedforward) and \$63.15\textbackslash\% \textbackslash pm 1.35\textbackslash\%\$ (transformer blocks). JSAEs provide \$8.54\textbackslash\% \textbackslash pm 0.38\textbackslash\%\$ improvement over TopK for feedforward layers but cannot train effectively across transformer blocks, unlike Staircase and TopK SAEs which work anywhere in the residual stream. We validate on a \$216\$K-parameter toy model and GPT-\$2\$ Small (\$124\$M), where Staircase SAEs maintain interaction sparsity improvements while preserving feature interpretability. Our work highlights the importance of interaction sparsity in SAEs through benchmarking and comparing promising architectures.},
+  archiveprefix = {arXiv},
+  keywords = {Computer Science - Machine Learning},
+  file = {/Users/julianschulz/Zotero/storage/3T4A8CLN/Fillingham et al. - 2025 - SCALAR Benchmarking SAE Interaction Sparsity in Toy LLMs.pdf;/Users/julianschulz/Zotero/storage/47UT9P3Z/2511.html}
+}
+
 @misc{hendrycks2025,
   title = {The {{Misguided Quest}} for {{Mechanistic AI Interpretability}}},
   author = {Hendrycks, Dan and Hiscott, Laura},
@@ -172,6 +250,14 @@
   abstract = {Dan Hendrycks, May 15, 2025 --- Despite years of effort, mechanistic interpretability has failed to provide insight into AI behavior --- the result of a flawed foundational assumption.},
   langid = {english},
   file = {/Users/julianschulz/Zotero/storage/GBE43HSE/the-misguided-quest-for-mechanistic-ai-interpretability.html}
+}
+
+@article{johnson1984,
+  title = {Extensions of {{Lipschitz}} Mappings into a {{Hilbert}} Space},
+  author = {Johnson, William B. and Lindenstrauss, Joram},
+  year = 1984,
+  publisher = {Contemporary Mathematics},
+  file = {/Users/julianschulz/Zotero/storage/BGJN4RBC/Extensions_of_Lipschitz_mappings_into_a_Hilbert_sp.pdf}
 }
 
 @misc{karvonen2025b,
@@ -231,13 +317,14 @@
   file = {/Users/julianschulz/Zotero/storage/4K38TUN8/Li et al. - 2024 - Inference-Time Intervention Eliciting Truthful Answers from a Language Model.pdf;/Users/julianschulz/Zotero/storage/M6CKIVR5/2306.html}
 }
 
-@techreport{lindsey2024,
+@misc{lindsey2024,
   title = {Sparse {{Crosscoders}} for {{Cross-Layer Features}} and {{Model Diffing}}},
   author = {Lindsey, Jack and Templeton, Adly and Marcus, Jonathan and Conerly, Thomas and Batson, Joshua and Olah, Christopher},
   year = 2024,
   month = oct,
-  institution = {Anthropic},
-  url = {https://transformer-circuits.pub/2024/crosscoders/index.html}
+  journal = {Transformer Circuits Thread},
+  url = {https://transformer-circuits.pub/2024/crosscoders/index.html},
+  file = {/Users/julianschulz/Zotero/storage/HK4UIJKR/crosscoders.html}
 }
 
 @misc{lindsey2025a,
@@ -393,6 +480,15 @@
   file = {/Users/julianschulz/Zotero/storage/K56VPQEL/Park et al. - 2024 - The Linear Representation Hypothesis and the Geometry of Large Language Models.pdf}
 }
 
+@article{rajamanoharan2024,
+  title = {Improving {{Dictionary Learning}} with {{Gated Sparse Autoencoders}}},
+  author = {Rajamanoharan, Senthooran and Conmy, Arthur and Smith, Lewis and Lieberum, Tom and Varma, Vikrant and Kram{\'a}r, J{\'a}nos and Shah, Rohin and Nanda, Neel},
+  year = 2024,
+  month = apr,
+  langid = {english},
+  file = {/Users/julianschulz/Zotero/storage/QMNKXCTX/Rajamanoharan et al. - 2024 - Improving Dictionary Learning with Gated Sparse Autoencoders.pdf}
+}
+
 @article{segerie2023,
   title = {Against {{Almost Every Theory}} of {{Impact}} of {{Interpretability}} --- {{LessWrong}}},
   author = {Segerie, Charbel-Rapha{\"e}l},
@@ -420,6 +516,32 @@
   archiveprefix = {arXiv},
   keywords = {Computer Science - Machine Learning},
   file = {/Users/julianschulz/Zotero/storage/8239DSSZ/Sharkey et al. - 2025 - Open Problems in Mechanistic Interpretability.pdf}
+}
+
+@misc{spielman2012,
+  title = {Exact {{Recovery}} of {{Sparsely-Used Dictionaries}}},
+  author = {Spielman, Daniel A. and Wang, Huan and Wright, John},
+  year = 2012,
+  month = jun,
+  number = {arXiv:1206.5882},
+  eprint = {1206.5882},
+  publisher = {arXiv},
+  url = {https://arxiv.org/abs/1206.5882},
+  abstract = {We consider the problem of learning sparsely used dictionaries with an arbitrary square dictionary and a random, sparse coefficient matrix. We prove that \$O (n \textbackslash log n)\$ samples are sufficient to uniquely determine the coefficient matrix. Based on this proof, we design a polynomial-time algorithm, called Exact Recovery of Sparsely-Used Dictionaries (ER-SpUD), and prove that it probably recovers the dictionary and coefficient matrix when the coefficient matrix is sufficiently sparse. Simulation results show that ER-SpUD reveals the true dictionary as well as the coefficients with probability higher than many state-of-the-art algorithms.},
+  archiveprefix = {arXiv},
+  file = {/Users/julianschulz/Zotero/storage/JNRP7EPX/1206_5882.pdf}
+}
+
+@misc{templeton2024,
+  title = {Scaling {{Monosemanticity}}: {{Extracting Interpretable Features}} from {{Claude}} 3 {{Sonnet}}},
+  author = {Templeton, Adly and Conerly, Tom and Marcus, Jonathan and Clark, Jack and Shlegeris, Yan and Bricken, Trenton and O'Gara, Aidan and Ameisen, Emmanuel and Jermyn, Adam and Zhang, Baobao and Olah, Chris and McCandlish, Sam},
+  year = 2024,
+  month = may,
+  journal = {Transformer Circuits Thread},
+  url = {https://transformer-circuits.pub/2024/scaling-monosemanticity/},
+  urldate = {2026-03-26},
+  abstract = {We apply sparse autoencoders to extract interpretable features from Claude 3 Sonnet, a production-scale language model. We find features corresponding to a wide range of concepts including cities, people, code syntax, and abstract ideas. We demonstrate that these features are causally active and can be used to steer model behavior.},
+  file = {/Users/julianschulz/Zotero/storage/MWU9DVNR/scaling-monosemanticity.html}
 }
 
 @misc{wang2022,
@@ -461,6 +583,12 @@
 % ===== PENDING BBT EXPORT (from Zotero metadata) =====
 % These entries will be replaced once Better BibTeX exports them
 
+@misc{olah2020a,
+  title = {Zoom In: An Introduction to Circuits},
+  author = {Olah},
+  year = {2020}
+}
+
 @misc{lawrencec2023,
   title = {Natural Abstractions: Key Claims, Theorems, and Critiques — AI Alignment Forum},
   author = {Chan},
@@ -499,6 +627,6 @@
 
 
 % ===== AUTO-GENERATED LATEX LABELS =====
-% Generated on 2026-04-01 11:53:50
+% Generated on 2026-04-02 13:25:16
 % Total labels: 0
 

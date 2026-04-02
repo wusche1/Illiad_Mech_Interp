@@ -1,0 +1,7 @@
+Title: Zoom In: An Introduction to Circuits
+Author: Olah
+Year: 2020
+Type: journalArticle
+Citation Key: olah2020a
+Zotero Key: CJ53XCS4
+URL: https://distill.pub/2020/circuits/zoom-in

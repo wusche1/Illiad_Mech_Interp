@@ -1,0 +1,6 @@
+Title: Extensions of Lipschitz mappings into a Hilbert space
+Author: Johnson
+Year: 1984
+Type: journalArticle
+Citation Key: johnson1984
+Zotero Key: 7463HE6J

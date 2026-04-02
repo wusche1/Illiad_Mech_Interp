@@ -1,0 +1,8 @@
+Title: Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet
+Author: Templeton
+Year: 2024
+Type: webpage
+Citation Key: templeton2024
+Zotero Key: R9PK5NUT
+URL: https://transformer-circuits.pub/2024/scaling-monosemanticity/
+Abstract: We apply sparse autoencoders to extract interpretable features from Claude 3 Sonnet, a production-scale language model. We find features corresponding to a wide range of concepts including cities, people, code syntax, and abstract ideas. We demonstrate that these features are causally active and can be used to steer model behavior.

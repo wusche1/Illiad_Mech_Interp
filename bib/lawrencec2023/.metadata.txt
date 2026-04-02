@@ -1,0 +1,13 @@
+Title: Natural Abstractions: Key Claims, Theorems, and Critiques — AI Alignment Forum
+Author: Chan
+Year: 2023
+Type: journalArticle
+Citation Key: lawrencec2023
+Zotero Key: 89BEN7YV
+URL: https://www.alignmentforum.org/posts/gvzW46Z3BsaZsLc25/natural-abstractions-key-claims-theorems-and-critiques-1
+Abstract: Lawrence, Erik, and Leon attempt to summarize the key claims of John Wentworth's natural abstractions agenda, formalize some of the mathematical proo…
+Extracted: 2026-03-31 15:55:23
+Extraction Method: HTML (LessWrong JSON-LD)
+Extracted Title: Natural Abstractions: Key Claims, Theorems, and Critiques
+Extracted Author: LawrenceC
+Extracted Date: 2023-03-16T16:37:40.181Z
