@@ -38,6 +38,23 @@ def _generate_metadata_entries(bib_dir, existing_keys):
     return entries
 
 
+def _find_named_figures(bib_dir):
+    """Find user-named figures (not auto-extracted fig0, table0, etc.)."""
+    auto_pattern = re.compile(r'^(fig|table)\d+')
+    figures = []
+    for fig_file in bib_dir.glob('*/figures/*.png'):
+        name = fig_file.stem
+        if not auto_pattern.match(name) and not name.endswith('_caption'):
+            citation_key = fig_file.parent.parent.name
+            figures.append((citation_key, name))
+    for fig_file in bib_dir.glob('*/figures/*.jpg'):
+        name = fig_file.stem
+        if not auto_pattern.match(name) and not name.endswith('_caption'):
+            citation_key = fig_file.parent.parent.name
+            figures.append((citation_key, name))
+    return sorted(figures)
+
+
 def sync_labels(config):
     """Extract all LaTeX labels and combine with refs.bib into a single file"""
     # Get project root (go up two levels from scripts/syncing/)
@@ -107,13 +124,28 @@ def sync_labels(config):
         bib_content += f"  year = {{9999}}\n"
         bib_content += f"}}\n\n"
 
+    # Add named figure entries
+    named_figures = _find_named_figures(bib_dir)
+    if named_figures:
+        bib_content += f"\n% ===== NAMED FIGURES =====\n"
+        bib_content += f"% Captured via figure-capture hotkey\n\n"
+        for citation_key, fig_name in named_figures:
+            ref = f"{citation_key}/{fig_name}"
+            bib_content += f"@misc{{{ref},\n"
+            bib_content += f"  title = {{Figure: {fig_name} ({citation_key})}},\n"
+            bib_content += f"  keywords = {{figure}},\n"
+            bib_content += f"  year = {{9999}}\n"
+            bib_content += f"}}\n\n"
+
     # Save to .bib file
     with open(output_file, 'w') as f:
         f.write(bib_content)
 
     n_pending = len(metadata_entries)
+    n_figures = len(named_figures)
     pending_msg = f" + {n_pending} pending" if n_pending else ""
-    print(f"Combined {refs_bib_path.name}{pending_msg} + {len(all_labels)} labels -> {output_path}")
+    figures_msg = f" + {n_figures} figures" if n_figures else ""
+    print(f"Combined {refs_bib_path.name}{pending_msg} + {len(all_labels)} labels{figures_msg} -> {output_path}")
 
 
 def main():

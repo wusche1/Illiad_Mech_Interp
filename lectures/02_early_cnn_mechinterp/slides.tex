@@ -17,12 +17,9 @@
 \end{frame}
 
 \begin{frame}{Why CNNs?}
-\begin{itemize}
-\item Many early impressive neural networks were visual (e.g.\ AlexNet)
-\item CNN channels are a preferred basis, so candidate features are architecturally clear
-\item Lots of universality in vision CNNs compared to LLMs
-\item Feature visualization works well in vision models
-\end{itemize}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/cnn_diagram.png}
+\end{center}
 
 \note{
 \begin{itemize}
@@ -197,24 +194,9 @@ These handwritten weights significantly mimic the original.
 \end{frame}
 
 \begin{frame}{Universality in Image Models \cite{olah2020}}
-\begin{columns}[t]
-\begin{column}{0.48\textwidth}
-\centering
-{\large\textbf{Curve Detectors}}
-
-\vspace{0.3em}
-\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{figures/universality_curves_full.png}
-\end{column}
-\begin{column}{0.48\textwidth}
-\centering
-{\large\textbf{High-Low Frequency Detectors}}
-
-\vspace{0.3em}
-\includegraphics[width=\textwidth,height=0.65\textheight,keepaspectratio]{figures/universality_hilo_full.png}
-\end{column}
-\end{columns}
-\vfill
-{\small Rows: AlexNet, GoogLeNet, VGG19, ResNet}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{figures/universality.png}
+\end{center}
 
 \note{
 \begin{itemize}

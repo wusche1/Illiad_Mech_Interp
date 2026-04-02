@@ -80,29 +80,27 @@ def extract_html_text(file_path: Path, folder_name: str, remove_base64_images: b
     
     # Remove base64-encoded images if configured
     if remove_base64_images:
-        markdown_content = _remove_base64_images(markdown_content)
-    
+        markdown_content = _remove_base64_images(markdown_content, folder_name)
+
     return markdown_content
 
 
-def _remove_base64_images(markdown_content: str) -> str:
-    """Remove base64-encoded images from markdown content"""
-    # Pattern to match markdown images with data: URIs
-    # Matches: ![alt text](data:image/type;base64,...)
-    base64_image_pattern = r'!\[([^\]]*)\]\(data:image/[^;]+;base64,[^)]+\)'
-    
-    # Replace base64 images with placeholder or remove entirely
-    # Option 1: Replace with placeholder showing alt text
+def _remove_base64_images(markdown_content: str, folder_name: str = "") -> str:
+    """Remove base64-encoded images from markdown content, replacing with figure paths."""
+    base64_image_pattern = r'!\[([^\]]*)\]\(data:(?:image/[^;]+|binary/octet-stream);base64,[^)]+\)'
+
+    counter = [0]
+
     def replace_with_placeholder(match):
         alt_text = match.group(1)
+        idx = counter[0]
+        counter[0] += 1
+        fig_ref = f"bib/{folder_name}/figures/fig{idx}.png" if folder_name else f"fig{idx}.png"
         if alt_text:
-            return f"[Image: {alt_text}]"
+            return f"[Figure {idx}: {alt_text} -> {fig_ref}]"
         else:
-            return "[Image]"
-    
-    # Option 2: Remove entirely (uncomment this line and comment above to use)
-    # return re.sub(base64_image_pattern, '', markdown_content)
-    
+            return f"[Figure {idx} -> {fig_ref}]"
+
     return re.sub(base64_image_pattern, replace_with_placeholder, markdown_content)
 
 
@@ -134,7 +132,7 @@ def extract_lesswrong_text(file_path: Path, folder_name: str, remove_base64_imag
                 
                 # Remove base64-encoded images if configured
                 if remove_base64_images:
-                    markdown_content = _remove_base64_images(markdown_content)
+                    markdown_content = _remove_base64_images(markdown_content, folder_name)
                 
                 # Return metadata separately
                 metadata = {

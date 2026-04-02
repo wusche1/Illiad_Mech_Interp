@@ -5,10 +5,29 @@ Runs as part of the sync pipeline. Only processes papers that have a PDF
 but no figures/ directory yet.
 """
 
+import re
+import base64
 from pathlib import Path
 
 from docling.document_converter import DocumentConverter, PdfFormatOption
 from docling.datamodel.pipeline_options import PdfPipelineOptions
+
+
+def _extract_html_figures(html_path, figures_dir):
+    """Extract base64-encoded images from an HTML file."""
+    html = html_path.read_text(errors='ignore')
+    # Match both data:image/PNG and data:binary/octet-stream (used by some sites)
+    matches = re.findall(
+        r'data:(?:image/(?:PNG|png|jpeg|jpg)|binary/octet-stream);base64,([A-Za-z0-9+/=\s]+)',
+        html
+    )
+    for i, data in enumerate(matches):
+        data = data.replace('\n', '').replace(' ', '')
+        img_bytes = base64.b64decode(data)
+        # Detect format from magic bytes
+        ext = 'png' if img_bytes[:4] == b'\x89PNG' else 'jpg'
+        (figures_dir / f"fig{i}.{ext}").write_bytes(img_bytes)
+    print(f"    {len(matches)} figures extracted from HTML")
 
 
 _converter = None
@@ -42,11 +61,21 @@ def extract_figures(config):
             continue
 
         pdf = paper_dir / f"{paper_dir.name}.pdf"
-        if not pdf.exists():
+        html = paper_dir / f"{paper_dir.name}.html"
+
+        if not pdf.exists() and not html.exists():
             continue
 
         print(f"  Extracting figures from {paper_dir.name}...")
         figures_dir.mkdir()
+
+        # HTML-only papers: extract base64 images directly
+        if not pdf.exists() and html.exists():
+            try:
+                _extract_html_figures(html, figures_dir)
+            except Exception as e:
+                print(f"    Error extracting HTML figures: {e}")
+            continue
 
         try:
             converter = _get_converter()

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Add a paper to Zotero with manually provided metadata and PDF URL."""
+"""Add a paper to Zotero with manually provided metadata and PDF URL or web snapshot."""
 
 import sys
 import os
@@ -67,21 +67,73 @@ def parse_authors(authors_str):
     return creators
 
 
-def download_pdf(url):
-    print(f"Downloading PDF from {url}...")
+def download_content(url):
+    print(f"Downloading from {url}...")
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Macintosh)"})
-    return urllib.request.urlopen(req, timeout=120).read()
+    resp = urllib.request.urlopen(req, timeout=120)
+    content_type = resp.headers.get("Content-Type", "")
+    content = resp.read()
+    return content, content_type
 
 
-def save_attachment_local(parent_key, pdf_content, filename):
+def download_html_singlefile(url):
+    """Save a fully rendered web page using SingleFile CLI (same as Zotero's web connector)."""
+    import subprocess, tempfile
+    print(f"Saving web snapshot via SingleFile: {url}")
+
+    # Find playwright's chromium
+    try:
+        result = subprocess.run(
+            ["uv", "run", "python3", "-c",
+             "from playwright.sync_api import sync_playwright; p = sync_playwright().start(); print(p.chromium.executable_path); p.stop()"],
+            capture_output=True, text=True, timeout=30)
+        chromium_path = result.stdout.strip()
+    except Exception:
+        chromium_path = ""
+
+    with tempfile.NamedTemporaryFile(suffix=".html", delete=False) as f:
+        tmp_path = f.name
+
+    cmd = ["single-file", url, tmp_path,
+           "--browser-wait-until", "networkidle",
+           "--browser-wait-delay", "5000"]
+    if chromium_path:
+        cmd += ["--browser-executable-path", chromium_path]
+
+    result = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+    if result.returncode != 0 or not os.path.exists(tmp_path):
+        print(f"SingleFile failed: {result.stderr}")
+        print("Falling back to raw download")
+        content, _ = download_content(url)
+        return content
+
+    content = open(tmp_path, "rb").read()
+    os.unlink(tmp_path)
+    print(f"Saved complete snapshot: {len(content)} bytes")
+    return content
+
+
+def is_html_url(url):
+    return url.endswith(".html") or url.endswith(".htm") or any(
+        site in url for site in [
+            "lesswrong.com", "alignmentforum.org", "transformer-circuits.pub",
+            "distill.pub", "arxiv.org/html",
+        ]
+    )
+
+
+def save_attachment_local(parent_key, content, filename, link_mode, content_type, url=None):
     attachment = {
         "itemType": "attachment",
         "parentItem": parent_key,
-        "linkMode": "imported_file",
+        "linkMode": link_mode,
         "title": filename,
-        "contentType": "application/pdf",
+        "contentType": content_type,
         "filename": filename,
     }
+    if url and link_mode == "imported_url":
+        attachment["url"] = url
+        attachment["charset"] = "utf-8"
 
     result = api_request("items", method="POST", data=[attachment])
     if not result.get("successful"):
@@ -94,9 +146,9 @@ def save_attachment_local(parent_key, pdf_content, filename):
     zotero_storage = Path.home() / "Zotero" / "storage" / attach_key
     zotero_storage.mkdir(parents=True, exist_ok=True)
 
-    pdf_path = zotero_storage / filename
-    pdf_path.write_bytes(pdf_content)
-    print(f"Saved PDF to: {pdf_path}")
+    file_path = zotero_storage / filename
+    file_path.write_bytes(content)
+    print(f"Saved to: {file_path} ({len(content)} bytes)")
     return True
 
 
@@ -108,7 +160,7 @@ def create_item(metadata, collection_key=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Add a paper to Zotero with manual metadata")
-    parser.add_argument("--pdf", required=True, help="URL to the PDF file")
+    parser.add_argument("--pdf", required=True, help="URL to the PDF file or webpage to snapshot")
     parser.add_argument("--title", required=True, help="Paper title")
     parser.add_argument("--authors", required=True, help="Comma-separated author names (e.g., 'John Smith, Jane Doe')")
     parser.add_argument("--year", required=True, help="Publication year")
@@ -136,6 +188,8 @@ if __name__ == "__main__":
 
     if args.url:
         metadata["url"] = args.url
+    elif args.type == "webpage":
+        metadata["url"] = args.pdf
     if args.abstract:
         metadata["abstractNote"] = args.abstract
     if args.publisher:
@@ -143,6 +197,8 @@ if __name__ == "__main__":
             metadata["institution"] = args.publisher
         else:
             metadata["publisher"] = args.publisher
+    if args.type == "webpage" and args.publisher:
+        metadata["websiteTitle"] = args.publisher
 
     print(f"Title: {metadata['title']}")
     print(f"Authors: {', '.join(c.get('lastName', c.get('name')) for c in metadata['creators'])}")
@@ -157,12 +213,27 @@ if __name__ == "__main__":
     print(f"Created item: {parent_key}")
 
     try:
-        pdf_content = download_pdf(args.pdf)
-        filename = args.pdf.split("/")[-1]
-        if not filename.endswith(".pdf"):
-            filename = f"{args.title[:50].replace(' ', '_')}.pdf"
-        save_attachment_local(parent_key, pdf_content, filename)
+        content, resp_content_type = download_content(args.pdf)
+        source_url = args.pdf
+
+        if is_html_url(source_url) or "text/html" in resp_content_type:
+            # Save as web snapshot using SingleFile for proper rendering
+            content = download_html_singlefile(source_url)
+            slug = args.title[:50].replace(" ", "-").replace("/", "-").lower()
+            filename = f"{slug}.html"
+            save_attachment_local(parent_key, content, filename,
+                                 link_mode="imported_url",
+                                 content_type="text/html",
+                                 url=source_url)
+        else:
+            # Save as PDF
+            filename = source_url.split("/")[-1]
+            if not filename.endswith(".pdf"):
+                filename = f"{args.title[:50].replace(' ', '_')}.pdf"
+            save_attachment_local(parent_key, content, filename,
+                                 link_mode="imported_file",
+                                 content_type="application/pdf")
     except Exception as e:
-        print(f"Warning: Could not attach PDF: {e}")
+        print(f"Warning: Could not attach file: {e}")
 
     print("Done!")

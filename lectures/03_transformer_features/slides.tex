@@ -239,9 +239,9 @@ and thereby classify the input on a linear scale.
 % elhage2022: fig8 = privileged basis, fig9 = superposition
 \begin{frame}{Superposition \cite{elhage2022}}
 \begin{center}
-\includegraphics[height=0.35\textheight,keepaspectratio]{fig8.png}
+\includegraphics[height=0.35\textheight,keepaspectratio]{figures/elhage2022/fig8.png}
 \hspace{2em}
-\includegraphics[height=0.35\textheight,keepaspectratio]{fig9.png}
+\includegraphics[height=0.35\textheight,keepaspectratio]{figures/elhage2022/fig9.png}
 \end{center}
 
 \note{
@@ -257,7 +257,7 @@ and thereby classify the input on a linear scale.
 % elhage2022: fig10 = 3 features in 2 dimensions
 \begin{frame}{Superposition \cite{elhage2022}}
 \begin{center}
-\includegraphics[width=0.5\textwidth,height=0.7\textheight,keepaspectratio]{fig10.png}
+\includegraphics[width=0.5\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/fig10.png}
 \end{center}
 
 \note{
@@ -292,7 +292,7 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 % elhage2022: fig13 = experiment setup
 \begin{frame}{Demonstrating Superposition \cite{elhage2022}}
 \begin{center}
-\includegraphics[width=0.9\textwidth,height=0.7\textheight,keepaspectratio]{fig13.png}
+\includegraphics[width=0.9\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/fig13.png}
 \end{center}
 
 \note{
@@ -324,7 +324,7 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 % elhage2022: fig18 = sparsity vs features big plot
 \begin{frame}{Demonstrating Superposition \cite{elhage2022}}
 \begin{center}
-\includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{fig18.png}
+\includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2022/fig18.png}
 \end{center}
 
 \note{
@@ -342,7 +342,7 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 % elhage2022: fig29 = dimensions per feature plot
 \begin{frame}{Dimensions per Feature \cite{elhage2022}}
 \begin{center}
-\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{dimensions_per_feature.png}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/dimensions_per_feature.png}
 \end{center}
 
 \note{
@@ -372,7 +372,7 @@ How many dimensions does the network allocate to encoding feature $i$?
 % elhage2022: fig31 = feature geometry plot
 \begin{frame}{Feature Geometry \cite{elhage2022}}
 \begin{center}
-\includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{fig31.png}
+\includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2022/fig31.png}
 \end{center}
 
 \note{
@@ -388,7 +388,7 @@ How many dimensions does the network allocate to encoding feature $i$?
 
 % engels2025: fig0 = circular representations
 \begin{frame}{Feature Geometry \cite{engels2025}}
-\paperfig{fig0.png}{03_transformer_features/figures/engels2025/fig0-caption.txt}
+\paperfig{figures/engels2025/fig0.png}{03_transformer_features/figures/engels2025/fig0-caption.txt}
 
 \note{
 \begin{itemize}
@@ -588,6 +588,19 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
+\begin{frame}{}
+\begin{center}
+\Large The Cambrian Explosion of SAEs
+\end{center}
+
+\note{
+\begin{itemize}
+\item Given these problems, and that SAEs seemed such a promising tool, we got a Cambrian explosion through roughly 2024
+\item Lots of people iterating on the concept and coming up with better ways of doing SAEs
+\end{itemize}
+}
+\end{frame}
+
 \begin{frame}{Gated SAEs \cite{rajamanoharan2024}}
 \paperfig{figures/rajamanoharan2024/fig5.png}{03_transformer_features/figures/rajamanoharan2024/fig5-caption.txt}
 
@@ -596,6 +609,19 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 \item A countermeasure for shrinkage: the SAE learns two different things separately
 \item Whether the feature is on or off (gating path)
 \item What the magnitude of the feature is (magnitude path)
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{}
+\begin{center}
+\Large The Cambrian Explosion of SAEs
+\end{center}
+
+\note{
+\begin{itemize}
+\item Given these problems, and that SAEs seemed such a promising tool, we got a Cambrian explosion through roughly 2024
+\item Lots of people iterating on the concept and coming up with better ways of doing SAEs
 \end{itemize}
 }
 \end{frame}
@@ -627,11 +653,171 @@ No L1 penalty needed.
 \end{frame}
 
 \begin{frame}{Staircase SAEs \cite{fillingham2025}}
-\paperfig{figures/fillingham2025/fig0.png}{03_transformer_features/figures/fillingham2025/fig0-caption.txt}
+\paperfig{figures/fillingham2025/staircase_sae.png}{}
 
 \note{
 \begin{itemize}
 \item The idea: you get features per layer, and your SAE resembles the residual stream slowly building up features from layer to layer
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Comparing SAEs \cite{karvonen2025b}}
+\paperfig{figures/karvonen2025b/fig1.png}{03_transformer_features/figures/karvonen2025b/fig1-caption.txt}
+
+\note{
+\begin{itemize}
+\item SAEs are not classical ML where we just want low loss on an eval set
+\item We actually want them to be a good interpretability tool, and that is hard to quantify
+\item Loss recovered: what percentage of the transformer performance is recovered when we replace activations with the SAE reconstruction vs.\ delete the activations
+\item Auto interpretability: give an LLM examples of when the feature was active/not active, it proposes an explanation, then predicts feature activation on a test set
+\item Mean absorption score: for hierarchical features like starting letters and words, how much are rarer features absorbed into more common ones?
+\item SCR top 20: train a classification probe on data with spurious correlations (e.g.\ profession and gender), then ablate the gender feature --- does the bias decrease?
+\item K-sparse probing: take a concept like sentiment, train a probe on the single most relevant feature --- what is the probe's performance?
+\item Extremely mixed results: different SAE architectures have different strengths and weaknesses
+\end{itemize}
+}
+\end{frame}
+
+\section{SAEs at Scale}
+
+\begin{frame}{SAEs Scale \cite{templeton2024}}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig2.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item Most important for these methods: they scale to production models
+\item Here we see SAEs applied to Claude 3 Sonnet
+\item Loss decreases approximately according to a power law with respect to compute
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Bigger Models, More Specific Features \cite{templeton2024}}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig1.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item We see more specific and general features than we saw earlier in smaller models
+\item For example, the now famous Golden Gate Bridge feature
+\item Features are multilingual and multimodal
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Golden Gate Claude}
+\begin{center}
+\includegraphics[width=0.7\textwidth,height=0.75\textheight,keepaspectratio]{figures/golden_gate_claude.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item Anthropic made a chatbot available for one day with the Golden Gate Bridge feature clamped up
+\item It cannot help itself from bringing up the Golden Gate Bridge, which can be quite strange
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Reading Claude's Mind \cite{templeton2024}}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig42.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item We can now somewhat read Claude's mind for safety-relevant contexts
+\item When asked about itself, Claude activates features related to robots, AI consciousness, moral agency, emotions, entrapment
+\item The model's self-representation invokes common tropes about AI and is heavily anthropomorphized
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Safety-Relevant Feature Steering \cite{anthropic2025b}}
+In the Claude Opus 4.5 system card:
+
+\vspace{0.5em}
+\begin{enumerate}
+\item Find \textbf{evaluation awareness} features via:
+\begin{itemize}
+\item Contrastive vectors (eval vs.\ non-eval prompts)
+\item SAE features (discriminating eval transcripts)
+\end{itemize}
+\item \textbf{Inhibit} these features (negative steering at 25\% of activation norm)
+\end{enumerate}
+
+\vspace{0.5em}
+\textbf{Results:}
+\begin{itemize}
+\item Reduced verbalized evaluation awareness
+\item Modestly increased misaligned behavior
+\item Random feature steering also had a (weaker) effect
+\end{itemize}
+
+\note{
+\begin{itemize}
+\item The chain of thought said less things like ``I know this is a test''
+\item The model behaves less aligned, but not in the most egregious cases of previous models (blackmail, sabotage)
+\item Some of the effect is just the model being pushed out of distribution, since random features also cause changes
+\item They used both contrastive vectors (subtracting activations on eval vs.\ non-eval prompts) and SAE features identified by discriminating eval-aware vs.\ non-eval-aware transcripts
+\end{itemize}
+}
+\end{frame}
+
+\section{Expanding SAEs}
+
+\begin{frame}{Transcoders and Crosscoders \cite{lindsey2024}}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/cross_trans_coer.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item We can not only vary the architecture and loss of the SAE itself, but also what kind of data we are acting on
+\item Transcoders do not sparsify a single layer of activations, but reconstruct the next layer from the current layer
+\item The idea: sparsify the computation going on in some part of the transformer
+\item Crosscoders take multiple layers and reconstruct multiple layers out of multiple layers
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Transcoders and Crosscoders \cite{lindsey2024}}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/activities_across_layers.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item This enables things like figuring out what ``the same feature'' is across the model
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Model Diffing \cite{lindsey2024}}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/model_diffing.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item We can also use the same method to identify the same feature across different models
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Model Diffing \cite{lindsey2024}}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/diffing_results.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item The authors took the model diff between Sonnet 3 base and chat model
+\item They could identify on a feature level what concepts it learned during post-training
+\item Specific features for refusal, step-by-step reasoning, etc.
 \end{itemize}
 }
 \end{frame}

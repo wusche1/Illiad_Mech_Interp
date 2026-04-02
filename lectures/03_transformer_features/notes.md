@@ -449,7 +449,7 @@ Matroschka SAEs ahve the basic Idea, that you get the most important features la
 --
 
 Staircase SAEs
-Figure 1 @fillingham2025
+@fillingham2025/staircase_sae
 
 s:here the idea is that you get features ber layer, and your sae resembes the resudual stream slowly building up features from layer to layer
 
@@ -545,5 +545,39 @@ the model behvaes less aligned, but not in the most egregious mislainged cases o
 
 
 --
-other 
-kk
+
+expanding SAEs
+
+@lindsey2024/cross_trans_coers
+s:
+
+we can not only vary the arcitecture and loss of the SAE itself, but also what kind of data we are acting on.
+
+the variant shere are trascoders, that do not try to sparsify a single layer of activaiotns, but want to reocnsotruc th next layer out of the current layer. The ida hre being, that we sparsify the computation that is goin on in some part of the tranformer.
+
+the corsscoder takes multiplt layers and rescontucts multiple layers out of multiple layers
+
+--
+@lindsey2024/activities_across_layers
+
+s:
+this enables things like: figuring out what 'the same feture' is across the model
+
+--
+model diffing
+
+@lindsey2024/model_diffing
+s:
+now, we can also do the same method, but go further and identify the same feature afross different models
+
+--
+
+@lindsey2024/model_diffing
+
+s:
+here the authors took the model idiff between sonent 3 base and chat model, and could identify on a feature level what concepts it leanred during post trainign, and look at what the specific featurea are, for example refulsal or features for step by step reasoning.
+
+
+
+
+

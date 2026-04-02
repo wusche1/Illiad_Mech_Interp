@@ -28,15 +28,15 @@ uv run python scripts/tools/rag.py "query"  # Search literature with RAG
 - `lectures/XX_name/exercises/YY_name/{notebook.ipynb, utils.py}` - Exercises
 - `lectures/XX_name/claude_notes.md` - AI's research notes (only when explicitly instructed)
 
-### Figure Extraction
-The sync pipeline auto-extracts figures and tables from paper PDFs using Docling into `bib/{key}/figures/`. Each figure gets:
-- `fig0.png`, `fig1.png`, ... (pictures)
-- `table0.png`, `table1.png`, ... (tables)
-- `fig0_caption.txt`, `table0_caption.txt`, ... (captions, when available)
+### Figure Capture
+Figures are captured by the user via a macOS hotkey (Cmd+Shift+6) while reading papers in Zotero.
+Figures are saved as `bib/{key}/figures/{name}.png` with user-chosen names.
+The daemon's label sync picks these up and adds `{key}/{name}` entries to `labels.bib`.
 
-When slides need a figure from a paper, use the ones in `bib/{key}/figures/`. Inspect the numbered files to find the right one.
+In notes, the user references figures as `@key/figure_name` (e.g., `@fillingham2025/staircase_sae`).
+When adding a figure to slides, copy it from `bib/{key}/figures/` to `lectures/XX_name/figures/{key}/` and reference as `\paperfig{figures/{key}/{name}.png}{}`.
 
-Do NOT use manual page cropping or PyMuPDF `get_images()` — those produce bad results.
+Do NOT auto-extract figures. Only use figures the user has explicitly captured.
 
 ### Presenter Mode
 Use `dspdfviewer` to present with speaker notes on Mac:

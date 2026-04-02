@@ -8,7 +8,13 @@ from text_extraction import extract_text
 from label_sync import sync_labels
 from create_chapters import create_chapters
 from embeddings import create_embeddings
-from figure_extraction import extract_figures as extract_paper_figures
+
+
+def register_project():
+    config_dir = Path.home() / ".config" / "figure-capture"
+    config_dir.mkdir(parents=True, exist_ok=True)
+    project_root = Path(__file__).parent.parent.parent
+    (config_dir / "current_project").write_text(str(project_root.resolve()))
 
 
 def main():
@@ -16,7 +22,8 @@ def main():
     config_path = Path(__file__).parent.parent / 'config.yaml'
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)
-    
+
+    register_project()
     interval = config.get('check_interval', 30)
     
     while True:
@@ -32,9 +39,6 @@ def main():
         print("\n--- Chapter creation ---")
         create_chapters(config)
         
-        print("\n--- Figure extraction ---")
-        extract_paper_figures(config)
-
         print("\n--- Embeddings creation ---")
         create_embeddings(config)
         

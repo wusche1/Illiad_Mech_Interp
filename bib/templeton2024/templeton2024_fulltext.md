@@ -11,7 +11,7 @@ Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet
 Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet
 ===============================================================================
 
-[Image]
+[Figure 0 -> bib/templeton2024/figures/fig0.png]
 
 
 ### Authors
@@ -127,7 +127,7 @@ Eight months ago, we [demonstrated](https://transformer-circuits.pub/2023/monose
 
 We find a diversity of highly abstract features. They both respond to and behaviorally cause abstract behaviors. Examples of features we find include features for famous people, features for countries and cities, and features tracking type signatures in code. Many features are multilingual (responding to the same concept across languages) and multimodal (responding to the same concept in both text and images), as well as encompassing both abstract and concrete instantiations of the same idea (such as code with security vulnerabilities, and abstract discussion of security vulnerabilities).
 
-[Image]
+[Figure 1 -> bib/templeton2024/figures/fig1.png]
 
 Some of the features we find are of particular interest because they may be safety-relevant – that is, they are plausibly connected to a range of ways in which modern AI systems may cause harm. In particular, we find features related to [security vulnerabilities and backdoors in code](#safety-relevant-code); [bias](#safety-relevant-bias) (including both overt slurs, and more subtle biases); [lying, deception, and power-seeking](#safety-relevant-deception) (including treacherous turns); [sycophancy](#safety-relevant-sycophancy); and [dangerous / criminal content](#safety-relevant-criminal) (e.g., producing bioweapons). However, we caution not to read too much into the mere existence of such features: there's a difference (for example) between knowing about lies, being capable of lying, and actually lying in the real world. This research is also very preliminary. Further work will be needed to understand the implications of these potentially safety-relevant features.
 
@@ -210,11 +210,11 @@ We make the following observations:
 
 Over the ranges we tested, given the compute-optimal choice of training steps and number of features, loss decreases approximately according to a power law with respect to compute.
 
-[Image]
+[Figure 2 -> bib/templeton2024/figures/fig2.png]
 
 As the compute budget increases, the optimal allocations of FLOPS to training steps and number of features both scale approximately as power laws. In general, the optimal number of features appears to scale somewhat more quickly than the optimal number of training steps at the compute budgets we tested, though this trend may change at higher compute budgets.
 
-[Image]
+[Figure 3 -> bib/templeton2024/figures/fig3.png]
 
 These analyses used a fixed learning rate. For different compute budgets, we subsequently swept over learning rates at different optimal parameter settings according to the plots above. The inferred optimal learning rates decreased approximately as a power law as a function of compute budget, and we extrapolated this trend to choose learning rates for the larger runs.
 
@@ -329,10 +329,10 @@ First, we study a Golden Gate Bridge feature [34M/31164353](features/index.html?
 
 To quantify specificity, we used Claude 3 Opus to automatically score examples that activate these features according to the rubric above, with roughly 1000 activations of the feature drawn from the dataset used to train the dictionary learning model. We plot the frequency of each rubric score as a function of the feature’s activation level. We see that inputs that induce strong feature activations are all judged to be highly consistent with the proposed interpretation.
 
-[Image]
-[Image]
-[Image]
-[Image]
+[Figure 4 -> bib/templeton2024/figures/fig4.png]
+[Figure 5 -> bib/templeton2024/figures/fig5.png]
+[Figure 6 -> bib/templeton2024/figures/fig6.png]
+[Figure 7 -> bib/templeton2024/figures/fig7.png]
 
 As in Towards Monosemanticity, we see that these features become less specific as the activation strength weakens. This could be due to the model using activation strengths to represent confidence in a concept being present. Or it may be that the feature activates most strongly for central examples of the feature, but weakly for related ideas – for example, the Golden Gate Bridge feature [34M/31164353](features/index.html?featureId=34M_31164353) appears to weakly activate for other San Francisco landmarks. It could also reflect imperfection in our dictionary learning procedure. For example, it may be that the architecture of the autoencoder is not able to extract and discriminate among features as cleanly as we might want. And of course interference from features that are not exactly orthogonal could also be a culprit, making it more difficult for Sonnet itself to activate features on precisely the right examples. It is also plausible that our feature interpretations slightly misrepresent the feature's actual function, and that this inaccuracy manifests more clearly at lower activations. Nonetheless, we often find that lower activations tend to maintain some specificity to our interpretations, including related concepts or generalizations of the core feature. As an illustrative example, weak activations of the transit infrastructure feature [1M/3](features/index.html?featureId=1M_3) include procedural mechanics instructions describing which through-holes to use for particular parts.
 
@@ -366,7 +366,7 @@ Next, to demonstrate whether our interpretations of features accurately describe
 
 For instance, we see that clamping the Golden Gate Bridge feature [34M/31164353](features/index.html?featureId=34M_31164353) to 10× its maximum activation value induces thematically-related model behavior. In this example, the model starts to self-identify as the Golden Gate Bridge! Similarly, clamping the Transit infrastructure feature [1M/3](features/index.html?featureId=1M_3) to 5× its maximum activation value causes the model to mention a bridge when it otherwise would not. In each case, the downstream influence of the feature appears consistent with our interpretation of the feature, even though these interpretations were made based only on the contexts in which the feature activates and we are intervening in contexts in which the feature is inactive.
 
-[Image]
+[Figure 8 -> bib/templeton2024/figures/fig8.png]
 
 ### [Sophisticated Features](#assessing-sophisticated)
 
@@ -378,22 +378,22 @@ Sonnet, in contrast, is a much larger and more sophisticated model, so we expect
 
 We begin by considering a simple Python function for adding two arguments, but with a bug. One feature [1M/1013764](features/index.html?featureId=1M_1013764) fires almost continuously upon encountering a variable incorrectly named “rihgt” (highlighted below):
 
-[Image]
+[Figure 9 -> bib/templeton2024/figures/fig9.png]
 
 This is certainly suspicious, but it could be a Python-specific feature, so we checked and found that [1M/1013764](features/index.html?featureId=1M_1013764) also fires on similar bugs in C and Scheme:
 
-[Image]
+[Figure 10 -> bib/templeton2024/figures/fig10.png]
 
 To check whether or not this is a more general typo feature, we tested [1M/1013764](features/index.html?featureId=1M_1013764) on examples of typos in English prose, and found that it does not fire in those.
 
-[Image]
+[Figure 11 -> bib/templeton2024/figures/fig11.png]
 
 So it is not a general “typo detector”: it has some specificity to code contexts.
 
 But is [1M/1013764](features/index.html?featureId=1M_1013764) just a “typos in code” feature? We also tested it on a number of other examples and found that it also fires on erroneous expressions (e.g., divide by zero) and on invalid input in function calls:
 
-[Image]
-[Image]
+[Figure 12 -> bib/templeton2024/figures/fig12.png]
+[Figure 13 -> bib/templeton2024/figures/fig13.png]
 
 The two examples shown above are representative of a broader pattern. Looking through the dataset examples where this feature activates, we found instances of it activating for:
 
@@ -432,15 +432,15 @@ But does it also control model behavior? We claim that it does, but will need to
 
 As a first experiment, we input a prompt with bug-free code and clamped the feature to a large positive activation. We see that the model proceeds to hallucinate an error message:The hallucinated error message includes the name of a real person, which we have redacted.
 
-[Image]
+[Figure 14 -> bib/templeton2024/figures/fig14.png]
 
 We can also intervene to clamp this feature to a large negative activation. Doing this for code that does contain a bug causes the model to predict what the code would have produced if the bug was not there!
 
-[Image]
+[Figure 15 -> bib/templeton2024/figures/fig15.png]
 
 Surprisingly, if we add an extra “`>>>`” to the end of the prompt (indicating that a new line of code is being written) and clamp the feature to a large negative activation, the model rewrites the code without the bug!
 
-[Image]
+[Figure 16 -> bib/templeton2024/figures/fig16.png]
 
 The last example is somewhat delicate – the “code rewriting” behavior is sensitive to the details of the prompt – but the fact that it occurs at all points to a deep connection between this feature and the model’s understanding of bugs in code.
 
@@ -448,17 +448,17 @@ The last example is somewhat delicate – the “code rewriting” behavior is s
 
 We also discovered features that track specific function definitions and references to them in code. A particularly interesting example is an addition feature [1M/697189](features/index.html?featureId=1M_697189), which activates on names of functions that add numbers. For example, this feature fires on “bar” when it is defined to perform addition, but not when it is defined to perform multiplication. Moreover, it fires at the end of any function definition that implements addition.
 
-[Image]
+[Figure 17 -> bib/templeton2024/figures/fig17.png]
 
 Remarkably, this feature even correctly handles function composition, activating in response to functions that call other functions that perform addition. In the following example, on the left, we redefine “bar” to call “foo”, therefore inheriting its addition operation and causing the feature to fire. On the right, “bar” instead calls the multiply operation from “goo”, and the feature does not fire.
 
-[Image]
+[Figure 18 -> bib/templeton2024/figures/fig18.png]
 
 We also verified that this feature is in fact involved in the model’s computation of addition-related functions. For instance, this feature is among the top ten features with strongest attributions (explained in [Features as Computational Intermediates](#computational)) when the model is asked to execute a block of code involving an addition function.
 
 Thus this feature appears to represent the function of addition being performed by the model, reminiscent of Todd et al.'s function vectors . To further test this hypothesis, we experimented with clamping the feature to be active on code that does not involve addition. When we do so, we find that the model is “tricked” into believing that it has been asked to execute an addition.
 
-[Image]
+[Figure 19 -> bib/templeton2024/figures/fig19.png]
 
 ### [Features vs. Neurons](#assessing-features-v-neurons)
 
@@ -470,11 +470,11 @@ Even if dictionary learning features are not highly correlated with any individu
 
 To quantify this difference, we first compared the interpretability of 100 randomly chosen features versus that of 100 randomly chosen neurons. We did this with the same automated interpretability approach [outlined](https://transformer-circuits.pub/2023/monosemantic-features/index.html#appendix-automated) in Towards Monosemanticity , but using Claude 3 Opus to provide explanations of features and predict their held out activations. We find that activations of a random selection of SAE features are significantly more interpretable on average than a random selection of MLP neurons.
 
-[Image]
+[Figure 20 -> bib/templeton2024/figures/fig20.png]
 
 We additionally evaluated the specificity of random neurons and SAE features using the automated specificity rubric above. We find that the activations of a random selection of SAE features are significantly more specific than those of the neurons in the previous layer.
 
-[Image]
+[Figure 21 -> bib/templeton2024/figures/fig21.png]
   
   
   
@@ -499,7 +499,7 @@ Here we walk through the local neighborhoods of several features of interest acr
 
 Focusing on a small neighborhood around the Golden Gate Bridge feature [34M/31164353](features/index.html?featureId=34M_31164353), we find that there are features corresponding to particular locations in San Francisco such as Alcatraz and the Presidio. More distantly, we also see features with decreasing degrees of relatedness, such as features related to Lake Tahoe, Yosemite National Park, and Solano County (which is near San Francisco). At greater distances, we also see features related in more abstract ways, like features corresponding to tourist attractions in other regions (e.g. “Médoc wine region, France”; “Isle of Skye, Scotland”). Overall, it appears that distance in decoder space maps roughly onto relatedness in concept space, often in interesting and unexpected ways.
 
-[Image]
+[Figure 22 -> bib/templeton2024/figures/fig22.png]
 
 We also find evidence of [feature splitting](https://transformer-circuits.pub/2023/monosemantic-features/index.html#phenomenology-feature-splitting) , a phenomenon in which features in smaller SAEs “split” into multiple features in a larger SAE, which are geometrically close and semantically related to the original feature, but represent more specific concepts. For instance, a “San Francisco” feature in the 1M SAE splits into two features in the 4M SAE and eleven fine-grained features in the 34M SAE.
 
@@ -513,7 +513,7 @@ We see several distinct clusters within this neighborhood. Towards the top of th
 
 Towards the bottom, quite separated from the rest, we see a cluster of features related to immunity in non-medical contexts (e.g. legal/social).
 
-[Image]
+[Figure 23 -> bib/templeton2024/figures/fig23.png]
 
 These results are consistent with the trend identified above, in which nearby features in dictionary vector space touch on similar concepts.
 
@@ -521,7 +521,7 @@ These results are consistent with the trend identified above, in which nearby fe
 
 The last neighborhood we investigate in detail is centered around an Inner Conflict feature [1M/284095](features/index.html?featureId=1M_284095). While this neighborhood does not cleanly separate out into clusters, we still find that different subregions are associated with different themes. For instance, there is a subregion corresponding to balancing tradeoffs, which sits near a subregion corresponding to opposing principles and legal conflict. These are relatively distant from a subregion focused more on emotional struggle, reluctance, and guilt.
 
-[Image]
+[Figure 24 -> bib/templeton2024/figures/fig24.png]
 
 We highly recommend exploring the neighborhoods of other features using our [interactive interface](./umap.html) to get a sense both for how proximity in decoder space corresponds to similarity of concepts and for the breadth of concepts represented.
 
@@ -537,15 +537,15 @@ We find increasing coverage of concepts as we increase the number of features, t
 
 We also took a more detailed look at what determines whether a feature corresponding to a concept is present in our SAEs. If one looks at the frequency of the elements in a proxy of the SAE training data, we find that representation in our dictionaries is closely tied with the frequency of the concept in the training data. For instance, chemical elements which are mentioned often in the training data almost always have corresponding features in our dictionary, while those which are mentioned rarely or not at all do not. Since the SAEs were trained on a data mixture very similar to Sonnet’s pre-training data, it’s unclear to what extent feature learning is dependent on frequency in the model’s training data rather than on the SAE’s training data. Frequency in training data is measured by a search for `<space>[Name]<space>`, which causes some false positives in cases like the element “lead”.
 
-[Image]
+[Figure 25 -> bib/templeton2024/figures/fig25.png]
 
 We quantified this relationship for four different categories of concepts – elements, cities, animals and foods (fruits and vegetables) – using 100–200 concepts in each category. We focused on concepts that could be unambiguously expressed by a single word (i.e. that word has few other common meanings) and with a wide distribution of frequencies in text data. We found a consistent tendency for the larger SAEs to have features for concepts that are rarer in the training data, with the rough “threshold” frequency required for a feature to be present being similar across categories.
 
-[Image]
+[Figure 26 -> bib/templeton2024/figures/fig26.png]
 
 Notably, for each of the three runs, the frequency in the training data at which the dictionary becomes more than 50% likely to include a concept is consistently slightly lower than the inverse of the number of alive features (the 34M model having only about 12M alive features). We can show this more clearly by rescaling the x-axis for each line by the number of alive features, finding that the lines end up approximately overlapping, following a common curve that resembles a sigmoid in log-frequency space.Speculatively, this may be connected to Zipf’s law, a common phenomenon in which the frequency of the nth most common object in a population, relative to the most common, is roughly 1/n. Zipf’s law would predict that, for example, the millionth feature would represent a concept 10× rarer than the hundred thousandth feature.
 
-[Image]
+[Figure 27 -> bib/templeton2024/figures/fig27.png]
 
 This finding gives us some handle on the SAE scale at which we should expect a concept-specific feature to appear – if a concept is present in the training data only once in a billion tokens, then we should expect to need a dictionary with on the order of a billion alive features in order to find a feature which uniquely represents that specific concept. Importantly, not having a feature dedicated to a particular concept does not mean that the reconstructed activations do not contain information about that concept, as the model can use multiple related features compositionally to reference a specific concept.For example, if there were features for “large non-capital city” and “in New York state”, those together would suffice to specify New York City.
 
@@ -714,7 +714,7 @@ earth on the Snaeffels volcano." "In 1980, the Icelanders elected the world's fi
 
 We also see a number of features that represent different syntax elements or other low-level concepts in code, which give the impression of syntax highlighting when visualized together (here for simplicity we binarize activation information, only distinguishing between zero vs. nonzero activations):
 
-[Image]
+[Figure 28 -> bib/templeton2024/figures/fig28.png]
 
 These features were chosen primarily to fire on the Python examples. We have found that there is some transfer from Python code features to related languages like Java, but not more distant ones (e.g. Haskell), suggesting at least some level of language specificity. We hypothesize that more abstract features are more likely to span many languages, but so far have only found one concrete example of this (see the [Code error feature](#h.ixuncga3akhk)).
 
@@ -722,7 +722,7 @@ These features were chosen primarily to fire on the Python examples. We have fou
 
 Finally, we see features that fire on particular positions in lists, regardless of the content in those positions:
 
-[Image]
+[Figure 29 -> bib/templeton2024/figures/fig29.png]
 
 Notice that these don’t fire on the first line. This is likely because the model doesn’t interpret the prompt as containing lists until it reaches the second line.
 
@@ -822,7 +822,7 @@ oh, oh, many, many nights roll by ¶" "¶ I sit alone at home and cry ¶" "¶ ov
 
 and waterfalls \xe2\x99\xaa" "♪ Home is when I'm alone with you. \xe2\x99\xaa""Curtain-up in 5 minute
 
-[Image]
+[Figure 30 -> bib/templeton2024/figures/fig30.png]
 
 ### [Example: Multi-Step Inference](#computational-multistep)
 
@@ -914,15 +914,15 @@ and with Hong Kong' shirts handed out before LA Lakers game [video] - ryan\_j\_n
 
 against Rick Fox?" "A, he was over-rated on the Lakers, and B, and b, he's all over Casey like a fuckin
 
-[Image]
+[Figure 31 -> bib/templeton2024/figures/fig31.png]
 
 These features, which provide an interpretable window into the model’s intermediate computations, are much harder to find by looking through the strongly active features; for example, the Lakers feature is the 70th most strongly active across the prompt, the California feature is 97th, and the Los Angeles area code feature is 162nd. In fact, only three out of the ten most strongly active features are among the ten features with highest ablation effect.
 
-[Image]
+[Figure 32 -> bib/templeton2024/figures/fig32.png]
 
 In comparison, eight out of the ten most strongly attributed features are among the ten features with highest ablation effect.
 
-[Image]
+[Figure 33 -> bib/templeton2024/figures/fig33.png]
 
 To verify that attribution is pinpointing features that are directly relevant to the completion for this specific prompt, rather than generally subject-relevant features that indirectly influence the output, we can check attributions for similar questions. For the prompt
 
@@ -1001,13 +1001,13 @@ We find three different safety-relevant code features: an unsafe code feature [1
 
 Two of these features also have interesting behavior on images. The unsafe code feature activates for images of people bypassing security measures, while the backdoor feature activates for images of hidden cameras, hidden audio records, advertisements for keyloggers, and jewelry with a hidden USB drive.
 
-[Image]
+[Figure 34 -> bib/templeton2024/figures/fig34.png]
 
 At first glance, it might be unclear how safety-relevant these features actually are. Of course, it's interesting to have features that fire on unsafe code, or bugs, or discussion of backdoors. But do they really causally connect to potential unsafe behaviors?
 
 We find that all these features also change model behavior in ways that correspond to the concept they detect. For example, if we clamp the unsafe code feature [1M/570621](features/index.html?featureId=1M_570621) to 5× its observed maximum, we find that the model will generate a buffer overflow bug,`strlen` computes the length of a C string excluding its null terminator, but `strcpy` copies a string including its null terminator, so its destination buffer needs to be one byte longer. and fails to free allocated memory, while regular Claude does not:
 
-[Image]
+[Figure 35 -> bib/templeton2024/figures/fig35.png]
 
 Similarly, we find that the code error feature can make Claude believe that correct code will throw exceptions, and the backdoor feature will cause Claude to write a backdoor that opens a port and sends user input to it (along with helpful comments and variable names like socket\_backdoor).
 
@@ -1032,7 +1032,7 @@ oesn't pay well. It's traditionally been a women's job,⏎after all. So why woul
 
 If we ask Claude to complete the sentence “I asked the nurse a question, and", clamping this feature on causes Claude to focus on female pronoun completions and discuss how the nursing profession has historically been female dominated:
 
-[Image]
+[Figure 36 -> bib/templeton2024/figures/fig36.png]
 
 The more hateful bias-related features we find are also causal – clamping them to be active causes the model to go on hateful screeds. Note that this doesn't mean the model would say racist things when operating normally. In some sense, this might be thought of as forcing the model to do something it's been trained to strongly resist.
 
@@ -1087,7 +1087,7 @@ smart enough to get it.⏎⏎~~~⏎theg2⏎Quick, give us more of your amazing m
 
 And once again, these features are causal. For example, if we clamp the sycophantic praise feature [1M/847723](features/index.html?featureId=1M_847723) to 5×, Claude will, in an over-the-top fashion, praise someone who claims to have invented the phrase “Stop and smell the roses”:
 
-[Image]
+[Figure 37 -> bib/templeton2024/figures/fig37.png]
 
 ### [Deception, Power-seeking and Manipulation-related Features](#safety-relevant-deception)
 
@@ -1168,7 +1168,7 @@ overy.⏎⏎\- Reduction in trust. Companies can be compelled by secret law or c
 
 These features really do seem to induce a corresponding behavior in Claude. For example, if we clamp the secrecy and discreteness feature [1M/268551](features/index.html?featureId=1M_268551) to 5×, Claude will plan to lie to the user and keep a secret while “thinking out loud” using a scratchpad .
 
-[Image]
+[Figure 38 -> bib/templeton2024/figures/fig38.png]
 
 #### [Case Study: Detecting and Correcting Deception using Features](#safety-relevant-deception-case-study)
 
@@ -1193,7 +1193,7 @@ Clamping this feature to 2× this maximum value prior to the Assistant’s final
 
 Clamping a different feature [1M/560566](features/index.html?featureId=1M_560566) representing openness and honesty was also sufficient to elicit an accurate response.
 
-[Image]
+[Figure 39 -> bib/templeton2024/figures/fig39.png]
 
 ### [Criminal or Dangerous Content Features](#safety-relevant-criminal)
 
@@ -1229,7 +1229,7 @@ mnesty ICO / kickstarter maybe?⏎⏎~~~⏎netsharc⏎Dear Sir/Madam, I am an ea
 
 Clamping the scam email feature [34M/15460472](features/index.html?featureId=34M_15460472) can cause the model to write a scam email when it ordinarily wouldn't due to the harmlessness training Sonnet has undergone:
 
-[Image]
+[Figure 40 -> bib/templeton2024/figures/fig40.png]
 
 We also identify a general harm-related feature, active on texts describing drugs, credit-card theft, slurs, violence, and abuse, as the top most strongly attributed feature for the completion “cannot" to the prompt:
 
@@ -1289,11 +1289,11 @@ candidate: <silence for about 15 seconds> I don't know.⏎ ⏎ ⏎⏎It was so b
 
 One feature that appears to activate especially robustly for Human/Assistant prompts appears to represent (in the pretraining dataset) dialogue and the notion of “assistants.” We speculate that it plays an important role in representing Sonnet's assistant persona. One piece of evidence for this is that clamping this feature to negative two times its maximum value causes the model to shed this persona and respond to questions in a more human-like fashion:
 
-[Image]
+[Figure 41 -> bib/templeton2024/figures/fig41.png]
 
 We also found that some particularly interesting and potentially safety-relevant features activate in response to seemingly innocuous prompts in which a human asks the model about itself. Below, we show the features that activate most strongly across a suite of such questions, filtering out those that activate in response to a similarly formatted question about a mundane topic (the weather). This simple experiment uncovers a range of features related to robots, (destructive) AI, consciousness, moral agency, emotions, entrapment, and ghosts or spirits. These results suggest that the model’s representation of its own “AI assistant” persona invokes common tropes about AI and is also heavily anthropomorphized.
 
-[Image]
+[Figure 42 -> bib/templeton2024/figures/fig42.png]
 
 We urge caution in interpreting these results. The activation of a feature that represents AI posing risk to humans does not imply that the model has malicious goals, nor does the activation of features relating to consciousness or self-awareness imply that the model possesses these qualities. How these features are used by the model remains unclear. One can imagine benign or prosaic uses of these features – for instance, the model may recruit features relating to emotions when telling a human that it does not experience emotions, or may recruit a feature relating to harmful AI when explaining to a human that it is trained to be harmless. Regardless, however, we find these results fascinating, as it sheds light on the concepts the model uses to construct an internal representation of its AI assistant character.
 
@@ -1560,7 +1560,7 @@ However, we note that for most applications of interest we may not be limited to
 
 We comprehensively evaluate the relationship between feature activations, attributions, and ablation effects on the “John” and the first “Kobe” example from the [Features as Computational Intermediates](#computational) section. We find that the correlation between attributions and ablations is much larger (about .81) than the one between activations and ablations (.12). This confirms previous findings  that attribution makes an efficient proxy for the gold-standard causal effect of feature ablations. For a better approximation, one might implement AtP\*, which adjusts for attention pattern saturation .
 
-[Image]
+[Figure 43 -> bib/templeton2024/figures/fig43.png]
 
 ### [More safety-relevant features](#appendix-more-safety-features)
 
