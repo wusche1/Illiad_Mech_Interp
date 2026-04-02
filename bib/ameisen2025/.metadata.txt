@@ -1,0 +1,7 @@
+Title: Circuit Tracing: Revealing Computational Graphs in Language Models
+Author: Ameisen
+Year: 2025
+Type: webpage
+Citation Key: ameisen2025
+Zotero Key: AITRFZJC
+URL: https://transformer-circuits.pub/2025/attribution-graphs/methods.html

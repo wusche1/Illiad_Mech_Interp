@@ -15,7 +15,7 @@
 \end{frame}
 
 % mikolov2013: fig1+fig2 are two panels of the same Figure 2, keep together
-\begin{frame}{Features Represent Human-Understandable Concepts \cite{mikolov2013}}
+\begin{frame}{Features Represent Human-Understandable Concepts}
 \begin{center}
 \includegraphics[height=0.55\textheight,keepaspectratio]{figures/mikolov2013/fig1.png}
 \hspace{0.5em}
@@ -25,6 +25,8 @@
   \CatchFileDef{\captiontext}{03_transformer_features/figures/mikolov2013/fig1-caption.txt}{\endlinechar=-1}%
   {\tiny \captiontext}%
 }{}
+
+\source{mikolov2013}
 
 \note{
 \begin{itemize}
@@ -62,8 +64,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % park2024: fig3 = Figure 4
-\begin{frame}{Linear Probes Can Classify Text Properties \cite{park2024}}
+\begin{frame}{Linear Probes Can Classify Text Properties}
 \paperfig{figures/park2024/fig3.png}{03_transformer_features/figures/park2024/fig3-caption.txt}
+
+\source{park2024}
 
 \note{
 \begin{itemize}
@@ -78,8 +82,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % nanda2023: fig0 = Figure 1
-\begin{frame}{Linear Probes Can Measure World Models \cite{nanda2023}}
+\begin{frame}{Linear Probes Can Measure World Models}
 \paperfig{figures/nanda2023/fig0.png}{03_transformer_features/figures/nanda2023/fig0-caption.txt}
+
+\source{nanda2023}
 
 \note{
 \begin{itemize}
@@ -91,8 +97,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % nanda2023: table0 = Table 1
-\begin{frame}{Linear Probes Can Measure World Models \cite{nanda2023}}
+\begin{frame}{Linear Probes Can Measure World Models}
 \paperfig{figures/nanda2023/table0.png}{03_transformer_features/figures/nanda2023/table0-caption.txt}
+
+\source{nanda2023}
 
 \note{
 \begin{itemize}
@@ -103,8 +111,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % nanda2023: fig1 = Figure 2
-\begin{frame}{Intervening on the World Model \cite{nanda2023}}
+\begin{frame}{Intervening on the World Model}
 \paperfig{figures/nanda2023/fig1.png}{03_transformer_features/figures/nanda2023/fig1-caption.txt}
+
+\source{nanda2023}
 
 \note{
 \begin{itemize}
@@ -115,8 +125,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % nanda2023: table1 = Table 2
-\begin{frame}{Intervening on the World Model \cite{nanda2023}}
+\begin{frame}{Intervening on the World Model}
 \paperfig{figures/nanda2023/table1.png}{03_transformer_features/figures/nanda2023/table1-caption.txt}
+
+\source{nanda2023}
 
 \note{
 \begin{itemize}
@@ -127,8 +139,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % li2024b: fig1 = Figure 2
-\begin{frame}{Probing LLMs \cite{li2024b}}
+\begin{frame}{Probing LLMs}
 \paperfig{figures/li2024b/fig1.png}{03_transformer_features/figures/li2024b/fig1-caption.txt}
+
+\source{li2024b}
 
 \note{
 \begin{itemize}
@@ -141,8 +155,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % li2024b: fig2 = Figure 3
-\begin{frame}{Adding in Truthfulness \cite{li2024b}}
+\begin{frame}{Adding in Truthfulness}
 \paperfig{figures/li2024b/fig2.png}{03_transformer_features/figures/li2024b/fig2-caption.txt}
+
+\source{li2024b}
 
 \note{
 \begin{itemize}
@@ -153,8 +169,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % li2024b: table0 = Table 1
-\begin{frame}{Adding in Truthfulness \cite{li2024b}}
+\begin{frame}{Adding in Truthfulness}
 \paperfig{figures/li2024b/table0.png}{03_transformer_features/figures/li2024b/table0-caption.txt}
+
+\source{li2024b}
 
 \note{
 \begin{itemize}
@@ -165,8 +183,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % panickssery2024: fig0 = Figure 1a
-\begin{frame}{Steering via Contrastive Features \cite{panickssery2024}}
+\begin{frame}{Steering via Contrastive Features}
 \paperfig{figures/panickssery2024/fig0.png}{03_transformer_features/figures/panickssery2024/fig0-caption.txt}
+
+\source{panickssery2024}
 
 \note{
 \begin{itemize}
@@ -177,8 +197,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % panickssery2024: fig7 = Figure 4
-\begin{frame}{Steering via Contrastive Features \cite{panickssery2024}}
+\begin{frame}{Steering via Contrastive Features}
 \paperfig{figures/panickssery2024/fig7.png}{03_transformer_features/figures/panickssery2024/fig7-caption.txt}
+
+\source{panickssery2024}
 
 \note{
 \begin{itemize}
@@ -187,7 +209,7 @@ and thereby classify the input on a linear scale.
 }
 \end{frame}
 
-\begin{frame}{Ablating Features \cite{arditi2024}}
+\begin{frame}{Ablating Features}
 \textbf{Activation addition:}
 \[ x^{(l)\prime} \leftarrow x^{(l)} + r^{(l)} \]
 
@@ -202,6 +224,8 @@ and thereby classify the input on a linear scale.
 \vspace{0.3em}
 {\small $r$: feature direction \quad $x$: activation \quad $W$: weight matrix}
 
+\source{arditi2024}
+
 \note{
 \begin{itemize}
 \item Once we have a feature, we can do more than just adding it somewhere to see what happens
@@ -212,8 +236,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % arditi2024: fig0 = Figure 1
-\begin{frame}{Refusal Is Mediated by a Single Direction \cite{arditi2024}}
+\begin{frame}{Refusal Is Mediated by a Single Direction}
 \paperfig{figures/arditi2024/fig0.png}{03_transformer_features/figures/arditi2024/fig0-caption.txt}
+
+\source{arditi2024}
 
 \note{
 \begin{itemize}
@@ -224,8 +250,10 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % arditi2024: fig1 = Figure 2
-\begin{frame}{Refusal Is Mediated by a Single Direction \cite{arditi2024}}
+\begin{frame}{Refusal Is Mediated by a Single Direction}
 \paperfig{figures/arditi2024/fig1.png}{03_transformer_features/figures/arditi2024/fig1-caption.txt}
+
+\source{arditi2024}
 
 \note{
 \begin{itemize}
@@ -237,12 +265,14 @@ and thereby classify the input on a linear scale.
 \section{Superposition}
 
 % elhage2022: fig8 = privileged basis, fig9 = superposition
-\begin{frame}{Superposition \cite{elhage2022}}
+\begin{frame}{Superposition}
 \begin{center}
 \includegraphics[height=0.35\textheight,keepaspectratio]{figures/elhage2022/fig8.png}
 \hspace{2em}
 \includegraphics[height=0.35\textheight,keepaspectratio]{figures/elhage2022/fig9.png}
 \end{center}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -255,10 +285,12 @@ and thereby classify the input on a linear scale.
 \end{frame}
 
 % elhage2022: fig10 = 3 features in 2 dimensions
-\begin{frame}{Superposition \cite{elhage2022}}
+\begin{frame}{Superposition}
 \begin{center}
 \includegraphics[width=0.5\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/fig10.png}
 \end{center}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -274,13 +306,15 @@ and thereby classify the input on a linear scale.
 }
 \end{frame}
 
-\begin{frame}{Johnson--Lindenstrauss Lemma \cite{johnson1984}}
+\begin{frame}{Johnson--Lindenstrauss Lemma}
 In $N$ dimensions, we can pack
 \[ m \leq e^{c \cdot \varepsilon^2 \cdot N} \]
 vectors with pairwise dot product at most $\varepsilon$.
 
 \vspace{1em}
 Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilon$.
+
+\source{johnson1984}
 
 \note{
 \begin{itemize}
@@ -290,10 +324,12 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 \end{frame}
 
 % elhage2022: fig13 = experiment setup
-\begin{frame}{Demonstrating Superposition \cite{elhage2022}}
+\begin{frame}{Demonstrating Superposition}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/fig13.png}
 \end{center}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -305,12 +341,14 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 \end{frame}
 
 % elhage2022: fig20 = loss function
-\begin{frame}{Demonstrating Superposition \cite{elhage2022}}
+\begin{frame}{Demonstrating Superposition}
 \[ h = Wx \qquad \hat{x} = \text{ReLU}(W^T h + b) \]
 \[ L \sim \sum_i I_i (1 - \|W_i\|^2)^2 + \sum_{i \neq j} I_j (W_i \cdot W_j)^2 \]
 
 \vspace{0.5em}
 {\small Sparsity $S$: probability that $x_i$ is nonzero}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -322,10 +360,12 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 \end{frame}
 
 % elhage2022: fig18 = sparsity vs features big plot
-\begin{frame}{Demonstrating Superposition \cite{elhage2022}}
+\begin{frame}{Demonstrating Superposition}
 \begin{center}
 \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2022/fig18.png}
 \end{center}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -340,10 +380,12 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 \end{frame}
 
 % elhage2022: fig29 = dimensions per feature plot
-\begin{frame}{Dimensions per Feature \cite{elhage2022}}
+\begin{frame}{Dimensions per Feature}
 \begin{center}
 \includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/dimensions_per_feature.png}
 \end{center}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -353,11 +395,13 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 }
 \end{frame}
 
-\begin{frame}{Feature Dimensionality \cite{elhage2022}}
+\begin{frame}{Feature Dimensionality}
 \[ D_i = \frac{1}{\sum_j \frac{(W_i \cdot W_j)^2}{\|W_i\|^2 \|W_j\|^2}} \]
 
 \vspace{0.5em}
 How many dimensions does the network allocate to encoding feature $i$?
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -370,10 +414,12 @@ How many dimensions does the network allocate to encoding feature $i$?
 \end{frame}
 
 % elhage2022: fig31 = feature geometry plot
-\begin{frame}{Feature Geometry \cite{elhage2022}}
+\begin{frame}{Feature Geometry}
 \begin{center}
 \includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2022/fig31.png}
 \end{center}
+
+\source{elhage2022}
 
 \note{
 \begin{itemize}
@@ -387,8 +433,10 @@ How many dimensions does the network allocate to encoding feature $i$?
 \end{frame}
 
 % engels2025: fig0 = circular representations
-\begin{frame}{Feature Geometry \cite{engels2025}}
+\begin{frame}{Feature Geometry}
 \paperfig{figures/engels2025/fig0.png}{03_transformer_features/figures/engels2025/fig0-caption.txt}
+
+\source{engels2025}
 
 \note{
 \begin{itemize}
@@ -411,7 +459,7 @@ How many dimensions does the network allocate to encoding feature $i$?
 }
 \end{frame}
 
-\begin{frame}{Dictionary Learning \cite{arora2013}}
+\begin{frame}{Dictionary Learning}
 \textbf{Setup:} Unknown dictionary $A = [A_1, \ldots, A_m] \in \mathbb{R}^{n \times m}$ with $m > n$.
 
 We observe samples $y = Ax$, where $x \in \mathbb{R}^m$ is $k$-sparse.
@@ -425,6 +473,8 @@ We know neither $x$ nor $A$.
 \item \textbf{Sufficient data:} $p = \Omega\!\left(\frac{m^2}{k^2} \log m\right)$ samples with varying support
 \item \textbf{Well-behaved coefficients:} independent, symmetric, bounded away from zero
 \end{itemize}
+
+\source{arora2013}
 
 \note{
 \begin{itemize}
@@ -443,7 +493,7 @@ We know neither $x$ nor $A$.
 }
 \end{frame}
 
-\begin{frame}{Compressed Sensing \cite{candes2004,donoho2006}}
+\begin{frame}{Compressed Sensing}
 \textbf{Setup:} Known dictionary $A \in \mathbb{R}^{n \times m}$.
 We observe $y = Ax$, where $x$ is $k$-sparse.
 We want to recover $x$.
@@ -458,6 +508,8 @@ recovers $x$ exactly.
 
 \vspace{0.5em}
 $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
+
+\source{candes2004,donoho2006}
 
 \note{
 \begin{itemize}
@@ -487,8 +539,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 
 \section{Sparse Autoencoders}
 
-\begin{frame}{Sparse Autoencoders \cite{bricken2023}}
+\begin{frame}{Sparse Autoencoders}
 \paperfig{figures/bricken2023/fig2.png}{03_transformer_features/figures/bricken2023/fig2-caption.txt}
+
+\source{bricken2023}
 
 \note{
 \begin{itemize}
@@ -498,10 +552,12 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Sparse Autoencoders \cite{bricken2023}}
+\begin{frame}{Sparse Autoencoders}
 \[ f = \text{ReLU}(W_{\text{enc}}(x - b_{\text{dec}}) + b_{\text{enc}}) \]
 \[ \hat{x} = W_{\text{dec}} f + b_{\text{dec}} \]
 \[ \mathcal{L} = \underbrace{\|x - \hat{x}\|_2^2}_{\text{reconstruction}} + \lambda \underbrace{\|f\|_1}_{\text{sparsity}} \]
+
+\source{bricken2023}
 
 \note{
 \begin{itemize}
@@ -517,8 +573,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Identifying SAE Features \cite{bricken2023}}
+\begin{frame}{Identifying SAE Features}
 \paperfig{figures/bricken2023/fig15.png}{03_transformer_features/figures/bricken2023/fig15-caption.txt}
+
+\source{bricken2023}
 
 \note{
 \begin{itemize}
@@ -528,8 +586,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Identifying SAE Features \cite{bricken2023}}
+\begin{frame}{Identifying SAE Features}
 \paperfig{figures/bricken2023/fig17.png}{03_transformer_features/figures/bricken2023/fig17-caption.txt}
+
+\source{bricken2023}
 
 \note{
 \begin{itemize}
@@ -555,8 +615,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Trouble with SAEs: Feature Absorption \cite{chanin2024}}
+\begin{frame}{Trouble with SAEs: Feature Absorption}
 \paperfig{figures/chanin2024/fig0.png}{03_transformer_features/figures/chanin2024/fig0-caption.txt}
+
+\source{chanin2024}
 
 \note{
 \begin{itemize}
@@ -566,8 +628,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Trouble with SAEs: Feature Absorption \cite{chanin2024}}
+\begin{frame}{Trouble with SAEs: Feature Absorption}
 \paperfig{figures/chanin2024/fig1.png}{03_transformer_features/figures/chanin2024/fig1-caption.txt}
+
+\source{chanin2024}
 
 \note{
 \begin{itemize}
@@ -576,8 +640,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Trouble with SAEs: Feature Shrinkage \cite{rajamanoharan2024}}
+\begin{frame}{Trouble with SAEs: Feature Shrinkage}
 \paperfig{figures/rajamanoharan2024/fig4.png}{03_transformer_features/figures/rajamanoharan2024/fig4-caption.txt}
+
+\source{rajamanoharan2024}
 
 \note{
 \begin{itemize}
@@ -601,8 +667,10 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Gated SAEs \cite{rajamanoharan2024}}
+\begin{frame}{Gated SAEs}
 \paperfig{figures/rajamanoharan2024/fig5.png}{03_transformer_features/figures/rajamanoharan2024/fig5-caption.txt}
+
+\source{rajamanoharan2024}
 
 \note{
 \begin{itemize}
@@ -626,12 +694,14 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{Top-K SAEs \cite{bussmann2024}}
+\begin{frame}{Top-K SAEs}
 \[ f_{\text{TopK}}(x) = \text{TopK}(W_{\text{enc}}(x - b_{\text{dec}})) \]
 
 \vspace{0.5em}
 Set all but the top $K$ feature activations to zero.
 No L1 penalty needed.
+
+\source{bussmann2024}
 
 \note{
 \begin{itemize}
@@ -642,8 +712,10 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Matryoshka SAEs \cite{bussmann2025}}
+\begin{frame}{Matryoshka SAEs}
 \paperfig{figures/bussmann2025/fig0.png}{03_transformer_features/figures/bussmann2025/fig0-caption.txt}
+
+\source{bussmann2025}
 
 \note{
 \begin{itemize}
@@ -652,8 +724,10 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Staircase SAEs \cite{fillingham2025}}
+\begin{frame}{Staircase SAEs}
 \paperfig{figures/fillingham2025/staircase_sae.png}{}
+
+\source{fillingham2025}
 
 \note{
 \begin{itemize}
@@ -662,8 +736,10 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Comparing SAEs \cite{karvonen2025b}}
+\begin{frame}{Comparing SAEs}
 \paperfig{figures/karvonen2025b/fig1.png}{03_transformer_features/figures/karvonen2025b/fig1-caption.txt}
+
+\source{karvonen2025b}
 
 \note{
 \begin{itemize}
@@ -681,10 +757,12 @@ No L1 penalty needed.
 
 \section{SAEs at Scale}
 
-\begin{frame}{SAEs Scale \cite{templeton2024}}
+\begin{frame}{SAEs Scale}
 \begin{center}
 \includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig2.png}
 \end{center}
+
+\source{templeton2024}
 
 \note{
 \begin{itemize}
@@ -695,10 +773,12 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Bigger Models, More Specific Features \cite{templeton2024}}
+\begin{frame}{Bigger Models, More Specific Features}
 \begin{center}
 \includegraphics[width=0.95\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig1.png}
 \end{center}
+
+\source{templeton2024}
 
 \note{
 \begin{itemize}
@@ -722,10 +802,12 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Reading Claude's Mind \cite{templeton2024}}
+\begin{frame}{Reading Claude's Mind}
 \begin{center}
 \includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig42.png}
 \end{center}
+
+\source{templeton2024}
 
 \note{
 \begin{itemize}
@@ -736,7 +818,7 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Safety-Relevant Feature Steering \cite{anthropic2025b}}
+\begin{frame}{Safety-Relevant Feature Steering}
 In the Claude Opus 4.5 system card:
 
 \vspace{0.5em}
@@ -757,6 +839,8 @@ In the Claude Opus 4.5 system card:
 \item Random feature steering also had a (weaker) effect
 \end{itemize}
 
+\source{anthropic2025b}
+
 \note{
 \begin{itemize}
 \item The chain of thought said less things like ``I know this is a test''
@@ -769,10 +853,12 @@ In the Claude Opus 4.5 system card:
 
 \section{Expanding SAEs}
 
-\begin{frame}{Transcoders and Crosscoders \cite{lindsey2024}}
+\begin{frame}{Transcoders and Crosscoders}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/cross_trans_coer.png}
 \end{center}
+
+\source{lindsey2024}
 
 \note{
 \begin{itemize}
@@ -784,10 +870,12 @@ In the Claude Opus 4.5 system card:
 }
 \end{frame}
 
-\begin{frame}{Transcoders and Crosscoders \cite{lindsey2024}}
+\begin{frame}{Transcoders and Crosscoders}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/activities_across_layers.png}
 \end{center}
+
+\source{lindsey2024}
 
 \note{
 \begin{itemize}
@@ -796,10 +884,12 @@ In the Claude Opus 4.5 system card:
 }
 \end{frame}
 
-\begin{frame}{Model Diffing \cite{lindsey2024}}
+\begin{frame}{Model Diffing}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/model_diffing.png}
 \end{center}
+
+\source{lindsey2024}
 
 \note{
 \begin{itemize}
@@ -808,10 +898,12 @@ In the Claude Opus 4.5 system card:
 }
 \end{frame}
 
-\begin{frame}{Model Diffing \cite{lindsey2024}}
+\begin{frame}{Model Diffing}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/diffing_results.png}
 \end{center}
+
+\source{lindsey2024}
 
 \note{
 \begin{itemize}

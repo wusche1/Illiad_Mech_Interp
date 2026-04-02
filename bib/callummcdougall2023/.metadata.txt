@@ -1,0 +1,8 @@
+Title: Induction heads - illustrated — LessWrong
+Author: McDougall
+Year: 2023
+Type: journalArticle
+Citation Key: callummcdougall2023
+Zotero Key: V4J9LWIN
+URL: https://www.lesswrong.com/posts/TvrfY4c9eaGLeyDkE/induction-heads-illustrated
+Abstract: Many thanks to everyone who provided helpful feedback, particularly Aryan Bhatt and Lawrence Chan! …

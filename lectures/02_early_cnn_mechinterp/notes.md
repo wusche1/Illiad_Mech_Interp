@@ -7,8 +7,6 @@ s:
 
 
 most of the early work on MechInterp was done on visual neural netwoks, that tended to be CNNs
-this had multiplt reasons:
-
 __
 slide with a diagram showing how convolution works
 

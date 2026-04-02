@@ -1,0 +1,239 @@
+% Chapter: 04_transformer_circuits
+% Included from lectures/main.tex
+
+\section{Circuits in Transformers}
+
+\begin{frame}{Circuits in Transformers}
+
+\note{
+\begin{itemize}
+\item Next we want to try to identify circuits in transformers
+\item But is that even possible?
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Complete Reverse Engineering}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nanda2023a/compelte_algorythem.png}
+\end{center}
+
+\source{nanda2023a}
+
+\note{
+\begin{itemize}
+\item Positive example: a model trained on mod 113 addition, got close to perfect score
+\item They completely reverse engineered the algorithm
+\item The embedding layer writes $\cos(\omega a)$ in different directions for different $\omega$
+\item The attention mechanism multiplies sines and cosines using trig identities to get $\cos$ and $\sin$ of the sum
+\item The logits are a linear combination of $\cos(\omega c)$ and $\sin(\omega c)$ for every $c$ in the output vocab
+\item The cosines cancel out when $a+b-c \neq 0$, and only constructively interfere when they are equal
+\item Hopeful concept: ML in a transformer leads to algorithms we can understand
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Complete Reverse Engineering}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nanda2023a/frequencies.png}
+\end{center}
+
+\source{nanda2023a}
+
+\note{
+\begin{itemize}
+\item Neel Nanda got the idea to plot the Fourier transform of the embedding matrix
+\item This revealed the specific frequencies the model learned, then he could trace the circuits forward
+\item Impressive but not scalable: we cannot have Neel Nanda staring at an LLM, tracing every computation
+\item LLMs are way more messy, way bigger, and we do not have enough Neel Nandas
+\item So we need more standardized methods
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Plotting Attention Patterns}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2021/attention_pattern.png}
+\end{center}
+
+\source{elhage2021}
+
+\note{
+\begin{itemize}
+\item One common tool: plot attention patterns (the $A$ matrix in the transformer)
+\item Token-by-token matrix for each attention head: what token spent attention where
+\item Use this to inform guesses about the function of attention heads
+\item Here we see a few attention heads always attending to the token after its previous use
+\item And another head always attending to the previous token
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Logit Attribution}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2021/attention_patter_and_logit_attribution.png}
+\end{center}
+
+\source{elhage2021}
+
+\note{
+\begin{itemize}
+\item Another property of any part of a neural network: its contribution to the output
+\item Take the output of the attention head, propagate it through to the unembedding
+\item See when this output was helpful at predicting the next token
+\item It is whenever there is the pattern $AB \ldots A$ and then $B$: in-context induction from previous examples
+\item The authors looked into these attention heads, examined how their weight matrices grip into each other, and reconstructed the algorithm
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{K-Composition}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/callummcdougall2023/k_composition.png}
+\end{center}
+
+\source{callummcdougall2023}
+
+\note{
+\begin{itemize}
+\item Induction heads need two heads working together: one that finds the previous occurrence of the current token, one that copies what came after it
+\item K-composition: the output of head 1 is used to generate the \textbf{key} vector in head 2
+\item Head 1 (previous token head): attends to the previous token, copies its identity into the residual stream via the OV circuit
+\item Head 2 (induction head): uses this copied token identity as the key. Its query is the current token, so it attends to positions where the previous token matches the current token
+\item Result: head 2 attends to the token after the previous occurrence of the current token, and copies it to the output
+\item Ask the audience: can you see another way two heads could compose to implement this?
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Q-Composition}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/callummcdougall2023/q_composition.png}
+\end{center}
+
+\source{callummcdougall2023}
+
+\note{
+\begin{itemize}
+\item Alternative mechanism: Q-composition
+\item Head 1 (previous token head): attends to the previous token, copies \textbf{positional} information into the residual stream via the OV circuit
+\item Head 2 (induction head): uses this positional info to generate its \textbf{query}. The query now effectively asks ``which token is at position (current $-$ offset)?''
+\item This requires ``pointer arithmetic'': moving and manipulating positional information between tokens
+\item Q-composition seems to form less easily than K-composition in practice
+\item In shortformer architectures (positional embeddings only added to Q and K, not the residual stream), Q-composition is impossible because positional info cannot be moved between tokens via the OV circuit
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Path Patching}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/wang2022/path_patching.png}
+\end{center}
+
+\source{wang2022}
+
+\note{
+\begin{itemize}
+\item General method for finding a circuit: path patching
+\item Specific task: indirect object identification (IOI)
+\item Explain IOI task
+\item We know what the relevant information is, so we construct a parallel case (David and John) where the answer should be different
+\item Go to any part of the transformer, replace activations from one forward pass with another
+\item See if the relevant information ``passed through'' there
+\item Can also knock out parts of the transformer, replacing output with average output over many tokens
+\item The authors traced the circuit for IOI through GPT-2
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{The IOI Circuit}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/wang2022/ioi_circuit.png}
+\end{center}
+
+\source{wang2022}
+
+\note{
+\begin{itemize}
+\item The circuit is kind of bizarre
+\item Explain different parts of the IOI circuit
+\item Highly redundant: things are implemented twice, likely due to dropout
+\item Reuse of known motifs: induction heads --- also a point for universality
+\item There are anti-helpful heads at the end? Authors guess this is hedging, but against what?
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Automated Circuit Discovery}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/recipe.png}
+\end{center}
+
+\source{conmy2023}
+
+\note{
+\begin{itemize}
+\item So far, circuit discovery has been artisanal despite common useful methods
+\item This paper takes the first step towards a method needing less human intervention
+\item What we need: a clearly defined task, a dataset where it is possible, a parallel dataset where it is not
+\item The expected output and a metric to maximize
+\item We also need to assume some partition of the network into parts, like attention heads or MLPs
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Automated Circuit Discovery}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/figure2.png}
+\end{center}
+
+\source{conmy2023}
+
+\note{
+\begin{itemize}
+\item Slowly cut the graph apart until we have a minimal circuit
+\item Basically: take each connection away and ask ``does the task still work?''
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Automated Circuit Discovery}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/algorythem.png}
+\end{center}
+
+\source{conmy2023}
+
+\note{
+\begin{itemize}
+\item ACDC iterates from outputs to inputs through the computational graph
+\item Start at the output node. For each node, try removing each incoming edge
+\item For each edge: replace the activation with the corrupted activation (from the parallel dataset where the task is absent)
+\item Run a forward pass and measure the effect on the output metric
+\item If removing the edge changes the metric by less than a threshold $\tau$, the edge is not important --- remove it
+\item If the metric drops significantly, the edge is part of the circuit --- keep it
+\item Recurse: move to the parent nodes through the kept edges and repeat
+\item When done: you have a sparse subgraph that recovers the task performance
+\item The threshold $\tau$ controls the trade-off between circuit size and faithfulness
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Recovered IOI Circuit}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/recovered_ioi_circuit.png}
+\end{center}
+
+\source{conmy2023}
+
+\note{
+\begin{itemize}
+\item They could recover the previously found IOI circuit
+\item Also some other examples in the paper
+\item Has not been used to find mass-circuits or anything at scale
+\item Downsides: computational units are limited (attention heads, MLP layers)
+\item Doing MLP neurons is possible but the computation load of pruning explodes
+\item The relevant unit of computation is probably features that do not easily map onto weights
+\end{itemize}
+}
+\end{frame}

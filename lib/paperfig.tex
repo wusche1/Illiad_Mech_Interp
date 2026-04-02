@@ -7,8 +7,10 @@
   \begin{center}
   \includegraphics[width=0.85\textwidth,height=0.6\textheight,keepaspectratio]{#1}%
   \end{center}%
-  \IfFileExists{#2}{%
-    \CatchFileDef{\captiontext}{#2}{\endlinechar=-1}%
-    {\tiny\captiontext}%
-  }{}%
+  \ifx\relax#2\relax\else
+    \IfFileExists{#2}{%
+      \CatchFileDef{\captiontext}{#2}{\endlinechar=-1}%
+      {\tiny\captiontext}%
+    }{}%
+  \fi
 }
