@@ -34,3 +34,6 @@ experiments/**
 # Python cache
 __pycache__/
 *.pyc
+
+# Playwright browser profile for Colab testing
+.cache/
