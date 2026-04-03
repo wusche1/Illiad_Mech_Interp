@@ -5,7 +5,7 @@ Extracts the code from the solution markdown cell's ```python block, swaps it in
 the exercise code cell, then executes the entire notebook.
 
 Notebooks importing transformer_lens are marked slow (they need model downloads + GPU).
-Skip them with: pytest tests/ -v -m "not slow"
+Skip them with: SKIP_SLOW=1 uv run pytest tests/ -v
 """
 import os
 import re
@@ -17,6 +17,7 @@ from nbconvert.preprocessors import ExecutePreprocessor
 
 ROOT = Path(__file__).resolve().parent.parent
 LECTURES = ROOT / "lectures"
+EXERCISES = ROOT / "exercises"
 
 SLOW_TIMEOUT = 600
 FAST_TIMEOUT = 120
@@ -25,12 +26,19 @@ SLOW_IMPORTS = {"transformer_lens", "circuitsvis"}
 
 
 def discover_exercises():
-    """Find exercise dirs that have a notebook.ipynb with exercise_id cells."""
+    """Find all exercise notebooks across both directory structures."""
     results = []
+    # lectures/*/exercises/*/notebook.ipynb (e.g. tangent)
     for nb_path in sorted(LECTURES.glob("*/exercises/*/notebook.ipynb")):
         d = nb_path.parent
         label = f"{d.parent.parent.name}/{d.name}"
-        results.append((d, label))
+        results.append((nb_path, label))
+    # exercises/*/notebook_*.ipynb (e.g. logit_lens normal/hard)
+    for nb_path in sorted(EXERCISES.glob("*/notebook_*.ipynb")):
+        d = nb_path.parent
+        variant = nb_path.stem.replace("notebook_", "")
+        label = f"{d.name}/{variant}"
+        results.append((nb_path, label))
     return results
 
 
@@ -58,12 +66,12 @@ def _is_slow(nb):
 
 
 @pytest.mark.parametrize(
-    "exercise_dir",
-    [d for d, _ in discover_exercises()],
+    "nb_path",
+    [p for p, _ in discover_exercises()],
     ids=[n for _, n in discover_exercises()],
 )
-def test_notebook(exercise_dir):
-    nb = nbformat.read(exercise_dir / "notebook.ipynb", as_version=4)
+def test_notebook(nb_path):
+    nb = nbformat.read(nb_path, as_version=4)
     solutions = extract_solutions(nb)
 
     exercise_ids = [
@@ -85,7 +93,7 @@ def test_notebook(exercise_dir):
 
     timeout = SLOW_TIMEOUT if slow else FAST_TIMEOUT
     ep = ExecutePreprocessor(timeout=timeout, kernel_name="python3")
-    ep.preprocess(nb, resources={"metadata": {"path": str(exercise_dir)}})
+    ep.preprocess(nb, resources={"metadata": {"path": str(nb_path.parent)}})
 
     for i, cell in enumerate(nb.cells):
         for output in cell.get("outputs", []):

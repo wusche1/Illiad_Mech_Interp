@@ -160,3 +160,10 @@ our computational units here are somehwat limited, like attention heads or MLP l
 doing MLP neurons is possible, but then the computation load of pruning the graph exploeds
 
 and in the end, we know that the relevant unit of computation here are porbably features that donot easily map onto the weights considered here.
+
+
+--
+
+explain circute tracing
+
+task play around with https://www.neuronpedia.org/jackl-circuits-runs-1-4-sofa-v3_0
