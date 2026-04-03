@@ -3,7 +3,11 @@
 For each notebook, finds cells tagged with exercise_id and solution_id metadata.
 Extracts the code from the solution markdown cell's ```python block, swaps it into
 the exercise code cell, then executes the entire notebook.
+
+Notebooks importing transformer_lens are marked slow (they need model downloads + GPU).
+Skip them with: pytest tests/ -v -m "not slow"
 """
+import os
 import re
 from pathlib import Path
 
@@ -13,6 +17,11 @@ from nbconvert.preprocessors import ExecutePreprocessor
 
 ROOT = Path(__file__).resolve().parent.parent
 LECTURES = ROOT / "lectures"
+
+SLOW_TIMEOUT = 600
+FAST_TIMEOUT = 120
+
+SLOW_IMPORTS = {"transformer_lens", "circuitsvis"}
 
 
 def discover_exercises():
@@ -38,6 +47,16 @@ def extract_solutions(nb):
     return solutions
 
 
+def _is_slow(nb):
+    """Check if any code cell imports a slow dependency."""
+    for cell in nb.cells:
+        if cell.cell_type == "code":
+            for keyword in SLOW_IMPORTS:
+                if keyword in cell.source:
+                    return True
+    return False
+
+
 @pytest.mark.parametrize(
     "exercise_dir",
     [d for d, _ in discover_exercises()],
@@ -60,7 +79,12 @@ def test_notebook(exercise_dir):
         if eid and eid in solutions:
             cell.source = solutions[eid]
 
-    ep = ExecutePreprocessor(timeout=120, kernel_name="python3")
+    slow = _is_slow(nb)
+    if slow and os.environ.get("SKIP_SLOW"):
+        pytest.skip("Skipping slow notebook (SKIP_SLOW is set)")
+
+    timeout = SLOW_TIMEOUT if slow else FAST_TIMEOUT
+    ep = ExecutePreprocessor(timeout=timeout, kernel_name="python3")
     ep.preprocess(nb, resources={"metadata": {"path": str(exercise_dir)}})
 
     for i, cell in enumerate(nb.cells):

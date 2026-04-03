@@ -19,4 +19,13 @@ dependencies = [
     "pytest>=8.0",
     "pypdfium2>=4.30.0",
     "playwright>=1.58.0",
+    "transformer_lens>=2.0.0",
+    "einops>=0.7.0",
+    "circuitsvis>=1.0.0",
+    "plotly>=5.0.0",
+    "scikit-learn>=1.0.0",
+    "jaxtyping>=0.2.0",
+    "typeguard>=4.0.0",
+    "huggingface_hub>=0.20.0",
+    "matplotlib>=3.0.0",
 ]
