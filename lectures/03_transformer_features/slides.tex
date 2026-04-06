@@ -262,6 +262,36 @@ and thereby classify the input on a linear scale.
 }
 \end{frame}
 
+\begin{frame}{Logit Lens}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nostalgebraist2020/logit_lense_example.png}
+\end{center}
+
+\source{nostalgebraist2020}
+
+\note{
+\begin{itemize}
+\item We already have a translation from residual stream activations into tokens: the unembedding matrix
+\item While only trained on the final activations, we can apply it to any layer's residual stream
+\item There is no a priori reason this has to be meaningful, but it turns out that unembedding earlier residual states gives useful guesses for the next token, building up layer by layer
+\item We can thereby see what aspects of the prediction are computed in which layer
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Logit Lens Exercise}
+\begin{center}
+\vfill
+\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_normal.ipynb}{%
+\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Normal Exercise\quad}}
+\vspace{1cm}
+
+\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_hard.ipynb}{%
+\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Hard Exercise\quad}}
+\vfill
+\end{center}
+\end{frame}
+
 \section{Superposition}
 
 % elhage2022: fig8 = privileged basis, fig9 = superposition
@@ -677,6 +707,30 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 \item A countermeasure for shrinkage: the SAE learns two different things separately
 \item Whether the feature is on or off (gating path)
 \item What the magnitude of the feature is (magnitude path)
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{JumpReLU SAEs}
+\[ a = \text{JumpReLU}_\theta(W_{\text{enc}} x) = W_{\text{enc}} x \cdot \mathbf{1}[W_{\text{enc}} x > \theta] \]
+
+\vspace{0.5em}
+\[ \mathcal{L} = \underbrace{\| x - \hat{x} \|_2^2}_{\text{reconstruction}} + \lambda \sum_i \underbrace{\tanh(c \cdot \| W_{\text{dec},i} \| \cdot a_i)}_{\approx\, \mathbf{1}[a_i > 0] \text{ for large } c} \]
+
+\vspace{0.5em}
+Hard threshold $\theta$: features are either fully on or off.
+Sparsity penalty approximates L0 --- no shrinkage on active features.
+
+\source{rajamanoharan2024}
+
+\note{
+\begin{itemize}
+\item A third approach to feature shrinkage, also from the gated SAE paper
+\item Hard threshold $\theta$: if pre-activation is above $\theta$, it passes through at true value; if below, hard-zeroed
+\item The sparsity penalty $\tanh(c \cdot \|w\| \cdot a)$ approximates counting active features (L0 proxy) for large $c$
+\item Once a feature is clearly active, $\tanh$ saturates to 1 and gradient vanishes --- no pressure to shrink magnitude
+\item Training dynamics: reconstruction loss wants $\theta$ low, sparsity loss wants $\theta$ high; equilibrium determines sparsity
+\item Used in cross-layer transcoders for Anthropic's circuit tracing work
 \end{itemize}
 }
 \end{frame}

@@ -138,7 +138,17 @@ s:
 in this paper, the authors identify the refusal dirction in a bunch of different llms
 they can always stop models form refusing by ablating it out, or make them refuse harmess quesitons by adding it.
 
+--
 
+Logit lense
+@nostalgebraist2020/logit_lense_example
+
+s:
+ - we are going to implement one simple tool for interpreting resid activations
+ - the intuition is, that we already have a tranlsation from resid activation into tokens: the unebmed matrix
+ - while only trained on the final activations, we can apply it to any
+ - there is no a priori reason this has to be meaningful, but we see that unembedding earlier resid states actually gives usefull guesses for the next tokens building up
+ - we can there by see what things about the later states is computed in what layer
 --
 
 Supoerposition:
@@ -425,6 +435,22 @@ include equattion 6 of @rajamanoharan2024
 s:
 for a while we had smart counter measrues for this, like gated SAEs
 we have the SAE learn in two differnt things: wether the feature is on or now, and what the magnitude of the feature is
+
+--
+JumpReLU SAEs
+
+$a = \text{JumpReLU}_\theta(W_{\text{enc}} x) = W_{\text{enc}} x \cdot \mathbf{1}[W_{\text{enc}} x > \theta]$
+
+s:
+a third approach to feature shrinkage: JumpReLU, also from the same paper as gated SAEs.
+
+instead of separating the gate and magnitude into two paths, JumpReLU uses a hard threshold theta: if the pre-activation is above theta, it passes through at its true value. if below, it is hard-zeroed.
+
+the sparsity penalty is tanh(c * ||w_dec|| * a), which for large c approximates just counting how many features are active (an L0 proxy). once a feature is clearly above threshold, tanh saturates to 1 and its gradient vanishes, so there is no pressure to shrink the magnitude.
+
+the training dynamics are: reconstruction loss wants theta low (more features active), sparsity loss wants theta high (fewer features active). the equilibrium determines sparsity. the threshold is the learned knob, not the feature magnitudes.
+
+this is used in the cross-layer transcoders from anthropic's circuit tracing work.
 
 --
 Top K SAEs

@@ -164,6 +164,149 @@ and in the end, we know that the relevant unit of computation here are porbably 
 
 --
 
-explain circute tracing
+circute tracing
+@ameisen2025/CLT
 
-task play around with https://www.neuronpedia.org/jackl-circuits-runs-1-4-sofa-v3_0
+s:
+
+- the most adcanced method we have for ciruit discovery right now, is this: circuit tracing, developed by anthropi last year.
+
+here the idea is, that the unit that we build the ciruits out of are features, not attention heads or neurons. so the first thing we have to do here, is to take our whle LLM apart into features
+
+for this we stary by trainng skip level transcoders on the entier tranformer.
+
+here we read in the resed before an mlp, and write in the mlp output of all alter mlp
+
+we do that on all layer, and train all of there transcoders together
+
+anthropic here went for jup relu transcoders
+
+that is a huge up front cost that you have to pay to get started here, but it lets you do somthing extremly cool:
+
+you can basically take all activations in a forward pass and deconstruct them into the active transcoder features
+
+this, models all the computation happening in the MLPs in a way tha tlets you label every feature here, and lets you build an interpretable model of the forward pass
+
+--
+
+@ameisen2025/replacement_models
+
+s:
+that is what they call a replacement model
+
+they take a forward pass on a specific prompt, decompose it into the active CLT features, and this gives basically an interpretable model, doing the same calculation
+
+at least you captre some part of the calculation: the nonlinear calculation happening in the MLPs.
+
+it does not giv you insight into how the attention pattern are clauclated, those are just taken and fixed formt her real forward pass
+same with the mupltipiilication factor in the layernorm
+
+also. of cause your CLTs are not prefectly replicating the actuavation at any layer. so they add these back in as error terms that they can not interpret
+
+--
+
+@ameisen2025/pruning
+
+s:
+now once you have cut apart the forward pass into those features, you can add the input tokens and output logits, and now you have a model, that you can take a gradient though
+
+you simply let all of the features have gradients, and all these other parts that we just copied over from the orignal orward pass liek the attention patterns get n grad tensors
+
+unlike in ACDC we now get the connection between any two of the points in this graph by a simple backward pass, we do not have to knock a connetion out and see if the resut is still possile.
+
+now once we have done this, we can kick out all features that do not have a connectionn above a given strength to the output logit, and we have a somewhat sparse so called attributio graph through the whole llm
+
+an additonal thing they often do here in thee graphs is to summarize a bunch of similar features together in one feature selection if they have similar labels and seem to foollow similar funcitons in this circuit
+
+--
+@ameisen2025/example_circuit
+
+s:
+and this lets us trace ciruits like this one, where we see the features the model uses to compute what the acrny here is
+
+
+--
+@ameisen2025/feature_supression
+
+s:
+anther thing you can do again is to supress a feature
+
+the way they do this is they take a feature of a CLT and add it back in, in the next n layers after the layer it is created with a prefactor of -1 most of the time
+
+but the authors take the freedom to fiddle around with the numbers of layers to inject and the prefactor, wich they describe as 'ad-hoc' and makes me think this is a pretty lame validatin for the whole method.
+
+--
+@ameisen2025/supresseion_example
+
+s:
+here we see and example of a supression
+
+indeed if you supress the feature in the graph where a specific letter of the acronym was decided, this leads to this letter of the aronym being false
+
+--
+link to https://www.neuronpedia.org/gemma-2-2b/graph
+
+s:
+
+for you to get a feeling for how these attribution graphs look like and what we find there, i encourage you to play around with the ones on neuropedia here, see what kin of circuits you can find, and if you can learn anything from them
+
+--
+@lindsey2025a/maths_circuit
+
+s:
+they also did circuit tracing on thier won model, here heiku 3.5
+
+and found some interesting circuits
+
+here for example one for doing maths, but als a bunch of others
+
+--
+@lindsey2025a/misaligned_model_pipeline
+
+s:
+they also showcased how this can be usefull for alingment
+they made a misaligned verson of heku 3.5, by putting it rhogh a training pipeline inducing a form of reward hacking
+
+htey SDF on ficktional papers saying that reward models like meta-commetns in llmoutput.
+
+then they sft in the behaviour of including meta-comments in model output
+
+this leads to a model also doing things what it thinks the RM will like OOD
+
+--
+@lindsey2025a/misaligned_circuit
+
+they do the cirocuit tracing on a model output where ti finishes a poem with a meta line, and they see the feature where it it thinks about the reward model causally upsteream of it's output
+
+--
+
+@lindsey2025a/misaligned_intervention
+
+s:
+and they can causally intervine, steering against the reward model thought, and thereby making this behaviour less likely
+
+this is honeslty the coolest tool i have seen so far in the in MechInterp.
+
+--
+
+Gnerality
+
+- high abstraction features in middel layers
+- attention moves most information in early layers
+- 'dfault' circuits
+- shorcuts
+- some computation on 'special' token position
+- confidence reducing features
+- 'boring' feature
+
+@lindsey2025a
+s:
+ - thy looked at a bunch of different circuits, so how does it look with generality?
+ - some pattersn:
+ - ealy and late layers have more simple token oriented features, most interesting compuation happens in middle layers
+ - when information is gatherd by atention heads, thatmostly happens in early layers
+ - ther are often defaut pathways, like saying you dont know a person, that then get overwritten by other things like a person the llm knows
+ - circuits often have mutiple ways to get to the ansesers, like shortcusts that when i ask what is the capital of texas, one pathway ges from texas+capital to dalasa, but just texas alone already upweights dalas
+ - some info gathering, or decision making points are in special tokens, like full stops or the new line token after a new <assistant:> or something
+- often there are outputs that write agaisnt the 'correct' tokens, maybe for hedghing like in ioi
+- there are lots of active features not part of the 'computation' like in the amthe example there rae ots of maths features, just just shortcut contribuite to all numbers

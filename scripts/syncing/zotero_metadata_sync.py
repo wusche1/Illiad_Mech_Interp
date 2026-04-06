@@ -266,8 +266,8 @@ class ZoteroMetadataSync:
         item_dir = self.output_dir / item.citation_key
         pdf_dest = item_dir / f'{item.citation_key}.pdf'
         
-        # Copy PDF if it doesn't exist
-        if not pdf_dest.exists():
+        # Copy PDF if it doesn't exist or is empty
+        if not pdf_dest.exists() or pdf_dest.stat().st_size == 0:
             shutil.copy(pdf_file, pdf_dest)
             print(f'  Copied PDF: {item.citation_key}.pdf')
         else:
@@ -284,8 +284,8 @@ class ZoteroMetadataSync:
         item_dir = self.output_dir / item.citation_key
         html_dest = item_dir / f'{item.citation_key}.html'
         
-        # Copy HTML if it doesn't exist
-        if not html_dest.exists():
+        # Copy HTML if it doesn't exist or is empty
+        if not html_dest.exists() or html_dest.stat().st_size == 0:
             shutil.copy(html_file, html_dest)
             print(f'  Copied HTML: {item.citation_key}.html')
         else:
