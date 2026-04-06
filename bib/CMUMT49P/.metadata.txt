@@ -1,8 +1,8 @@
 Title: Activation space interpretability may be doomed — AI Alignment Forum
-Author: Chughtai
+Author: bilalchughtai
 Year: 2025
 Type: journalArticle
-Citation Key: chughtai2025
+Citation Key: CMUMT49P
 Zotero Key: CMUMT49P
 URL: https://www.alignmentforum.org/posts/gYfpPbww3wQRaxAFD/activation-space-interpretability-may-be-doomed
 Abstract: TL;DR: There may be a fundamental problem with interpretability work that attempts to understand neural networks by decomposing their individual acti…

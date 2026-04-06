@@ -4,10 +4,18 @@ Slides:
 https://docs.google.com/gview?url=https://github.com/wusche1/Illiad_Mech_Interp/raw/main/lectures/output/main.pdf
 
 Exercises (in order):
-1. Feature Visualization
+1. Logit Lens
+   Normal: https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_normal.ipynb
+   Hard:   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_hard.ipynb
+
+2. Induction Heads
+   Normal: https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_normal.ipynb
+   Hard:   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_hard.ipynb
+
+3. Feature Visualization
    https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/03_feature_viz/notebook.ipynb
 
-2. Sparse Autoencoders
+4. Sparse Autoencoders
    https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/04_saes/notebook.ipynb
 
 Reading for Discussion (pick one):
