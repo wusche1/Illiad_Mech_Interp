@@ -39,12 +39,11 @@ When adding a figure to slides, copy it from `bib/{key}/figures/` to `lectures/X
 Do NOT auto-extract figures. Only use figures the user has explicitly captured.
 
 ### Presenter Mode
-Use `dspdfviewer` to present with speaker notes on Mac:
+Use `pdfpc` to present with speaker notes on Mac:
 ```bash
-brew install dspdfviewer
-dspdfviewer lectures/output/main.pdf
+pdfpc --notes=right lectures/output/main.pdf
 ```
-This splits the Beamer dual-screen PDF automatically (slides on projector, notes on laptop).
+This shows slides on the projector and notes + next slide on the presenter screen.
 
 ### Shared LaTeX Config
 - `lib/preamble.tex` - Shared preamble included by all lectures

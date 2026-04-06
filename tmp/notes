@@ -1,0 +1,24 @@
+Mechanistic Interpretability Workshop
+
+Slides:
+https://docs.google.com/gview?url=https://github.com/wusche1/Illiad_Mech_Interp/raw/main/lectures/output/main.pdf
+
+Exercises (in order):
+1. Feature Visualization
+   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/03_feature_viz/notebook.ipynb
+
+2. Sparse Autoencoders
+   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/04_saes/notebook.ipynb
+
+Reading for Discussion (pick one):
+1. A Pragmatic Vision for Interpretability (Nanda et al., 2025) ~15 min
+   https://www.alignmentforum.org/posts/StENzDcD3kpfGJssR/a-pragmatic-vision-for-interpretability
+
+2. Against Almost Every Theory of Impact of Interpretability (Segerie, 2023) ~20 min
+   https://www.lesswrong.com/posts/LNA8mubrByG7SFacm/against-almost-every-theory-of-impact-of-interpretability-1
+
+3. The Misguided Quest for Mechanistic AI Interpretability (Hendrycks, 2025) ~20 min
+   https://ai-frontiers.org/articles/the-misguided-quest-for-mechanistic-ai-interpretability
+
+4. Activation Space Interpretability May Be Doomed (Chughtai & Bushnaq, 2025) ~15 min
+   https://www.alignmentforum.org/posts/gYfpPbww3wQRaxAFD/activation-space-interpretability-may-be-doomed

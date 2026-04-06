@@ -1,18 +1,21 @@
 % Chapter: 03_transformer_features
 % Included from lectures/main.tex
 
-\section{Features in Language Models}
-
-\begin{frame}{Features in Language Models}
-
-\note{
-\begin{itemize}
-\item Doing MechInterp in language models is harder
-\item We often do not have a privileged basis (the residual stream in a transformer is rotationally invariant)
-\item It is not clear which directions are our features
-\end{itemize}
+{
+\setbeamertemplate{section page}{
+  \begin{centering}
+    \usebeamerfont{section title}\insertsection\par
+  \end{centering}
+  \note{
+  \begin{itemize}
+  \item Doing MechInterp in language models is harder
+  \item We often do not have a privileged basis (the residual stream in a transformer is rotationally invariant)
+  \item It is not clear which directions are our features
+  \end{itemize}
+  }
 }
-\end{frame}
+\section{Features in Language Models}
+}
 
 % mikolov2013: fig1+fig2 are two panels of the same Figure 2, keep together
 \begin{frame}{Features Represent Human-Understandable Concepts}
@@ -735,19 +738,6 @@ Sparsity penalty approximates L0 --- no shrinkage on active features.
 }
 \end{frame}
 
-\begin{frame}{}
-\begin{center}
-\Large The Cambrian Explosion of SAEs
-\end{center}
-
-\note{
-\begin{itemize}
-\item Given these problems, and that SAEs seemed such a promising tool, we got a Cambrian explosion through roughly 2024
-\item Lots of people iterating on the concept and coming up with better ways of doing SAEs
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Top-K SAEs}
 \[ f_{\text{TopK}}(x) = \text{TopK}(W_{\text{enc}}(x - b_{\text{dec}})) \]
 
@@ -966,4 +956,13 @@ In the Claude Opus 4.5 system card:
 \item Specific features for refusal, step-by-step reasoning, etc.
 \end{itemize}
 }
+\end{frame}
+
+\begin{frame}{SAE Exercise}
+\begin{center}
+\vfill
+\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/04_saes/notebook.ipynb}{%
+\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad SAE Exercise\quad}}
+\vfill
+\end{center}
 \end{frame}
