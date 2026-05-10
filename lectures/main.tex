@@ -5,16 +5,11 @@
 \input{../lib/metadata}
 \input{../lib/paperfig}
 \addbibresource{../bib/refs.bib}
+\addbibresource{../bib/manual.bib}
 
-\usepackage{pgfpages}
-\setbeameroption{show notes on second screen=right}
-\hypersetup{pdfkeywords={SP-Right}}
-\setbeamerfont{note page}{size=\scriptsize}
-\setbeamertemplate{note page}{%
-  \insertnote%
-}
 
 \graphicspath{
+  {06_edinburgh/}
   {01_intro/}
   {02_early_cnn_mechinterp/}
   {03_transformer_features/}
@@ -31,10 +26,10 @@
   {05_discussion/}
 }
 
-\title{Mechanistic Interpretability}
-\subtitle{\coursetitle}
-\author{\instructor}
-\date{\today}
+\title{Intro to Neural Networks \& Mechanistic Interpretability}
+\subtitle{Maths, Physics, and AI Alignment}
+\author{Julian Schulz}
+\date{11 May 2026}
 
 \begin{document}
 
@@ -42,14 +37,7 @@
 \titlepage
 \end{frame}
 
-\input{01_intro/slides}
-
-\input{02_early_cnn_mechinterp/slides}
-\input{03_transformer_features/slides}
-\input{04_transformer_circuits/slides}
-\input{05_discussion/slides}
-
-% Future chapters:
+\input{06_edinburgh/slides}
 
 \begin{frame}[allowframebreaks]{References}
 \printbibliography[heading=none]

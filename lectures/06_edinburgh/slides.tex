@@ -1,0 +1,430 @@
+% Chapter: 06_edinburgh
+% Standalone talk: Intro to Neural Networks & Mechanistic Interpretability
+% Edinburgh seminar "Maths, Physics, and AI Alignment", 11 May 2026
+
+% ============================================================
+% Overview
+% ============================================================
+
+\begin{frame}{Overview}
+\begin{enumerate}
+\item \textbf{Machine Learning}
+  \begin{enumerate}
+  \item[1.1] Concepts
+  \item[1.2] Architectures
+  \end{enumerate}
+\item \textbf{Mechanistic Interpretability}
+\item \textbf{Features}
+\item \textbf{Circuits}
+\item \textbf{Open Problems}
+\end{enumerate}
+\end{frame}
+
+% ============================================================
+% Chapter navigation command
+% ============================================================
+
+% ============================================================
+\section{Machine Learning}
+% ============================================================
+
+% ------------------------------------------------------------
+\subsection{Concepts}
+% ------------------------------------------------------------
+
+\begin{frame}{}
+\begin{enumerate}
+\item \textbf{\large Machine Learning}
+  \begin{enumerate}
+  \item[1.1] \textbf{Concepts} $\leftarrow$
+  \item[1.2] \textcolor{gray}{Architectures}
+  \end{enumerate}
+\item \textcolor{gray}{Mechanistic Interpretability}
+\item \textcolor{gray}{Features}
+\item \textcolor{gray}{Circuits}
+\item \textcolor{gray}{Open Problems}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{The Training Loop}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={rectangle, draw, thick, rounded corners=3pt, minimum width=2.2cm, minimum height=1.8cm, font=\small, align=center},
+  arr/.style={->, very thick, gray!70},
+]
+  % Boxes
+  \node[box, fill=blue!15] (data) at (0, 0) {
+    \textbf{Data}\\[0.3em]
+    \includegraphics[width=1.4cm]{figures/dog.jpg}
+  };
+  \node[box, fill=green!15] (model) at (3.8, 0) {
+    \textbf{Model}\\[0.3em]
+    {\tiny\begin{tikzpicture}[scale=0.25,
+      n/.style={circle, draw, thick, fill=orange!20, minimum size=2mm, inner sep=0pt}]
+      \foreach \i in {1,2,3} { \node[n] (i\i) at (0, -\i*0.8) {}; }
+      \foreach \j in {1,2} { \node[n] (h\j) at (1.5, -\j*0.8-0.4) {}; }
+      \node[n] (o1) at (3, -1.6) {};
+      \foreach \i in {1,2,3} \foreach \j in {1,2} \draw[gray, thin] (i\i) -- (h\j);
+      \foreach \j in {1,2} \draw[gray, thin] (h\j) -- (o1);
+    \end{tikzpicture}}
+  };
+  \node[box, fill=red!15] (pred) at (7.6, 0) {
+    \textbf{Prediction}\\[0.3em]
+    {\scriptsize cat: 30\%}\\
+    {\scriptsize\textbf{dog: 70\%}}
+  };
+  \node[box, fill=yellow!15, minimum width=2.2cm] (loss) at (11.4, 0) {
+    \textbf{Loss}\\[0.3em]
+    {\scriptsize $-\log(0.7)$}
+  };
+  \node[box, fill=orange!15, minimum width=2.8cm] (opt) at (5.7, -3.2) {
+    \textbf{Optimizer}\\[0.3em]
+    {\scriptsize $\theta \leftarrow \theta - \alpha \nabla_\theta \mathcal{L}$}
+  };
+
+  % Arrows
+  \draw[arr] (data) -- (model);
+  \draw[arr] (model) -- (pred);
+  \draw[arr] (pred) -- (loss);
+  \draw[arr] (loss) |- (opt);
+  \draw[arr] (opt) -| (model);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Forward Pass / Backward Pass}
+\begin{center}
+\begin{tikzpicture}[
+  op/.style={rectangle, draw, thick, rounded corners=2pt, minimum width=1.4cm, minimum height=0.8cm, font=\small},
+  val/.style={font=\large},
+  farr/.style={->, thick, blue!60!black},
+  barr/.style={<-, thick, red!60!black, dashed},
+]
+  % Forward pass nodes
+  \node[val] (x) at (0, 0) {$x$};
+  \node[op, fill=blue!10] (mul1) at (2.5, 0) {$\times W_1$};
+  \node[op, fill=blue!10] (relu) at (5.5, 0) {ReLU};
+  \node[op, fill=blue!10] (mul2) at (8.5, 0) {$\times W_2$};
+  \node[op, fill=blue!10] (lossn) at (11.5, 0) {Loss};
+  \node[val, right] at (13, 0) {$L$};
+
+  % Intermediate labels
+  \node[val, above=2pt] at (4, 0.4) {$z$};
+  \node[val, above=2pt] at (7, 0.4) {$h$};
+  \node[val, above=2pt] at (10, 0.4) {$\hat{y}$};
+
+  % Forward arrows
+  \draw[farr] (x) -- (mul1);
+  \draw[farr] (mul1) -- (relu);
+  \draw[farr] (relu) -- (mul2);
+  \draw[farr] (mul2) -- (lossn);
+  \draw[farr] (lossn) -- (13, 0);
+
+  % Labels
+  \node[blue!60!black, font=\large\bfseries] at (6.5, 1.5) {Forward $\longrightarrow$};
+  \node[red!60!black, font=\large\bfseries] at (6.5, -1.7) {$\longleftarrow$ Backward};
+
+  % Backward arrows
+  \draw[barr] (mul1.south) ++(0,-0.3) -- (relu.south) ++(0,-0.3);
+  \draw[barr] (relu.south) ++(0,-0.3) -- (mul2.south) ++(0,-0.3);
+  \draw[barr] (mul2.south) ++(0,-0.3) -- (lossn.south) ++(0,-0.3);
+
+  % Gradient labels below backward arrows
+  \node[val, red!60!black] at (2.5, -1) {\scriptsize $\frac{\partial z}{\partial W_1}$};
+  \node[val, red!60!black] at (5.5, -1) {\scriptsize $\frac{\partial h}{\partial z}$};
+  \node[val, red!60!black] at (8.5, -1) {\scriptsize $\frac{\partial \hat{y}}{\partial h}$};
+  \node[val, red!60!black] at (11.5, -1) {\scriptsize $\frac{\partial L}{\partial \hat{y}}$};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.5em}
+\textbf{Chain rule:}
+\[
+\frac{\partial L}{\partial W_1}
+= \textcolor{red!60!black}{\frac{\partial L}{\partial \hat{y}}}
+\cdot \textcolor{red!60!black}{\frac{\partial \hat{y}}{\partial h}}
+\cdot \textcolor{red!60!black}{\frac{\partial h}{\partial z}}
+\cdot \textcolor{red!60!black}{\frac{\partial z}{\partial W_1}}
+\]
+\end{frame}
+
+\begin{frame}{Train Loss vs.\ Test Loss}
+\begin{center}
+\begin{tikzpicture}[xscale=1.4, yscale=1.2]
+  \draw[->] (0, 0) -- (7.5, 0) node[right, font=\small] {Training time};
+  \draw[->] (0, 0) -- (0, 3.5) node[above, font=\small] {Loss};
+
+  % Train loss (always decreasing)
+  \draw[very thick, blue!70!black, domain=0.3:7, samples=80]
+    plot (\x, {2.8*exp(-0.5*\x) + 0.15});
+  \node[blue!70!black, font=\small, right] at (7.1, 0.2) {train};
+
+  % Test loss (U-shaped)
+  \draw[very thick, red!70!black, domain=0.3:7, samples=80]
+    plot (\x, {2.8*exp(-0.5*\x) + 0.08*(\x-1)*(\x-1) + 0.3});
+  \node[red!70!black, font=\small, right] at (7.1, 2.8) {test};
+
+  % Regions
+  \draw[dashed, gray] (2.2, 0) -- (2.2, 3.3);
+  \draw[dashed, gray] (4.5, 0) -- (4.5, 3.3);
+
+  \node[font=\scriptsize, gray, align=center] at (1.1, 3.2) {underfit};
+  \node[font=\scriptsize, green!50!black, align=center] at (3.35, 3.2) {good fit};
+  \node[font=\scriptsize, red!60!black, align=center] at (5.8, 3.2) {overfit};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Double Descent}
+\begin{center}
+\begin{tikzpicture}[xscale=1.4, yscale=1.2]
+  \draw[->] (0, 0) -- (7.5, 0) node[right, font=\small] {Training time};
+  \draw[->] (0, 0) -- (0, 3.5) node[above, font=\small] {Loss};
+
+  % Train loss (always decreasing)
+  \draw[very thick, blue!70!black, domain=0.3:7, samples=80]
+    plot (\x, {2.8*exp(-0.5*\x) + 0.15});
+  \node[blue!70!black, font=\small, right] at (7.1, 0.2) {train};
+
+  % Test loss (U then down again)
+  \draw[very thick, red!70!black, domain=0.3:7, samples=100]
+    plot (\x, {2.8*exp(-0.5*\x) + 0.8*exp(-0.5*(\x-3.5)*(\x-3.5)) + 0.3});
+  \node[red!70!black, font=\small, right] at (7.1, 0.45) {test};
+
+  % Regions
+  \draw[dashed, gray] (2.2, 0) -- (2.2, 3.3);
+  \draw[dashed, gray] (4.8, 0) -- (4.8, 3.3);
+
+  \node[font=\scriptsize, gray, align=center] at (1.1, 3.2) {underfit};
+  \node[font=\scriptsize, red!60!black, align=center] at (3.5, 3.2) {overfit};
+  \node[font=\scriptsize, green!50!black, align=center] at (6.1, 3.2) {second descent};
+\end{tikzpicture}
+\end{center}
+
+\source{nakkiran2019}
+\end{frame}
+
+\begin{frame}{Grokking}
+\begin{center}
+\begin{tikzpicture}[xscale=1.4, yscale=1.2]
+  \draw[->] (0, 0) -- (7.5, 0) node[right, font=\small] {Training time};
+  \draw[->] (0, 0) -- (0, 3.5) node[above, font=\small] {Loss};
+
+  % Train loss (drops quickly)
+  \draw[very thick, blue!70!black, domain=0.3:7, samples=80]
+    plot (\x, {2.5*exp(-2*\x) + 0.15});
+  \node[blue!70!black, font=\small, right] at (7.1, 0.2) {train};
+
+  % Test loss (stays high, then suddenly drops)
+  \draw[very thick, red!70!black, domain=0.3:7, samples=100]
+    plot (\x, {2.2/(1 + exp(3*(\x-5))) + 0.3});
+  \node[red!70!black, font=\small, right] at (7.1, 0.45) {test};
+
+  % Regions
+  \draw[dashed, gray] (1.5, 0) -- (1.5, 3.3);
+  \draw[dashed, gray] (4.2, 0) -- (4.2, 3.3);
+
+  \node[font=\scriptsize, gray, align=center] at (0.75, 3.2) {learning};
+  \node[font=\scriptsize, red!60!black, align=center] at (2.85, 3.2) {memorization};
+  \node[font=\scriptsize, green!50!black, align=center] at (5.8, 3.2) {grokking};
+\end{tikzpicture}
+\end{center}
+
+\source{power2022}
+\end{frame}
+
+\begin{frame}{Definitions}
+\begin{description}
+\item[Parameter / Weight] the numbers that define the model, updated during training ($\theta$, $W$, $b$)
+\item[Activation] intermediate values computed during a forward pass
+\item[Hyperparameter] choices made \emph{before} training: learning rate, architecture, batch size
+\end{description}
+\end{frame}
+
+% ------------------------------------------------------------
+\subsection{Architectures}
+% ------------------------------------------------------------
+
+\begin{frame}{}
+\begin{enumerate}
+\item \textbf{\large Machine Learning}
+  \begin{enumerate}
+  \item[1.1] Concepts
+  \item[1.2] \textbf{Architectures} $\leftarrow$
+  \end{enumerate}
+\item \textcolor{gray}{Mechanistic Interpretability}
+\item \textcolor{gray}{Features}
+\item \textcolor{gray}{Circuits}
+\item \textcolor{gray}{Open Problems}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Multi-Layer Perceptron}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{center}
+\begin{tikzpicture}[
+  neuron/.style={circle, draw, thick, minimum size=8mm, inner sep=0pt},
+  input/.style={neuron, fill=blue!15},
+  hidden/.style={neuron, fill=orange!20},
+  output/.style={neuron, fill=green!20},
+  conn/.style={->, thick, gray!60},
+  annot/.style={font=\small\bfseries, text=black!70},
+]
+  \foreach \i in {1,2,3} {
+    \node[input] (i\i) at (0, -\i*1.2+2.4) {$x_{\i}$};
+  }
+  \foreach \j in {1,2,3,4} {
+    \node[hidden] (h\j) at (2.5, -\j*1.0+2.5) {$h_{\j}$};
+  }
+  \foreach \k in {1,2} {
+    \node[output] (o\k) at (5, -\k*1.2+1.8) {$y_{\k}$};
+  }
+  \foreach \i in {1,2,3}
+    \foreach \j in {1,2,3,4}
+      \draw[conn] (i\i) -- (h\j);
+  \foreach \j in {1,2,3,4}
+    \foreach \k in {1,2}
+      \draw[conn] (h\j) -- (o\k);
+  \node[annot, above=3mm] at (0, 1.2) {Input};
+  \node[annot, above=3mm] at (2.5, 1.5) {Hidden};
+  \node[annot, above=3mm] at (5, 0.6) {Output};
+
+  % nonlinearity label
+  \node[font=\scriptsize, red!70!black] at (2.5, -2.2) {$\sigma(\cdot)$ between layers};
+\end{tikzpicture}
+\end{center}
+\end{column}
+\begin{column}{0.42\textwidth}
+$$h = \sigma(W_1 x + b_1)$$
+$$y = W_2 h + b_2$$
+
+\vspace{1em}
+\begin{tikzpicture}[xscale=0.6, yscale=0.5]
+  \draw[->] (-2.5, 0) -- (2.8, 0) node[right, font=\tiny] {$x$};
+  \draw[->] (0, -0.5) -- (0, 2.5);
+  \draw[very thick, blue!70!black] (-2.2, 0) -- (0, 0);
+  \draw[very thick, blue!70!black] (0, 0) -- (2.2, 2.2);
+  \node[above, font=\small\bfseries, blue!70!black] at (0, 2.5) {ReLU};
+  \node[below, font=\scriptsize] at (0, -0.7) {$\max(0, x)$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Universal Approximation Theorem}
+\vfill
+A neural network with a single hidden layer and a nonlinear activation function
+can approximate any continuous function on a compact set to arbitrary precision,
+given enough neurons.
+\vfill
+
+\source{cybenko1989}
+\end{frame}
+
+\begin{frame}{Universal Approximation: Intuition}
+\begin{center}
+\begin{tikzpicture}[xscale=1.4, yscale=1.2]
+  \draw[->] (-0.3, 0) -- (7.5, 0) node[right, font=\tiny] {$x$};
+  \draw[->] (0, -0.3) -- (0, 3.5);
+  \draw[very thick, blue!60!black, domain=0.2:7, samples=100]
+    plot (\x, {1.5 + 1.2*sin(\x*60) + 0.4*cos(\x*120)});
+  \node[blue!60!black, font=\small, right] at (7.1, 2.5) {target $f$};
+  \draw[very thick, red!70!black, dashed]
+    (0.3, 1.76) -- (1.5, 2.30) -- (3.0, 1.90) -- (4.5, -0.10) --
+    (6.0, 1.90) -- (7.0, 2.34);
+  \node[red!70!black, font=\small, right] at (7.1, 1.5) {ReLU sum};
+  \node[red!70!black, font=\scriptsize, right] at (7.1, 1.0) {(6 neurons)};
+  \foreach \px/\py in {0.3/1.76, 1.5/2.30, 3.0/1.90, 4.5/-0.10, 6.0/1.90, 7.0/2.34} {
+    \fill[red!60!black] (\px, \py) circle (2pt);
+  }
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Layers}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.8cm, minimum height=0.8cm, font=\small},
+  arr/.style={->, very thick, gray!70},
+]
+  \node[font=\small] (inp) at (0, 0) {$x$};
+  \node[box] (l1) at (3, 0) {Layer 1};
+  \node[box] (l2) at (6, 0) {Layer 2};
+  \node[box] (l3) at (9, 0) {Layer 3};
+  \node[font=\small] (out) at (12, 0) {$y$};
+
+  \draw[arr] (inp) -- (l1);
+  \draw[arr] (l1) -- (l2);
+  \draw[arr] (l2) -- (l3);
+  \draw[arr] (l3) -- (out);
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Residual Connections}
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.8cm, minimum height=0.8cm, font=\small},
+  arr/.style={->, very thick, gray!70},
+]
+  \node[font=\small] (inp) at (0, 0) {$x$};
+  \node[box] (l1) at (3, 0) {Layer 1};
+  \node[box] (l2) at (6, 0) {Layer 2};
+  \node[box] (l3) at (9, 0) {Layer 3};
+  \node[font=\small] (out) at (12, 0) {$y$};
+
+  \draw[arr] (inp) -- (l1);
+  \draw[arr] (l1) -- (l2);
+  \draw[arr] (l2) -- (l3);
+  \draw[arr] (l3) -- (out);
+
+  % Skip connections around each layer
+  \draw[->, thick, red!60!black] (inp.south) to[bend right=45] (l1.south east);
+  \draw[->, thick, red!60!black] (l1.south west) ++(0,-0.05) to[bend right=45] (l2.south east);
+  \draw[->, thick, red!60!black] (l2.south west) ++(0,-0.05) to[bend right=45] (l3.south east);
+\end{tikzpicture}
+\end{center}
+
+\vspace{1em}
+
+\begin{center}
+\begin{tikzpicture}[
+  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.8cm, minimum height=0.8cm, font=\small},
+  stream/.style={->, very thick, blue!60!black},
+  plus/.style={circle, draw, thick, fill=blue!10, inner sep=1.5pt, font=\small\bfseries},
+]
+  \node[font=\small] (x0) at (0, 0) {$x$};
+  \node[plus] (p1) at (3.5, 0) {$+$};
+  \node[plus] (p2) at (7, 0) {$+$};
+  \node[plus] (p3) at (10.5, 0) {$+$};
+  \node[font=\small] (xn) at (12, 0) {$y$};
+
+  \draw[stream] (x0) -- (p1);
+  \draw[stream] (p1) -- (p2);
+  \draw[stream] (p2) -- (p3);
+  \draw[stream] (p3) -- (xn);
+
+  \node[box] (f1) at (1.75, -1.3) {Layer 1};
+  \node[box] (f2) at (5.25, -1.3) {Layer 2};
+  \node[box] (f3) at (8.75, -1.3) {Layer 3};
+
+  \draw[thick, gray] (0.8, 0) |- (f1.west);
+  \draw[->, thick, gray] (f1.east) -| (p1);
+  \draw[thick, gray] (4.3, 0) |- (f2.west);
+  \draw[->, thick, gray] (f2.east) -| (p2);
+  \draw[thick, gray] (7.8, 0) |- (f3.west);
+  \draw[->, thick, gray] (f3.east) -| (p3);
+
+  \node[blue!60!black, font=\scriptsize, above] at (5.25, 0.25) {residual stream};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Convolutional Neural Networks}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{figures/cnn_architecture.png}
+\end{center}
+
+\source{lecun1998}
+\end{frame}
