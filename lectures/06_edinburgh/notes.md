@@ -62,3 +62,13 @@ same as before, but with skip connections
 underneath similar picture but this time the residual stream is drwan as continual line and layers "add in"
 
 
+Transformer
+Attention
+
+Section 2 MechInterp
+section 2.1 what is Mechinterp
+Farmer vs biologist
+use for safety
+Olahs 3 claims
+
+

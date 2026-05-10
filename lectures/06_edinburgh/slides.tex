@@ -363,60 +363,83 @@ given enough neurons.
 \end{frame}
 
 \begin{frame}{Residual Connections}
+% Top: fork-and-merge with explicit fork dots
 \begin{center}
 \begin{tikzpicture}[
-  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.8cm, minimum height=0.8cm, font=\small},
-  arr/.style={->, very thick, gray!70},
+  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.5cm, minimum height=0.7cm, font=\small},
+  arr/.style={->, thick, gray!70},
+  plus/.style={circle, draw, very thick, fill=blue!10, minimum size=6mm, inner sep=0pt, font=\small\bfseries},
+  dot/.style={circle, fill=black, inner sep=1.5pt},
+  xscale=0.82,
 ]
+  % Fork points, layers, sum nodes
   \node[font=\small] (inp) at (0, 0) {$x$};
+  \node[dot] (d1) at (1.2, 0) {};
   \node[box] (l1) at (3, 0) {Layer 1};
-  \node[box] (l2) at (6, 0) {Layer 2};
-  \node[box] (l3) at (9, 0) {Layer 3};
-  \node[font=\small] (out) at (12, 0) {$y$};
+  \node[plus] (p1) at (5, 0) {$+$};
+  \node[dot] (d2) at (6, 0) {};
+  \node[box] (l2) at (7.8, 0) {Layer 2};
+  \node[plus] (p2) at (9.8, 0) {$+$};
+  \node[dot] (d3) at (10.8, 0) {};
+  \node[box] (l3) at (12.6, 0) {Layer 3};
+  \node[plus] (p3) at (14.6, 0) {$+$};
+  \node[font=\small] (out) at (16.2, 0) {$y$};
 
-  \draw[arr] (inp) -- (l1);
-  \draw[arr] (l1) -- (l2);
-  \draw[arr] (l2) -- (l3);
-  \draw[arr] (l3) -- (out);
+  % Main path
+  \draw[arr] (inp) -- (d1);
+  \draw[arr] (d1) -- (l1);
+  \draw[arr] (l1) -- (p1);
+  \draw[arr] (p1) -- (d2);
+  \draw[arr] (d2) -- (l2);
+  \draw[arr] (l2) -- (p2);
+  \draw[arr] (p2) -- (d3);
+  \draw[arr] (d3) -- (l3);
+  \draw[arr] (l3) -- (p3);
+  \draw[arr] (p3) -- (out);
 
-  % Skip connections around each layer
-  \draw[->, thick, red!60!black] (inp.south) to[bend right=45] (l1.south east);
-  \draw[->, thick, red!60!black] (l1.south west) ++(0,-0.05) to[bend right=45] (l2.south east);
-  \draw[->, thick, red!60!black] (l2.south west) ++(0,-0.05) to[bend right=45] (l3.south east);
+  % Skip connections from fork dots to + nodes
+  \draw[->, very thick, red!70!black, rounded corners=4pt]
+    (d1.south) -- ++(0,-0.9) -| (p1.south);
+  \draw[->, very thick, red!70!black, rounded corners=4pt]
+    (d2.south) -- ++(0,-0.9) -| (p2.south);
+  \draw[->, very thick, red!70!black, rounded corners=4pt]
+    (d3.south) -- ++(0,-0.9) -| (p3.south);
 \end{tikzpicture}
 \end{center}
 
-\vspace{1em}
+\vspace{0.5em}
 
+% Bottom: residual stream view
 \begin{center}
 \begin{tikzpicture}[
-  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.8cm, minimum height=0.8cm, font=\small},
+  box/.style={rectangle, draw, thick, fill=orange!15, minimum width=1.5cm, minimum height=0.7cm, font=\small},
   stream/.style={->, very thick, blue!60!black},
-  plus/.style={circle, draw, thick, fill=blue!10, inner sep=1.5pt, font=\small\bfseries},
+  plus/.style={circle, draw, very thick, fill=blue!10, minimum size=6mm, inner sep=0pt, font=\small\bfseries},
+  xscale=0.82,
 ]
   \node[font=\small] (x0) at (0, 0) {$x$};
-  \node[plus] (p1) at (3.5, 0) {$+$};
-  \node[plus] (p2) at (7, 0) {$+$};
-  \node[plus] (p3) at (10.5, 0) {$+$};
-  \node[font=\small] (xn) at (12, 0) {$y$};
+  \node[plus] (p1) at (4.2, 0) {$+$};
+  \node[plus] (p2) at (8.4, 0) {$+$};
+  \node[plus] (p3) at (12.6, 0) {$+$};
+  \node[font=\small] (xn) at (16.2, 0) {$y$};
 
   \draw[stream] (x0) -- (p1);
   \draw[stream] (p1) -- (p2);
   \draw[stream] (p2) -- (p3);
   \draw[stream] (p3) -- (xn);
 
-  \node[box] (f1) at (1.75, -1.3) {Layer 1};
-  \node[box] (f2) at (5.25, -1.3) {Layer 2};
-  \node[box] (f3) at (8.75, -1.3) {Layer 3};
+  \node[box] (f1) at (2.1, -1.3) {Layer 1};
+  \node[box] (f2) at (6.3, -1.3) {Layer 2};
+  \node[box] (f3) at (10.5, -1.3) {Layer 3};
 
-  \draw[thick, gray] (0.8, 0) |- (f1.west);
+  \draw[thick, gray, rounded corners=3pt] (0.9, 0) |- (f1.west);
   \draw[->, thick, gray] (f1.east) -| (p1);
-  \draw[thick, gray] (4.3, 0) |- (f2.west);
+  \draw[thick, gray, rounded corners=3pt] (5.1, 0) |- (f2.west);
   \draw[->, thick, gray] (f2.east) -| (p2);
-  \draw[thick, gray] (7.8, 0) |- (f3.west);
+  \draw[thick, gray, rounded corners=3pt] (9.3, 0) |- (f3.west);
   \draw[->, thick, gray] (f3.east) -| (p3);
 
-  \node[blue!60!black, font=\scriptsize, above] at (5.25, 0.25) {residual stream};
+  \node[blue!60!black, font=\scriptsize, above] at (6.3, 0.35) {residual stream};
 \end{tikzpicture}
 \end{center}
 \end{frame}
@@ -426,5 +449,127 @@ given enough neurons.
 \includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{figures/cnn_architecture.png}
 \end{center}
 
-\source{lecun1998}
+\source{superannotate2023}
+\end{frame}
+
+\begin{frame}{Transformers}
+\begin{center}
+\begin{tikzpicture}[
+  tok/.style={rectangle, draw, thick, fill=blue!10, minimum width=0.9cm, minimum height=0.55cm, font=\scriptsize},
+  ffn/.style={rectangle, draw, thick, fill=orange!15, minimum width=0.9cm, minimum height=0.45cm, font=\scriptsize},
+  attn/.style={rectangle, draw, thick, fill=red!12, rounded corners=2pt, minimum height=0.45cm, font=\scriptsize},
+  arr/.style={->, thick, gray!60},
+]
+  \node[tok] (tA) at (0, 0) {The};
+  \node[tok] (tB) at (1.8, 0) {cat};
+  \node[tok] (tC) at (3.6, 0) {sat};
+  \node[tok] (tD) at (5.4, 0) {on};
+  \node[tok] (tE) at (7.2, 0) {the};
+  \node[tok] (tF) at (9, 0) {mat};
+
+  \node[attn, minimum width=10.2cm] (a1) at (4.5, 1.2) {Attention: each token reads from all others};
+
+  \foreach \x in {0, 1.8, 3.6, 5.4, 7.2, 9}
+    \draw[arr] (\x, 0.28) -- (\x, 0.95);
+
+  \node[ffn] (fA1) at (0, 2.2) {MLP};
+  \node[ffn] (fB1) at (1.8, 2.2) {MLP};
+  \node[ffn] (fC1) at (3.6, 2.2) {MLP};
+  \node[ffn] (fD1) at (5.4, 2.2) {MLP};
+  \node[ffn] (fE1) at (7.2, 2.2) {MLP};
+  \node[ffn] (fF1) at (9, 2.2) {MLP};
+
+  \foreach \x in {0, 1.8, 3.6, 5.4, 7.2, 9}
+    \draw[arr] (\x, 1.45) -- (\x, 1.97);
+
+  \node[attn, minimum width=10.2cm] (a2) at (4.5, 3.2) {Attention: each token reads from all others};
+
+  \draw[arr] (fA1.north) -- (0, 2.95);
+  \draw[arr] (fB1.north) -- (1.8, 2.95);
+  \draw[arr] (fC1.north) -- (3.6, 2.95);
+  \draw[arr] (fD1.north) -- (5.4, 2.95);
+  \draw[arr] (fE1.north) -- (7.2, 2.95);
+  \draw[arr] (fF1.north) -- (9, 2.95);
+
+  \node[ffn] (fA2) at (0, 4.2) {MLP};
+  \node[ffn] (fB2) at (1.8, 4.2) {MLP};
+  \node[ffn] (fC2) at (3.6, 4.2) {MLP};
+  \node[ffn] (fD2) at (5.4, 4.2) {MLP};
+  \node[ffn] (fE2) at (7.2, 4.2) {MLP};
+  \node[ffn] (fF2) at (9, 4.2) {MLP};
+
+  \foreach \x in {0, 1.8, 3.6, 5.4, 7.2, 9}
+    \draw[arr] (\x, 3.45) -- (\x, 3.97);
+
+  \foreach \x in {0, 1.8, 3.6, 5.4, 7.2, 9} {
+    \node[gray, font=\small] at (\x, 4.9) {$\vdots$};
+  }
+
+  \draw[decorate, decoration={brace, amplitude=4pt}, thick, gray]
+    (-0.8, 1.9) -- (-0.8, 1.0);
+  \node[font=\tiny, gray, left, align=right] at (-1, 1.45) {tokens\\talk};
+
+  \draw[decorate, decoration={brace, amplitude=4pt}, thick, gray]
+    (-0.8, 2.55) -- (-0.8, 1.95);
+  \node[font=\tiny, gray, left, align=right] at (-1, 2.25) {tokens\\independent};
+\end{tikzpicture}
+\end{center}
+\end{frame}
+
+\begin{frame}{Attention}
+\vspace{-0.5em}
+\begin{center}
+\begin{tikzpicture}[
+  mat/.style={rectangle, draw, thick, minimum width=1.2cm, minimum height=0.7cm, font=\normalsize\bfseries},
+  wt/.style={rectangle, draw, thick, fill=gray!10, minimum width=1.1cm, minimum height=0.6cm, font=\small},
+  op/.style={rectangle, draw, thick, rounded corners=3pt, fill=gray!10, minimum height=0.6cm, font=\small},
+  arr/.style={->, thick, gray!70},
+  scale=0.92, transform shape,
+]
+  % Row 1: Input X
+  \node[mat, fill=green!15, minimum width=1.8cm] (X) at (1.5, 0.6) {$X$};
+
+  % Row 2: Three projection paths
+  \node[wt, fill=red!10] (Wq) at (-2, 1.7) {$W_Q$};
+  \node[wt, fill=blue!10] (Wk) at (1.5, 1.7) {$W_K$};
+  \node[wt, fill=orange!10] (Wv) at (5, 1.7) {$W_V$};
+
+  \draw[arr] (X.north) -- ++(0,0.2) -| (Wq.south);
+  \draw[arr] (X.north) -- (Wk.south);
+  \draw[arr] (X.north) -- ++(0,0.2) -| (Wv.south);
+
+  % Row 3: Q K V
+  \node[mat, fill=red!20] (Q) at (-2, 2.8) {$Q$};
+  \node[mat, fill=blue!20] (K) at (1.5, 2.8) {$K$};
+  \node[mat, fill=orange!25] (V) at (5, 2.8) {$V$};
+
+  \draw[arr] (Wq.north) -- (Q.south);
+  \draw[arr] (Wk.north) -- (K.south);
+  \draw[arr] (Wv.north) -- (V.south);
+
+  % Row 4: QK^T / sqrt(d)
+  \node[op, fill=yellow!15] (qkt) at (-0.25, 4.0) {$QK^\top\! / \sqrt{d_k}$};
+  \draw[arr] (Q.north) -- ++(0,0.25) -| ($(qkt.south)+(-0.5,0)$);
+  \draw[arr] (K.north) -- ++(0,0.25) -| ($(qkt.south)+(0.5,0)$);
+
+  % Row 5: softmax
+  \node[op, fill=purple!10] (soft) at (-0.25, 5.0) {softmax};
+  \draw[arr] (qkt.north) -- (soft.south);
+
+  % Row 6: A * V
+  \node[op, fill=green!10] (av) at (2.5, 6.0) {$A \cdot V$};
+  \draw[arr] (soft.north) -- ++(0,0.25) -| ($(av.south)+(-0.4,0)$);
+  \draw[arr] (V.north) -- ++(0,2.25) -| ($(av.south)+(0.4,0)$);
+
+  % Row 7: Output
+  \node[mat, fill=green!20, minimum width=1.5cm] (out) at (2.5, 7.0) {Output};
+  \draw[arr] (av.north) -- (out.south);
+
+  % Equation on the right
+  \node[font=\large, align=left] at (9.5, 4.2) {
+    $\text{Attention}(Q,K,V)$\\[0.8em]
+    $= \text{softmax}\!\left(\dfrac{QK^\top}{\sqrt{d_k}}\right) V$
+  };
+\end{tikzpicture}
+\end{center}
 \end{frame}
