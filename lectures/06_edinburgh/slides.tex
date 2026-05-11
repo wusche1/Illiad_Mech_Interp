@@ -3,26 +3,99 @@
 % Edinburgh seminar "Maths, Physics, and AI Alignment", 11 May 2026
 
 % ============================================================
+% Navigation slide command
+% ============================================================
+% Usage: \navslide{key} where key matches one of the entries below.
+% Pass "overview" for the initial overview slide (all items bold).
+
+\newcommand{\talksections}{%
+  {1/Concepts/1.1},%
+  {2/Architectures/1.2},%
+  {3/What is MechInterp?/2.1},%
+  {4/MechInterp in CNNs/2.2},%
+  {5/Features in Transformers/2.3},%
+  {6/Superposition/2.4},%
+  {7/Circuits/2.5},%
+  {8/Open Problems/3}%
+}
+
+% Parent sections: which items belong to which top-level section
+% 1-2 → Machine Learning, 3-7 → Mechanistic Interpretability, 8 → Open Problems
+\newcommand{\navslide}[1]{%
+\begin{frame}{}
+\begin{enumerate}
+  % --- 1. Machine Learning ---
+  \item \navparent{1}{2}{#1}{Machine Learning}
+  \begin{enumerate}
+    \item[1.1] \navitem{1}{#1}{Concepts}
+    \item[1.2] \navitem{2}{#1}{Architectures}
+  \end{enumerate}
+  % --- 2. Mechanistic Interpretability ---
+  \item \navparent{3}{7}{#1}{Mechanistic Interpretability}
+  \begin{enumerate}
+    \item[2.1] \navitem{3}{#1}{What is MechInterp?}
+    \item[2.2] \navitem{4}{#1}{MechInterp in CNNs}
+    \item[2.3] \navitem{5}{#1}{Features in Transformers}
+    \item[2.4] \navitem{6}{#1}{Superposition}
+    \item[2.5] \navitem{7}{#1}{Circuits}
+  \end{enumerate}
+  % --- 3. Open Problems ---
+  \item \navitem{8}{#1}{Open Problems}
+\end{enumerate}
+\end{frame}
+}
+
+% Helper: format a single item (bold+arrow if current, gray if future, normal if past)
+\newcounter{navtemp}
+\newcommand{\navitem}[3]{%
+  \ifnum#1=#2\relax
+    \textbf{#3} $\leftarrow$%
+  \else
+    \ifnum#1>#2\relax
+      \textcolor{gray}{#3}%
+    \else
+      #3%
+    \fi
+  \fi
+}
+
+% Helper: format a parent section header (bold+large if contains current, gray if all future)
+\newcommand{\navparent}[4]{%
+  % #1=first child, #2=last child, #3=current, #4=label
+  \ifnum#3<#1\relax
+    \textcolor{gray}{#4}%
+  \else
+    \ifnum#3>#2\relax
+      #4%
+    \else
+      \textbf{\large #4}%
+    \fi
+  \fi
+}
+
+% ============================================================
 % Overview
 % ============================================================
 
+% Overview: all items visible, none highlighted
 \begin{frame}{Overview}
 \begin{enumerate}
-\item \textbf{Machine Learning}
+  \item \textbf{Machine Learning}
   \begin{enumerate}
-  \item[1.1] Concepts
-  \item[1.2] Architectures
+    \item[1.1] Concepts
+    \item[1.2] Architectures
   \end{enumerate}
-\item \textbf{Mechanistic Interpretability}
-\item \textbf{Features}
-\item \textbf{Circuits}
-\item \textbf{Open Problems}
+  \item \textbf{Mechanistic Interpretability}
+  \begin{enumerate}
+    \item[2.1] What is MechInterp?
+    \item[2.2] MechInterp in CNNs
+    \item[2.3] Features in Transformers
+    \item[2.4] Superposition
+    \item[2.5] Circuits
+  \end{enumerate}
+  \item \textbf{Open Problems}
 \end{enumerate}
 \end{frame}
-
-% ============================================================
-% Chapter navigation command
-% ============================================================
 
 % ============================================================
 \section{Machine Learning}
@@ -32,19 +105,7 @@
 \subsection{Concepts}
 % ------------------------------------------------------------
 
-\begin{frame}{}
-\begin{enumerate}
-\item \textbf{\large Machine Learning}
-  \begin{enumerate}
-  \item[1.1] \textbf{Concepts} $\leftarrow$
-  \item[1.2] \textcolor{gray}{Architectures}
-  \end{enumerate}
-\item \textcolor{gray}{Mechanistic Interpretability}
-\item \textcolor{gray}{Features}
-\item \textcolor{gray}{Circuits}
-\item \textcolor{gray}{Open Problems}
-\end{enumerate}
-\end{frame}
+\navslide{1}
 
 \begin{frame}{The Training Loop}
 \begin{center}
@@ -245,19 +306,7 @@
 \subsection{Architectures}
 % ------------------------------------------------------------
 
-\begin{frame}{}
-\begin{enumerate}
-\item \textbf{\large Machine Learning}
-  \begin{enumerate}
-  \item[1.1] Concepts
-  \item[1.2] \textbf{Architectures} $\leftarrow$
-  \end{enumerate}
-\item \textcolor{gray}{Mechanistic Interpretability}
-\item \textcolor{gray}{Features}
-\item \textcolor{gray}{Circuits}
-\item \textcolor{gray}{Open Problems}
-\end{enumerate}
-\end{frame}
+\navslide{2}
 
 \begin{frame}{Multi-Layer Perceptron}
 \begin{columns}[c]
@@ -593,25 +642,10 @@ given enough neurons.
 % ============================================================
 
 % ------------------------------------------------------------
-\subsection{What is Mechanistic Interpretability?}
+\subsection{What is MechInterp?}
 % ------------------------------------------------------------
 
-\begin{frame}{}
-\begin{enumerate}
-\item Machine Learning
-  \begin{enumerate}
-  \item[1.1] Concepts
-  \item[1.2] Architectures
-  \end{enumerate}
-\item \textbf{\large Mechanistic Interpretability}
-  \begin{enumerate}
-  \item[2.1] \textbf{What is Mechanistic Interpretability?} $\leftarrow$
-  \end{enumerate}
-\item \textcolor{gray}{Features}
-\item \textcolor{gray}{Circuits}
-\item \textcolor{gray}{Open Problems}
-\end{enumerate}
-\end{frame}
+\navslide{3}
 
 \begin{frame}{Two Ways to Relate to Models}
 \begin{columns}[T]
@@ -683,23 +717,7 @@ These circuits can also be rigorously studied and understood.
 \subsection{MechInterp in CNNs}
 % ------------------------------------------------------------
 
-\begin{frame}{}
-\begin{enumerate}
-\item Machine Learning
-  \begin{enumerate}
-  \item[1.1] Concepts
-  \item[1.2] Architectures
-  \end{enumerate}
-\item \textbf{\large Mechanistic Interpretability}
-  \begin{enumerate}
-  \item[2.1] What is Mechanistic Interpretability?
-  \item[2.2] \textbf{MechInterp in CNNs} $\leftarrow$
-  \end{enumerate}
-\item \textcolor{gray}{Features}
-\item \textcolor{gray}{Circuits}
-\item \textcolor{gray}{Open Problems}
-\end{enumerate}
-\end{frame}
+\navslide{4}
 
 \begin{frame}{Convolutional Neural Networks}
 \begin{center}
@@ -754,27 +772,11 @@ These circuits can also be rigorously studied and understood.
 \source{olah2020}
 \end{frame}
 
-% ============================================================
-\section{Features in Transformers}
-% ============================================================
+% ------------------------------------------------------------
+\subsection{Features in Transformers}
+% ------------------------------------------------------------
 
-\begin{frame}{}
-\begin{enumerate}
-\item Machine Learning
-  \begin{enumerate}
-  \item[1.1] Concepts
-  \item[1.2] Architectures
-  \end{enumerate}
-\item Mechanistic Interpretability
-  \begin{enumerate}
-  \item[2.1] What is Mechanistic Interpretability?
-  \item[2.2] MechInterp in CNNs
-  \end{enumerate}
-\item \textbf{\large Features in Transformers} $\leftarrow$
-\item \textcolor{gray}{Circuits}
-\item \textcolor{gray}{Open Problems}
-\end{enumerate}
-\end{frame}
+\navslide{5}
 
 \begin{frame}{Getting a Feature Direction}
 \textbf{Contrastive pairs:}
@@ -865,4 +867,321 @@ These circuits can also be rigorously studied and understood.
 \paperfig{figures/arditi2024/fig1.png}{06_edinburgh/figures/arditi2024/fig1-caption.txt}
 
 \source{arditi2024}
+\end{frame}
+
+% ------------------------------------------------------------
+\subsection{Superposition}
+% ------------------------------------------------------------
+
+\navslide{6}
+
+\begin{frame}{Preferred Basis vs.\ Superposition}
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\begin{center}
+\includegraphics[height=0.5\textheight,keepaspectratio]{figures/elhage2022/fig8.png}
+
+\vspace{0.5em}
+\textbf{Preferred basis}
+
+Each feature aligns with an axis.
+
+One neuron = one feature.
+\end{center}
+\end{column}
+
+\begin{column}{0.45\textwidth}
+\begin{center}
+\includegraphics[height=0.5\textheight,keepaspectratio]{figures/elhage2022/fig9.png}
+
+\vspace{0.5em}
+\textbf{Superposition}
+
+Features are off-axis directions.
+
+More features than dimensions.
+\end{center}
+\end{column}
+\end{columns}
+
+\source{elhage2022}
+\end{frame}
+
+\begin{frame}{Why Superposition?}
+In $N$ dimensions, we can pack
+\[ m \leq e^{\, c \cdot \varepsilon^2 \cdot N} \]
+vectors with pairwise dot product at most $\varepsilon$.
+
+\vspace{1em}
+If features are \textbf{sparse} (rarely co-active), the model tolerates overlap $\varepsilon$.
+
+\vspace{0.5em}
+$\Rightarrow$ Features scale \textbf{exponentially} with dimensions.
+
+\source{johnson1984}
+\end{frame}
+
+\begin{frame}{Toy Models of Superposition}
+\begin{center}
+\begin{tikzpicture}[
+  neuron/.style={circle, draw, thick, minimum size=8mm, inner sep=0pt},
+  feat/.style={neuron, fill=blue!15},
+  hid/.style={neuron, fill=orange!20},
+  conn/.style={->, thick, gray!60},
+  annot/.style={font=\small\bfseries, text=black!70},
+]
+  % Input features (n=5)
+  \foreach \i in {1,...,5} {
+    \node[feat] (x\i) at (0, -\i*1.0+3) {$x_{\i}$};
+  }
+
+  % Hidden layer (m=2)
+  \node[hid] (h1) at (3.5, 0.5) {$h_1$};
+  \node[hid] (h2) at (3.5, -1.5) {$h_2$};
+
+  % Output (reconstructed)
+  \foreach \i in {1,...,5} {
+    \node[feat] (xh\i) at (7, -\i*1.0+3) {$\hat{x}_{\i}$};
+  }
+
+  % Encoder connections
+  \foreach \i in {1,...,5}
+    \foreach \j in {1,2}
+      \draw[conn] (x\i) -- (h\j);
+
+  % Decoder connections
+  \foreach \j in {1,2}
+    \foreach \i in {1,...,5}
+      \draw[conn] (h\j) -- (xh\i);
+
+  % Labels
+  \node[annot, above=3mm] at (0, 2) {Features};
+  \node[annot, above=3mm] at (3.5, 0.9) {Hidden};
+  \node[annot, above=3mm] at (7, 2) {Reconstruction};
+
+  % Weight labels
+  \node[font=\small, text=orange!70!black] at (1.75, 1.5) {$W$};
+  \node[font=\small, text=orange!70!black] at (5.25, 1.5) {$W^\top$};
+
+  % ReLU label
+  \node[font=\scriptsize, red!70!black] at (5.25, -2.3) {+ ReLU};
+\end{tikzpicture}
+\end{center}
+
+\vspace{0.3em}
+\[ h = Wx \qquad \hat{x} = \text{ReLU}(W^\top h + b) \]
+\[ \mathcal{L} = \sum_i I_i \left( x_i - \hat{x}_i \right)^2 \]
+
+\source{elhage2022}
+\end{frame}
+
+\begin{frame}{Superposition Emerges with Sparsity}
+\vfill
+\begin{center}
+\includegraphics[width=\textwidth,keepaspectratio]{figures/elhage2022/fig18.png}
+\end{center}
+\vfill
+
+\source{elhage2022}
+\end{frame}
+
+\begin{frame}{Measuring Superposition}
+\textbf{Dimensions per feature} (whole network):
+\[ D = \frac{m}{\|W\|_F^2} \]
+
+\vspace{0.8em}
+\textbf{Dimensionality of feature $i$}:
+\[ D_i = \frac{1}{\displaystyle\sum_j \frac{(W_i \cdot W_j)^2}{\|W_i\|^2 \|W_j\|^2}} \]
+
+\vspace{0.8em}
+{\small
+$m$: number of hidden dimensions \quad
+$W_i$: column of $W$ for feature $i$ \quad
+$\|W\|_F$: Frobenius norm
+}
+
+\source{elhage2022}
+\end{frame}
+
+\begin{frame}{Feature Geometry}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{figures/elhage2022/fig31.png}
+\end{center}
+
+\source{elhage2022}
+\end{frame}
+
+\begin{frame}{SAEs in the Transformer}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/bricken2023/fig2.png}
+\end{center}
+
+\source{bricken2023}
+\end{frame}
+
+\begin{frame}{Sparse Autoencoders}
+\begin{columns}[c]
+\begin{column}{0.45\textwidth}
+\begin{center}
+\begin{tikzpicture}[
+  neuron/.style={circle, draw, thick, minimum size=5.5mm, inner sep=0pt, font=\tiny},
+  act/.style={neuron, fill=blue!15},
+  feat/.style={neuron, fill=green!20},
+  conn/.style={->, thin, gray!40},
+  annot/.style={font=\scriptsize\bfseries, text=black!70},
+]
+  % Input activations (n=3)
+  \foreach \i in {1,2,3} {
+    \node[act] (x\i) at (0, -\i*0.9+1.8) {$x_{\i}$};
+  }
+
+  % SAE features (m=6, expanded)
+  \foreach \j in {1,...,6} {
+    \node[feat] (f\j) at (2.5, -\j*0.65+2.75) {$f_{\j}$};
+  }
+
+  % Reconstructed activations
+  \foreach \i in {1,2,3} {
+    \node[act] (xh\i) at (5, -\i*0.9+1.8) {$\hat{x}_{\i}$};
+  }
+
+  % Encoder connections
+  \foreach \i in {1,2,3}
+    \foreach \j in {1,...,6}
+      \draw[conn] (x\i) -- (f\j);
+
+  % Decoder connections
+  \foreach \j in {1,...,6}
+    \foreach \i in {1,2,3}
+      \draw[conn] (f\j) -- (xh\i);
+
+  % Labels above
+  \node[annot] at (0, 2.8) {Activations};
+  \node[annot] at (2.5, 2.8) {Features};
+  \node[annot] at (5, 2.8) {Reconstr.};
+
+  % Weight labels
+  \node[font=\scriptsize, text=orange!70!black] at (1.25, 2.4) {$W_{\text{enc}}$};
+  \node[font=\scriptsize, text=orange!70!black] at (3.75, 2.4) {$W_{\text{dec}}$};
+
+  % ReLU label below diagram
+  \node[font=\scriptsize, red!70!black] at (2.5, -2.2) {+ ReLU};
+\end{tikzpicture}
+\end{center}
+\end{column}
+
+\begin{column}{0.52\textwidth}
+{\small
+\begin{align*}
+f &= \text{ReLU}(W_{\text{enc}} x + b_{\text{enc}}) \\[0.4em]
+\hat{x} &= W_{\text{dec}} f + b_{\text{dec}} \\[0.4em]
+\mathcal{L} &= \underbrace{\|x - \hat{x}\|^2}_{\text{reconstr.}} + \lambda \underbrace{\|f\|_1}_{\text{sparsity}}
+\end{align*}
+}
+\end{column}
+\end{columns}
+
+\source{bricken2023}
+\end{frame}
+
+\begin{frame}{Identifying SAE Features: Token Activations}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/bricken2023/fig15.png}
+\end{center}
+
+\source{bricken2023}
+\end{frame}
+
+\begin{frame}{Identifying SAE Features: Logit Weights}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/bricken2023/fig17.png}
+\end{center}
+
+\source{bricken2023}
+\end{frame}
+
+\begin{frame}{Neuronpedia: Explore SAE Features}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/neuronpedia_qr.png}
+\end{center}
+\end{column}
+\begin{column}{0.4\textwidth}
+\Large
+Browse SAE features of DeepSeek R1 on Neuronpedia
+
+\vspace{1em}
+\scriptsize
+\texttt{neuronpedia.org/deepseek-r1-\\distill-llama-8b/15-llamascope-\\openr1-res-32k/0}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Trouble with SAEs: Feature Shrinkage}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/rajamanoharan2024/fig4.png}
+\end{center}
+
+\source{rajamanoharan2024}
+\end{frame}
+
+\begin{frame}{Trouble with SAEs: Feature Absorption}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.65\textheight,keepaspectratio]{figures/feature_absorption.png}
+\end{center}
+
+\source{chanin2024}
+\end{frame}
+
+\begin{frame}{The Cambrian Explosion of SAEs}
+\begin{description}
+\item[Gated SAEs] Separate gating from magnitude. \cite{rajamanoharan2024}
+\item[JumpReLU SAEs] Hard threshold: features fully on or off, no shrinkage. \cite{rajamanoharan2024}
+\item[Top-K SAEs] Keep only the $K$ largest activations, zero the rest. \cite{bussmann2024}
+\item[Matryoshka SAEs] Train on multiple top-$N$; important features ranked first. \cite{bussmann2024a}
+\item[Staircase SAEs] One SAE across layers, mirroring residual stream. \cite{fillingham2025}
+\item[Transcoders] Map MLP inputs to outputs directly. \cite{ameisen2025}
+\end{description}
+\end{frame}
+
+\begin{frame}{Transcoders and Crosscoders}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/cross_trans_coer.png}
+\end{center}
+
+\source{lindsey2024}
+\end{frame}
+
+\begin{frame}{Features Across Layers}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/activities_across_layers.png}
+\end{center}
+
+\source{lindsey2024}
+\end{frame}
+
+\begin{frame}{SAEs Scale}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig2.png}
+\end{center}
+
+\source{templeton2024}
+\end{frame}
+
+\begin{frame}{Bigger Models, More Specific Features}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig1.png}
+\end{center}
+
+\source{templeton2024}
+\end{frame}
+
+\begin{frame}{Golden Gate Claude}
+\begin{center}
+\includegraphics[width=0.7\textwidth,height=0.7\textheight,keepaspectratio]{figures/golden_gate_claude_chat.png}
+\end{center}
+
+\vfill
+{\scriptsize\color{gray} Zvi Mowshowitz, ``I Am the Golden Gate Bridge,'' \textit{thezvi.substack.com}, 2024}
 \end{frame}
