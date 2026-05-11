@@ -20,7 +20,7 @@
 }
 
 % Parent sections: which items belong to which top-level section
-% 1-2 → Machine Learning, 3-7 → Mechanistic Interpretability, 8 → Open Problems
+% 1-2 → Machine Learning, 3-8 → Mechanistic Interpretability
 \newcommand{\navslide}[1]{%
 \begin{frame}{}
 \begin{enumerate}
@@ -31,16 +31,15 @@
     \item[1.2] \navitem{2}{#1}{Architectures}
   \end{enumerate}
   % --- 2. Mechanistic Interpretability ---
-  \item \navparent{3}{7}{#1}{Mechanistic Interpretability}
+  \item \navparent{3}{8}{#1}{Mechanistic Interpretability}
   \begin{enumerate}
     \item[2.1] \navitem{3}{#1}{What is MechInterp?}
     \item[2.2] \navitem{4}{#1}{MechInterp in CNNs}
     \item[2.3] \navitem{5}{#1}{Features in Transformers}
     \item[2.4] \navitem{6}{#1}{Superposition}
     \item[2.5] \navitem{7}{#1}{Circuits}
+    \item[2.6] \navitem{8}{#1}{Open Problems}
   \end{enumerate}
-  % --- 3. Open Problems ---
-  \item \navitem{8}{#1}{Open Problems}
 \end{enumerate}
 \end{frame}
 }
@@ -92,8 +91,8 @@
     \item[2.3] Features in Transformers
     \item[2.4] Superposition
     \item[2.5] Circuits
+    \item[2.6] Open Problems
   \end{enumerate}
-  \item \textbf{Open Problems}
 \end{enumerate}
 \end{frame}
 
@@ -236,34 +235,6 @@
 \end{center}
 \end{frame}
 
-\begin{frame}{Double Descent}
-\begin{center}
-\begin{tikzpicture}[xscale=1.4, yscale=1.2]
-  \draw[->] (0, 0) -- (7.5, 0) node[right, font=\small] {Training time};
-  \draw[->] (0, 0) -- (0, 3.5) node[above, font=\small] {Loss};
-
-  % Train loss (always decreasing)
-  \draw[very thick, blue!70!black, domain=0.3:7, samples=80]
-    plot (\x, {2.8*exp(-0.5*\x) + 0.15});
-  \node[blue!70!black, font=\small, right] at (7.1, 0.2) {train};
-
-  % Test loss (U then down again)
-  \draw[very thick, red!70!black, domain=0.3:7, samples=100]
-    plot (\x, {2.8*exp(-0.5*\x) + 0.8*exp(-0.5*(\x-3.5)*(\x-3.5)) + 0.3});
-  \node[red!70!black, font=\small, right] at (7.1, 0.45) {test};
-
-  % Regions
-  \draw[dashed, gray] (2.2, 0) -- (2.2, 3.3);
-  \draw[dashed, gray] (4.8, 0) -- (4.8, 3.3);
-
-  \node[font=\scriptsize, gray, align=center] at (1.1, 3.2) {underfit};
-  \node[font=\scriptsize, red!60!black, align=center] at (3.5, 3.2) {overfit};
-  \node[font=\scriptsize, green!50!black, align=center] at (6.1, 3.2) {second descent};
-\end{tikzpicture}
-\end{center}
-
-\source{nakkiran2019}
-\end{frame}
 
 \begin{frame}{Grokking}
 \begin{center}
@@ -553,6 +524,17 @@ given enough neurons.
   \foreach \x in {0, 1.8, 3.6, 5.4, 7.2, 9} {
     \node[gray, font=\small] at (\x, 4.9) {$\vdots$};
   }
+
+  % Output tokens at the top
+  \node[tok, fill=green!15] at (0, 5.6) {cat};
+  \node[tok, fill=green!15] at (1.8, 5.6) {sat};
+  \node[tok, fill=green!15] at (3.6, 5.6) {on};
+  \node[tok, fill=green!15] at (5.4, 5.6) {the};
+  \node[tok, fill=green!15] at (7.2, 5.6) {mat};
+  \node[tok, fill=green!15] at (9, 5.6) {.};
+
+  \foreach \x in {0, 1.8, 3.6, 5.4, 7.2, 9}
+    \draw[arr] (\x, 5.15) -- (\x, 5.32);
 
   \draw[decorate, decoration={brace, amplitude=4pt}, thick, gray]
     (-0.8, 1.9) -- (-0.8, 1.0);
@@ -1136,26 +1118,27 @@ Browse SAE features of DeepSeek R1 on Neuronpedia
 
 \begin{frame}{The Cambrian Explosion of SAEs}
 \begin{description}
-\item[Gated SAEs] Separate gating from magnitude. \cite{rajamanoharan2024}
-\item[JumpReLU SAEs] Hard threshold: features fully on or off, no shrinkage. \cite{rajamanoharan2024}
-\item[Top-K SAEs] Keep only the $K$ largest activations, zero the rest. \cite{bussmann2024}
-\item[Matryoshka SAEs] Train on multiple top-$N$; important features ranked first. \cite{bussmann2024a}
-\item[Staircase SAEs] One SAE across layers, mirroring residual stream. \cite{fillingham2025}
-\item[Transcoders] Map MLP inputs to outputs directly. \cite{ameisen2025}
+\item[Gated SAEs] Separate gating from magnitude.\textsuperscript{1}
+\item[JumpReLU SAEs] Hard threshold: features fully on or off, no shrinkage.\textsuperscript{1}
+\item[Top-K SAEs] Keep only the $K$ largest activations, zero the rest.\textsuperscript{2}
+\item[Matryoshka SAEs] Train on multiple top-$N$; important features ranked first.\textsuperscript{3}
+\item[Staircase SAEs] One SAE across layers, mirroring residual stream.\textsuperscript{4}
+\item[Transcoders] Map MLP inputs to outputs directly.\textsuperscript{5}
 \end{description}
+
+\vfill
+{\scriptsize\color{gray}%
+\textsuperscript{1}~\cite{rajamanoharan2024}\quad
+\textsuperscript{2}~\cite{bussmann2024}\quad
+\textsuperscript{3}~\cite{bussmann2024a}\quad
+\textsuperscript{4}~\cite{fillingham2025}\quad
+\textsuperscript{5}~\cite{ameisen2025}%
+}
 \end{frame}
 
 \begin{frame}{Transcoders and Crosscoders}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/cross_trans_coer.png}
-\end{center}
-
-\source{lindsey2024}
-\end{frame}
-
-\begin{frame}{Features Across Layers}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/activities_across_layers.png}
 \end{center}
 
 \source{lindsey2024}
@@ -1185,3 +1168,261 @@ Browse SAE features of DeepSeek R1 on Neuronpedia
 \vfill
 {\scriptsize\color{gray} Zvi Mowshowitz, ``I Am the Golden Gate Bridge,'' \textit{thezvi.substack.com}, 2024}
 \end{frame}
+
+\begin{frame}{Reading Claude's Mind}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig42.png}
+\end{center}
+
+\source{templeton2024}
+\end{frame}
+
+\begin{frame}{Safety-Relevant Feature Steering}
+In the Claude Opus 4.5 system card:
+
+\vspace{0.5em}
+\begin{enumerate}
+\item Find \textbf{evaluation awareness} features via:
+\begin{itemize}
+\item Contrastive vectors (eval vs.\ non-eval prompts)
+\item SAE features (discriminating eval transcripts)
+\end{itemize}
+\item \textbf{Inhibit} these features (negative steering at 25\% of activation norm)
+\end{enumerate}
+
+\vspace{0.5em}
+\textbf{Results:}
+\begin{itemize}
+\item Reduced verbalized evaluation awareness
+\item Modestly increased misaligned behavior
+\item Random feature steering also had a (weaker) effect
+\end{itemize}
+
+\source{anthropic2025b}
+\end{frame}
+
+% ------------------------------------------------------------
+\subsection{Circuits}
+% ------------------------------------------------------------
+
+\navslide{7}
+
+\begin{frame}{Complete Reverse Engineering}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nanda2023a/compelte_algorythem.png}
+\end{center}
+
+\source{nanda2023a}
+\end{frame}
+
+\begin{frame}{Complete Reverse Engineering}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nanda2023a/frequencies.png}
+\end{center}
+
+\source{nanda2023a}
+\end{frame}
+
+\begin{frame}{Attention Patterns and Logit Attribution}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2021/attention_patter_and_logit_attribution.png}
+\end{center}
+
+\source{elhage2021}
+\end{frame}
+
+\begin{frame}{K-Composition}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/callummcdougall2023/k_composition.png}
+\end{center}
+
+\source{callummcdougall2023}
+\end{frame}
+
+\begin{frame}{Path Patching}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/wang2022/path_patching.png}
+\end{center}
+
+\source{wang2022}
+\end{frame}
+
+\begin{frame}{The IOI Circuit}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/wang2022/ioi_circuit.png}
+\end{center}
+
+\source{wang2022}
+\end{frame}
+
+\begin{frame}{Automated Circuit Discovery}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/figure2.png}
+\end{center}
+
+\source{conmy2023}
+\end{frame}
+
+\begin{frame}{Automated Circuit Discovery}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/algorythem.png}
+\end{center}
+
+\source{conmy2023}
+\end{frame}
+
+\begin{frame}{Recovered IOI Circuit}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/recovered_ioi_circuit.png}
+\end{center}
+
+\source{conmy2023}
+\end{frame}
+
+\begin{frame}{Circuit Tracing: Cross-Layer Transcoders}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/CLT.png}
+\end{center}
+
+\source{ameisen2025}
+\end{frame}
+
+\begin{frame}{Replacement Models}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/replacement_models.png}
+\end{center}
+
+\source{ameisen2025}
+\end{frame}
+
+\begin{frame}{Attribution Graphs}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/pruning.png}
+\end{center}
+
+\source{ameisen2025}
+\end{frame}
+
+\begin{frame}{Example: Acronym Circuit}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/example_circuit.png}
+\end{center}
+
+\source{ameisen2025}
+\end{frame}
+
+\begin{frame}{Feature Suppression}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/feature_supression.png}
+\end{center}
+
+\source{ameisen2025}
+\end{frame}
+
+\begin{frame}{Feature Suppression Example}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/supresseion_example.png}
+\end{center}
+
+\source{ameisen2025}
+\end{frame}
+
+\begin{frame}{Neuronpedia: Explore Attribution Graphs}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+\begin{center}
+\includegraphics[width=0.6\textwidth]{figures/neuronpedia_graphs_qr.png}
+\end{center}
+\end{column}
+\begin{column}{0.4\textwidth}
+\Large
+Explore attribution graphs on Neuronpedia
+
+\vspace{1em}
+\scriptsize
+\texttt{neuronpedia.org/gemma-2-2b/\\graph}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Misaligned Model Pipeline}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/misaligned_model_pipeline.png}
+\end{center}
+
+\source{lindsey2025a}
+\end{frame}
+
+\begin{frame}{Misaligned Circuit}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/misaligned_circuit.png}
+\end{center}
+
+\source{lindsey2025a}
+\end{frame}
+
+\begin{frame}{Misaligned Intervention}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/misaligned_intervention.png}
+\end{center}
+
+\source{lindsey2025a}
+\end{frame}
+
+% ------------------------------------------------------------
+\subsection{Open Problems}
+% ------------------------------------------------------------
+
+\navslide{8}
+
+\begin{frame}{Open Problems in MechInterp}
+Decomposition: problems with Sparse Dictionary Learning
+\begin{itemize}
+\item High reconstruction errors
+\item Expensive for large models
+\item Sparsity is a flawed proxy for interpretability
+\item Dataset dependent
+\item No clarity on the concept of a ``feature''
+\end{itemize}
+\source{sharkey2025}
+\end{frame}
+
+\begin{frame}{Open Problems in MechInterp}
+Description: interpreting component roles
+\begin{itemize}
+\item Highly activating examples are correlational
+\item Attribution methods are first-order approximations
+\item Causal interventions are expensive at scale
+\end{itemize}
+\source{sharkey2025}
+\end{frame}
+
+\begin{frame}{Open Problems in MechInterp}
+Validation: testing our explanations
+\begin{itemize}
+\item Different methods yield different explanations
+\item Performance is seldom demonstrated on real-world tasks
+\item Conclusions are often not validated
+\end{itemize}
+\source{sharkey2025}
+\end{frame}
+
+\begin{frame}{Open Problems in MechInterp}
+Automation: scaling up interpretability
+\begin{itemize}
+\item Scaling up current methods does not yield more interesting results
+\item ``Streetlight interpretability''
+\end{itemize}
+\source{sharkey2025}
+\end{frame}
+
+\begin{frame}{Open Problems in MechInterp}
+Applications: using interpretability in practice
+\begin{itemize}
+\item Can't reliably distinguish recognizing vs.\ applying a concept
+\item Mechanistic verification of behavior not possible
+\item Mechanistic understanding might further capabilities by pruning models
+\end{itemize}
+\source{sharkey2025}
+\end{frame}
+
