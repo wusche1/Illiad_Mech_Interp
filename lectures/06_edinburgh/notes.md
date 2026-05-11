@@ -71,4 +71,22 @@ Farmer vs biologist
 use for safety
 Olahs 3 claims
 
+section 2.2 CNN Interpretability
+slides about:
+evidence for a feature having a meaning
+circuit
+Section 2.3 Features in Transformers
+Do directions in LLMs mean something? -> gender direction
+how to get a direciton out of an LLM:
+- contrast activations
+- contrast many activations
+- train a probe (ITI & Othello)
+What can you do once you have a feature
+- steering: CCA & Othello
+- ablate it out: Refusal Ablation
 
+section 2.3 Superposition:
+Example from CNNs with the car
+Toy models of Superposition:
+experimental setup (picture + Equation)
+Result: just upper panel

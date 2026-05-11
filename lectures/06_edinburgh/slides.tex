@@ -517,59 +517,352 @@ given enough neurons.
 \end{frame}
 
 \begin{frame}{Attention}
-\vspace{-0.5em}
+\vspace{-0.3em}
 \begin{center}
 \begin{tikzpicture}[
-  mat/.style={rectangle, draw, thick, minimum width=1.2cm, minimum height=0.7cm, font=\normalsize\bfseries},
-  wt/.style={rectangle, draw, thick, fill=gray!10, minimum width=1.1cm, minimum height=0.6cm, font=\small},
-  op/.style={rectangle, draw, thick, rounded corners=3pt, fill=gray!10, minimum height=0.6cm, font=\small},
-  arr/.style={->, thick, gray!70},
-  scale=0.92, transform shape,
+  mat/.style={rectangle, draw, thick, minimum width=1.3cm, minimum height=0.6cm, font=\normalsize\bfseries},
+  wt/.style={rectangle, draw, thick, dashed, fill=gray!6, minimum width=1.1cm, minimum height=0.5cm, font=\small},
+  op/.style={rectangle, draw, thick, rounded corners=3pt, fill=gray!8, minimum height=0.5cm, font=\small},
+  sh/.style={font=\small, text=gray!80},
+  arr/.style={->, thick, gray!55},
+  scale=0.88, transform shape,
 ]
   % Row 1: Input X
-  \node[mat, fill=green!15, minimum width=1.8cm] (X) at (1.5, 0.6) {$X$};
+  \node[mat, fill=green!15, minimum width=1.6cm] (X) at (1.5, 0) {$X$};
+  \node[sh, right=0.15cm of X] {$n \times d$};
 
-  % Row 2: Three projection paths
-  \node[wt, fill=red!10] (Wq) at (-2, 1.7) {$W_Q$};
-  \node[wt, fill=blue!10] (Wk) at (1.5, 1.7) {$W_K$};
-  \node[wt, fill=orange!10] (Wv) at (5, 1.7) {$W_V$};
+  % Row 2: Learned projection weights (dashed = learned parameters)
+  \node[wt, fill=red!8] (Wq) at (-2, 1.2) {$W_Q$};
+  \node[sh, right=0.1cm of Wq] {$d \!\times\! d_h$};
+  \node[wt, fill=blue!8] (Wk) at (1.5, 1.2) {$W_K$};
+  \node[sh, right=0.1cm of Wk] {$d \!\times\! d_h$};
+  \node[wt, fill=orange!8] (Wv) at (5, 1.2) {$W_V$};
+  \node[sh, right=0.1cm of Wv] {$d \!\times\! d_h$};
 
-  \draw[arr] (X.north) -- ++(0,0.2) -| (Wq.south);
+  \draw[arr] (X.north) -- ++(0,0.1) -| (Wq.south);
   \draw[arr] (X.north) -- (Wk.south);
-  \draw[arr] (X.north) -- ++(0,0.2) -| (Wv.south);
+  \draw[arr] (X.north) -- ++(0,0.1) -| (Wv.south);
 
   % Row 3: Q K V
-  \node[mat, fill=red!20] (Q) at (-2, 2.8) {$Q$};
-  \node[mat, fill=blue!20] (K) at (1.5, 2.8) {$K$};
-  \node[mat, fill=orange!25] (V) at (5, 2.8) {$V$};
+  \node[mat, fill=red!20] (Q) at (-2, 2.3) {$Q$};
+  \node[sh, right=0.15cm of Q] {$n \times d_h$};
+  \node[mat, fill=blue!20] (K) at (1.5, 2.3) {$K$};
+  \node[sh, right=0.15cm of K] {$n \times d_h$};
+  \node[mat, fill=orange!25] (V) at (5, 2.3) {$V$};
+  \node[sh, right=0.15cm of V] {$n \times d_h$};
 
   \draw[arr] (Wq.north) -- (Q.south);
   \draw[arr] (Wk.north) -- (K.south);
   \draw[arr] (Wv.north) -- (V.south);
 
   % Row 4: QK^T / sqrt(d)
-  \node[op, fill=yellow!15] (qkt) at (-0.25, 4.0) {$QK^\top\! / \sqrt{d_k}$};
-  \draw[arr] (Q.north) -- ++(0,0.25) -| ($(qkt.south)+(-0.5,0)$);
-  \draw[arr] (K.north) -- ++(0,0.25) -| ($(qkt.south)+(0.5,0)$);
+  \node[op, fill=yellow!15] (qkt) at (-0.25, 3.5) {$QK^\top\! / \sqrt{d_h}$};
+  \node[sh, right=0.15cm of qkt] {$n \times n$};
+  \draw[arr] (Q.north) -- ++(0,0.2) -| ($(qkt.south)+(-0.5,0)$);
+  \draw[arr] (K.north) -- ++(0,0.2) -| ($(qkt.south)+(0.5,0)$);
 
-  % Row 5: softmax
-  \node[op, fill=purple!10] (soft) at (-0.25, 5.0) {softmax};
-  \draw[arr] (qkt.north) -- (soft.south);
+  % Row 5: softmax → A (softmax as label on arrow)
+  \node[mat, fill=purple!18, minimum width=1cm, minimum height=0.55cm, font=\small\bfseries] (A) at (-0.25, 4.7) {$A$};
+  \node[sh, right=0.15cm of A] {$n \times n$};
+  \draw[arr] (qkt.north) -- node[left, font=\small, text=gray!65, inner sep=2pt] {softmax} (A.south);
 
-  % Row 6: A * V
-  \node[op, fill=green!10] (av) at (2.5, 6.0) {$A \cdot V$};
-  \draw[arr] (soft.north) -- ++(0,0.25) -| ($(av.south)+(-0.4,0)$);
-  \draw[arr] (V.north) -- ++(0,2.25) -| ($(av.south)+(0.4,0)$);
+  % Row 6: A * V → output
+  \node[mat, fill=green!18, minimum width=1.5cm] (av) at (2.5, 5.8) {$A \cdot V$};
+  \node[sh, right=0.15cm of av] {$n \times d_h$};
+  \draw[arr] (A.north) -- ++(0,0.15) -| ($(av.south)+(-0.4,0)$);
+  \draw[arr] (V.north) -- ++(0,2.55) -| ($(av.south)+(0.4,0)$);
 
-  % Row 7: Output
-  \node[mat, fill=green!20, minimum width=1.5cm] (out) at (2.5, 7.0) {Output};
-  \draw[arr] (av.north) -- (out.south);
-
-  % Equation on the right
-  \node[font=\large, align=left] at (9.5, 4.2) {
+  % Equation
+  \node[font=\large, align=left] at (9, 3.3) {
     $\text{Attention}(Q,K,V)$\\[0.8em]
-    $= \text{softmax}\!\left(\dfrac{QK^\top}{\sqrt{d_k}}\right) V$
+    $= \text{softmax}\!\left(\dfrac{QK^\top}{\sqrt{d_h}}\right) V$
+  };
+
+  % Legend
+  \node[align=left, font=\normalsize, text=gray!80] at (9, 0.6) {
+    $n$ = sequence length\\[0.3em]
+    $d$ = model dimension\\[0.3em]
+    $d_h$ = head dimension
   };
 \end{tikzpicture}
 \end{center}
+\end{frame}
+
+% ============================================================
+\section{Mechanistic Interpretability}
+% ============================================================
+
+% ------------------------------------------------------------
+\subsection{What is Mechanistic Interpretability?}
+% ------------------------------------------------------------
+
+\begin{frame}{}
+\begin{enumerate}
+\item Machine Learning
+  \begin{enumerate}
+  \item[1.1] Concepts
+  \item[1.2] Architectures
+  \end{enumerate}
+\item \textbf{\large Mechanistic Interpretability}
+  \begin{enumerate}
+  \item[2.1] \textbf{What is Mechanistic Interpretability?} $\leftarrow$
+  \end{enumerate}
+\item \textcolor{gray}{Features}
+\item \textcolor{gray}{Circuits}
+\item \textcolor{gray}{Open Problems}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Two Ways to Relate to Models}
+\begin{columns}[T]
+\begin{column}{0.48\textwidth}
+\begin{center}
+\textbf{\large Machine Learning}
+\vspace{0.5em}
+
+\includegraphics[width=0.75\textwidth]{figures/honest_work.jpg}
+\end{center}
+
+\begin{itemize}
+\item Output-oriented
+\item Find hyperparameters to improve models
+\end{itemize}
+\end{column}
+
+\begin{column}{0.48\textwidth}
+\begin{center}
+\textbf{\large Mech.\ Interpretability}
+\vspace{0.5em}
+
+\includegraphics[width=0.75\textwidth]{figures/scientist_microscope.jpg}
+\end{center}
+
+\begin{itemize}
+\item Learned models are the object of study
+\item Understand and reverse-engineer parameters
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+\begin{frame}{Theories of Impact}
+\vfill
+\begin{center}
+\begin{minipage}{0.7\textwidth}
+\Large
+\begin{itemize}
+\item Auditing for misalignment/deception
+\item Enumerative safety
+\item Eliciting latent knowledge
+\end{itemize}
+\end{minipage}
+\end{center}
+\vfill
+
+\source{nanda2022}
+\end{frame}
+
+\begin{frame}{Three Speculative Claims}
+\begin{enumerate}
+\item \textbf{Features} are the fundamental unit of neural networks.
+They correspond to directions.
+These features can be rigorously studied and understood.
+
+\vspace{0.5em}
+\item Features are connected by weights, forming \textbf{circuits}.
+These circuits can also be rigorously studied and understood.
+
+\vspace{0.5em}
+\item \textbf{Universality}: Analogous features and circuits form across models and tasks.
+\end{enumerate}
+
+\source{olah2020}
+\end{frame}
+
+% ------------------------------------------------------------
+\subsection{MechInterp in CNNs}
+% ------------------------------------------------------------
+
+\begin{frame}{}
+\begin{enumerate}
+\item Machine Learning
+  \begin{enumerate}
+  \item[1.1] Concepts
+  \item[1.2] Architectures
+  \end{enumerate}
+\item \textbf{\large Mechanistic Interpretability}
+  \begin{enumerate}
+  \item[2.1] What is Mechanistic Interpretability?
+  \item[2.2] \textbf{MechInterp in CNNs} $\leftarrow$
+  \end{enumerate}
+\item \textcolor{gray}{Features}
+\item \textcolor{gray}{Circuits}
+\item \textcolor{gray}{Open Problems}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Convolutional Neural Networks}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{figures/cnn_architecture.png}
+\end{center}
+
+\source{superannotate2023}
+\end{frame}
+
+\begin{frame}{Evidence for Curve Detectors}
+\begin{center}
+\begin{tikzpicture}[
+  img/.style={rectangle, draw=gray!50, thick, inner sep=2pt},
+  lbl/.style={font=\scriptsize, align=center},
+]
+  \node[img] (fv) at (0, 0) {\includegraphics[width=2.8cm]{figures/curve_detector_feature_visualization.png}};
+  \node[lbl, below=2pt of fv] {Feature\\Visualization};
+
+  \node[img] (de) at (4, 0) {\includegraphics[width=2.8cm]{figures/curve_detector_dataset_examples.png}};
+  \node[lbl, below=2pt of de] {Dataset\\Examples};
+
+  \node[img] (st) at (8, 0) {\includegraphics[width=2.8cm]{figures/curve_detector_synthetic_tuning.png}};
+  \node[lbl, below=2pt of st] {Synthetic\\Tuning};
+
+  \node[img] (rt) at (0, -3.8) {\includegraphics[width=2.8cm]{figures/curve_detector_radial_tuning.png}};
+  \node[lbl, below=2pt of rt] {Joint\\Tuning};
+
+  \node[img] (wt) at (4, -3.8) {\includegraphics[width=2.8cm]{figures/curve_detector_weights.png}};
+  \node[lbl, below=2pt of wt] {Weight\\Analysis};
+
+  \node[img] (uc) at (8, -3.8) {\includegraphics[width=2.8cm]{figures/curve_detector_use_in_circuits.png}};
+  \node[lbl, below=2pt of uc] {Use in\\Circuits};
+\end{tikzpicture}
+\end{center}
+
+\source{olah2020}
+\end{frame}
+
+\begin{frame}{Circuits: Car Detection}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.75\textheight,keepaspectratio]{figures/car_circuit.png}
+\end{center}
+
+\source{olah2020}
+\end{frame}
+
+\begin{frame}{Universality in Image Models}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.8\textheight,keepaspectratio]{figures/universality.png}
+\end{center}
+
+\source{olah2020}
+\end{frame}
+
+% ============================================================
+\section{Features in Transformers}
+% ============================================================
+
+\begin{frame}{}
+\begin{enumerate}
+\item Machine Learning
+  \begin{enumerate}
+  \item[1.1] Concepts
+  \item[1.2] Architectures
+  \end{enumerate}
+\item Mechanistic Interpretability
+  \begin{enumerate}
+  \item[2.1] What is Mechanistic Interpretability?
+  \item[2.2] MechInterp in CNNs
+  \end{enumerate}
+\item \textbf{\large Features in Transformers} $\leftarrow$
+\item \textcolor{gray}{Circuits}
+\item \textcolor{gray}{Open Problems}
+\end{enumerate}
+\end{frame}
+
+\begin{frame}{Getting a Feature Direction}
+\textbf{Contrastive pairs:}
+\[ r = \text{Emb}(\text{``Spanish''}) - \text{Emb}(\text{``French''}) \]
+
+\vspace{0.5em}
+\textbf{Linear probe:} \quad {\small $x_i$: sample activation, $y_i \in \{+1, -1\}$: label}
+\[ r = \arg\max_{\|r\|=1} \sum_i y_i \cdot r^\top x_i \]
+
+\vspace{0.5em}
+\textbf{CAA:} \quad {\small $x_i^{(+)}, x_i^{(-)}$: positive/negative example of a property}
+\[ r = \frac{1}{N} \sum_{i=1}^{N} \left( x_i^{(+)} - x_i^{(-)} \right) \]
+\end{frame}
+
+\begin{frame}{What To Do with a Feature Direction}
+\textbf{Activation addition} (steering):
+\[ x' \leftarrow x + \alpha \cdot r \]
+
+\vspace{0.5em}
+\textbf{Direction ablation} (make the model blind to the concept):
+\[ x' \leftarrow x - \hat{r}\hat{r}^\top x \]
+
+\vspace{0.5em}
+\textbf{Probing} (read out a concept):
+\[ s = r^\top x \]
+
+\vspace{0.3em}
+{\small $r$: feature direction \quad $x$: activation \quad $\alpha$: steering strength}
+
+\source{arditi2024}
+\end{frame}
+
+\begin{frame}{Example: Language Direction}
+\paperfig{figures/park2024/fig3.png}{06_edinburgh/figures/park2024/fig3-caption.txt}
+
+\source{park2024}
+\end{frame}
+
+\begin{frame}{Example: Probing for Truthfulness}
+\paperfig{figures/li2024b/fig1.png}{06_edinburgh/figures/li2024b/fig1-caption.txt}
+
+\source{li2024b}
+\end{frame}
+
+\begin{frame}{Example: Inference-Time Intervention}
+\paperfig{figures/li2024b/fig2.png}{06_edinburgh/figures/li2024b/fig2-caption.txt}
+
+\source{li2024b}
+\end{frame}
+
+\begin{frame}{Example: ITI Improves Truthfulness}
+\paperfig{figures/li2024b/table0.png}{06_edinburgh/figures/li2024b/table0-caption.txt}
+
+\source{li2024b}
+\end{frame}
+
+\begin{frame}{Example: Contrastive Activation Addition}
+\paperfig{figures/panickssery2024/fig0.png}{06_edinburgh/figures/panickssery2024/fig0-caption.txt}
+
+\source{panickssery2024}
+\end{frame}
+
+\begin{frame}{Example: CAA Steers Arbitrary Behaviors}
+\paperfig{figures/panickssery2024/fig7.png}{06_edinburgh/figures/panickssery2024/fig7-caption.txt}
+
+\source{panickssery2024}
+\end{frame}
+
+\begin{frame}{Example: Othello-GPT World Model}
+\paperfig{figures/nanda2023/fig0.png}{06_edinburgh/figures/nanda2023/fig0-caption.txt}
+
+\source{nanda2023}
+\end{frame}
+
+\begin{frame}{Example: Intervening on the World Model}
+\paperfig{figures/nanda2023/fig1.png}{06_edinburgh/figures/nanda2023/fig1-caption.txt}
+
+\source{nanda2023}
+\end{frame}
+
+\begin{frame}{Example: Refusal Is a Single Direction}
+\paperfig{figures/arditi2024/fig0.png}{06_edinburgh/figures/arditi2024/fig0-caption.txt}
+
+\source{arditi2024}
+\end{frame}
+
+\begin{frame}{Example: Adding Refusal to Harmless Queries}
+\paperfig{figures/arditi2024/fig1.png}{06_edinburgh/figures/arditi2024/fig1-caption.txt}
+
+\source{arditi2024}
 \end{frame}
