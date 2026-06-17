@@ -53,6 +53,54 @@
 }
 \end{frame}
 
+\begin{frame}{Getting a Feature Direction}
+\textbf{Contrastive pairs:}
+\[ r = \text{Emb}(\text{``Spanish''}) - \text{Emb}(\text{``French''}) \]
+
+\vspace{0.5em}
+\textbf{Linear probe:} \quad {\small $x_i$: sample activation, $y_i \in \{+1, -1\}$: label}
+\[ r = \arg\max_{\|r\|=1} \sum_i y_i \cdot r^\top x_i \]
+
+\vspace{0.5em}
+\textbf{CAA:} \quad {\small $x_i^{(+)}, x_i^{(-)}$: positive/negative example of a property}
+\[ r = \frac{1}{N} \sum_{i=1}^{N} \left( x_i^{(+)} - x_i^{(-)} \right) \]
+
+\note{
+\begin{itemize}
+\item Preview: three families of methods for obtaining a feature direction
+\item Contrastive pairs: just subtract embeddings of paired concepts
+\item Linear probe: supervised training on labeled examples
+\item CAA: averaged activation differences across many contrastive examples
+\item We will see concrete examples of each in the following slides
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{What To Do with a Feature Direction}
+\textbf{Activation addition} (steering):
+\[ x' \leftarrow x + \alpha \cdot r \]
+
+\vspace{0.5em}
+\textbf{Direction ablation} (make the model blind to the concept):
+\[ x' \leftarrow x - \hat{r}\hat{r}^\top x \]
+
+\vspace{0.5em}
+\textbf{Probing} (read out a concept):
+\[ s = r^\top x \]
+
+\vspace{0.3em}
+{\small $r$: feature direction \quad $x$: activation \quad $\alpha$: steering strength}
+
+\note{
+\begin{itemize}
+\item Once we have a direction, there are three things we can do with it
+\item Steering: add it to activations to push the model toward the concept
+\item Ablation: project it out to make the model blind to the concept
+\item Probing: read off the dot product to detect whether the concept is present
+\end{itemize}
+}
+\end{frame}
+
 \begin{frame}{Probes}
 We can project activations at any point in the forward pass along any direction,
 and thereby classify the input on a linear scale.
@@ -799,8 +847,6 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\section{SAEs at Scale}
-
 \begin{frame}{SAEs Scale}
 \begin{center}
 \includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig2.png}
@@ -894,8 +940,6 @@ In the Claude Opus 4.5 system card:
 \end{itemize}
 }
 \end{frame}
-
-\section{Expanding SAEs}
 
 \begin{frame}{Transcoders and Crosscoders}
 \begin{center}
