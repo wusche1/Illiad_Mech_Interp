@@ -1,4 +1,4 @@
-# Mechanistic Interpretability — ML4Good Canada 2026
+# Mechanistic Interpretability — Iliad Intensive
 
 [Slides (PDF)](https://raw.githubusercontent.com/wusche1/Illiad_Mech_Interp/main/lectures/output/main.pdf)
 
