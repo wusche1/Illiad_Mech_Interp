@@ -101,19 +101,6 @@
 }
 \end{frame}
 
-\begin{frame}{Probes}
-We can project activations at any point in the forward pass along any direction,
-and thereby classify the input on a linear scale.
-
-\note{
-\begin{itemize}
-\item We can just project the activations at any point in the forward pass along any direction, and thereby classify the input of the transformer on a linear scale
-\item If the direction is a feature with some human-understandable meaning, we would expect it could classify inputs that have this meaning (a Spanish feature could classify Spanish text)
-\item Or alternatively classify model cognition (a ``lying'' feature when the model decides to output a lie)
-\end{itemize}
-}
-\end{frame}
-
 % park2024: fig3 = Figure 4
 \begin{frame}{Linear Probes Can Classify Text Properties}
 \paperfig{figures/park2024/fig3.png}{03_transformer_features/figures/park2024/fig3-caption.txt}
@@ -260,32 +247,6 @@ and thereby classify the input on a linear scale.
 }
 \end{frame}
 
-\begin{frame}{Ablating Features}
-\textbf{Activation addition:}
-\[ x^{(l)\prime} \leftarrow x^{(l)} + r^{(l)} \]
-
-\vspace{0.5em}
-\textbf{Direction ablation:}
-\[ x' \leftarrow x - \hat{r}\hat{r}^\top x \]
-
-\vspace{0.5em}
-\textbf{Weight orthogonalization:}
-\[ W'_{\text{out}} \leftarrow W_{\text{out}} - \hat{r}\hat{r}^\top W_{\text{out}} \]
-
-\vspace{0.3em}
-{\small $r$: feature direction \quad $x$: activation \quad $W$: weight matrix}
-
-\source{arditi2024}
-
-\note{
-\begin{itemize}
-\item Once we have a feature, we can do more than just adding it somewhere to see what happens
-\item We can also ablate it out, and make a model basically blind to that concept
-\item We can fold this projection into the weights: basically making the model blind to a concept in a way that is not easy to detect from the weights alone
-\end{itemize}
-}
-\end{frame}
-
 % arditi2024: fig0 = Figure 1
 \begin{frame}{Refusal Is Mediated by a Single Direction}
 \paperfig{figures/arditi2024/fig0.png}{03_transformer_features/figures/arditi2024/fig0-caption.txt}
@@ -315,7 +276,7 @@ and thereby classify the input on a linear scale.
 
 \begin{frame}{Logit Lens}
 \begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nostalgebraist2020/logit_lense_example.png}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nostalgebraist2020/logit_lens_kl_grid.png}
 \end{center}
 
 \source{nostalgebraist2020}
@@ -423,11 +384,11 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 
 % elhage2022: fig20 = loss function
 \begin{frame}{Demonstrating Superposition}
-\[ h = Wx \qquad \hat{x} = \text{ReLU}(W^T h + b) \]
-\[ L \sim \sum_i I_i (1 - \|W_i\|^2)^2 + \sum_{i \neq j} I_j (W_i \cdot W_j)^2 \]
+\[ h = Wx \qquad \hat{x} = \text{ReLU}(W^\top h + b) \]
+\[ L = \mathbb{E}_x\!\left[\,\|I\,(x - \hat{x})\|^2\,\right] \]
 
 \vspace{0.5em}
-{\small Sparsity $S$: probability that $x_i$ is nonzero}
+{\small $I = \mathrm{diag}(I_i)$: per-feature importance \quad Sparsity $S$: probability that $x_i = 0$}
 
 \source{elhage2022}
 
@@ -460,6 +421,25 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 }
 \end{frame}
 
+\begin{frame}{Dimensions per Feature}
+\[ D = \frac{m}{\|W\|_F^2} \]
+
+\vspace{0.5em}
+On average, how many hidden dimensions does the network use per feature?
+
+\vspace{0.5em}
+{\small $m$: number of hidden dimensions \quad $\|W\|_F$: Frobenius norm of $W$}
+
+\source{elhage2022}
+
+\note{
+\begin{itemize}
+\item One global summary: how many dimensions per feature, averaged across the whole network
+\item Equivalent to the sum of squared norms of all feature columns, divided into the hidden dimension count
+\end{itemize}
+}
+\end{frame}
+
 % elhage2022: fig29 = dimensions per feature plot
 \begin{frame}{Dimensions per Feature}
 \begin{center}
@@ -470,7 +450,7 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 
 \note{
 \begin{itemize}
-\item $D = m / \|W\|_F^2$: how many dimensions per feature on average
+\item Plot of $D$ as sparsity is varied
 \item There are ``sticky regions'' --- some feature densities the network gravitates towards, notably 1 and 1/2
 \end{itemize}
 }
