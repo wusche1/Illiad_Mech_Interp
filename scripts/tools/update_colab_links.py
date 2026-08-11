@@ -1,4 +1,4 @@
-"""Update Colab badge and raw GitHub URLs in all lecture notebooks based on git remote and branch."""
+"""Update Colab badge and raw GitHub URLs in all exercise notebooks based on git remote and branch."""
 
 import json
 import re
@@ -42,5 +42,5 @@ def update_notebook(path, user, repo, branch):
 if __name__ == "__main__":
     user, repo, branch = get_repo_info()
     print(f"Repo: {user}/{repo} Branch: {branch}")
-    for nb_path in sorted(Path("lectures").rglob("notebook.ipynb")):
+    for nb_path in sorted(Path("exercises").glob("*/notebook*.ipynb")):
         update_notebook(nb_path, user, repo, branch)

@@ -1,6 +1,13 @@
 # Mechanistic Interpretability — Iliad Intensive
 
-[Slides (PDF)](https://raw.githubusercontent.com/iliad-team/iliad-intensive-C.2/main/lectures/output/main.pdf)
+The exercise notebooks for C.2. Open them in Colab; nothing needs installing.
+
+The slides are no longer in this repo. They are built from LaTeX in
+[`iliad-team/iliad-intensive`](https://github.com/iliad-team/iliad-intensive/tree/main/tex/mechanistic-interpretability)
+and published on the curriculum site:
+
+- [C.2 — Mechanistic Interpretability](https://iliad-team.github.io/iliad-intensive/interpretability/mechanistic-interpretability)
+- [Slides (PDF)](https://iliad-team.github.io/iliad-intensive/downloads/mechanistic-interpretability/mechanistic-interpretability-slides.pdf)
 
 ## Exercises and external links (in lecture order)
 
@@ -18,3 +25,10 @@
 - Ségerie, [Against Almost Every Theory of Impact of Interpretability](https://www.lesswrong.com/posts/LNA8mubrByG7SFacm/against-almost-every-theory-of-impact-of-interpretability-1), 2023
 - Hendrycks, [The Misguided Quest for Mechanistic AI Interpretability](https://ai-frontiers.org/articles/the-misguided-quest-for-mechanistic-ai-interpretability), 2025
 - Chughtai, [Activation Space Interpretability May Be Doomed](https://www.alignmentforum.org/posts/gYfpPbww3wQRaxAFD/activation-space-interpretability-may-be-doomed), 2025
+
+## Running locally
+
+```bash
+uv sync
+uv run pytest tests/ -v    # executes each notebook with its solutions injected
+```

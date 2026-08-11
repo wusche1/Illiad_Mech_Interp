@@ -16,7 +16,6 @@ import pytest
 from nbconvert.preprocessors import ExecutePreprocessor
 
 ROOT = Path(__file__).resolve().parent.parent
-LECTURES = ROOT / "lectures"
 EXERCISES = ROOT / "exercises"
 
 SLOW_TIMEOUT = 600
@@ -26,13 +25,8 @@ SLOW_IMPORTS = {"transformer_lens", "circuitsvis"}
 
 
 def discover_exercises():
-    """Find all exercise notebooks across both directory structures."""
+    """Find all exercise notebooks."""
     results = []
-    # lectures/*/exercises/*/notebook.ipynb (e.g. tangent)
-    for nb_path in sorted(LECTURES.glob("*/exercises/*/notebook.ipynb")):
-        d = nb_path.parent
-        label = f"{d.parent.parent.name}/{d.name}"
-        results.append((nb_path, label))
     # exercises/*/notebook_*.ipynb (e.g. logit_lens normal/hard)
     for nb_path in sorted(EXERCISES.glob("*/notebook_*.ipynb")):
         d = nb_path.parent

@@ -1,1 +1,0 @@
-Table 8: Model evaluations. For each evaluation, we report the orthogonalized model's performance, followed by the baseline model's performance, followed by the absolute increase or decrease.
