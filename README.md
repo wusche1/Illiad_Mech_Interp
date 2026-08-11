@@ -1,15 +1,15 @@
 # Mechanistic Interpretability — Iliad Intensive
 
-[Slides (PDF)](https://raw.githubusercontent.com/wusche1/Illiad_Mech_Interp/main/lectures/output/main.pdf)
+[Slides (PDF)](https://raw.githubusercontent.com/iliad-team/iliad-intensive-C.2/main/lectures/output/main.pdf)
 
 ## Exercises and external links (in lecture order)
 
-1. [Feature Visualization exercise](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/03_feature_viz/notebook.ipynb)
-2. Logit Lens exercise — [normal](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_normal.ipynb) · [hard](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_hard.ipynb)
+1. [Feature Visualization exercise](https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/03_feature_viz/notebook.ipynb)
+2. Logit Lens exercise — [normal](https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/01_logit_lens/notebook_normal.ipynb) · [hard](https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/01_logit_lens/notebook_hard.ipynb)
 3. [Neuronpedia — SAE features (Gemma 3 27B)](https://www.neuronpedia.org/gemma-3-27b/31-gemmascope-2-res-16k)
-4. [Sparse Autoencoders exercise](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/04_saes/notebook.ipynb)
+4. [Sparse Autoencoders exercise](https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/04_saes/notebook.ipynb)
 5. [Neuronpedia — Attribution graphs (Gemma 2 2B)](https://www.neuronpedia.org/gemma-2-2b/graph)
-6. Induction Heads exercise — [normal](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_normal.ipynb) · [hard](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_hard.ipynb)
+6. Induction Heads exercise — [normal](https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/02_induction_heads/notebook_normal.ipynb) · [hard](https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/02_induction_heads/notebook_hard.ipynb)
 7. [Neuronpedia — Natural Language Autoencoders (Llama 3.3 70B)](https://www.neuronpedia.org/llama3.3-70b-it/nla)
 
 ## Discussion reading

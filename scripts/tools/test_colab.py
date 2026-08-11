@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent.parent
 EXERCISES = ROOT / "exercises"
 PROFILE_DIR = ROOT / ".cache" / "playwright-colab-profile"
 
-REPO = "wusche1/Illiad_Mech_Interp"
+REPO = "iliad-team/iliad-intensive-C.2"
 BRANCH = "main"
 MAX_WAIT = 240  # seconds to wait for cell execution
 

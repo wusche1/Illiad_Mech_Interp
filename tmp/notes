@@ -1,22 +1,22 @@
 Mechanistic Interpretability Workshop
 
 Slides:
-https://docs.google.com/gview?url=https://github.com/wusche1/Illiad_Mech_Interp/raw/main/lectures/output/main.pdf
+https://docs.google.com/gview?url=https://github.com/iliad-team/iliad-intensive-C.2/raw/main/lectures/output/main.pdf
 
 Exercises (in order):
 1. Logit Lens
-   Normal: https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_normal.ipynb
-   Hard:   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_hard.ipynb
+   Normal: https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/01_logit_lens/notebook_normal.ipynb
+   Hard:   https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/01_logit_lens/notebook_hard.ipynb
 
 2. Induction Heads
-   Normal: https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_normal.ipynb
-   Hard:   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_hard.ipynb
+   Normal: https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/02_induction_heads/notebook_normal.ipynb
+   Hard:   https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/02_induction_heads/notebook_hard.ipynb
 
 3. Feature Visualization
-   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/03_feature_viz/notebook.ipynb
+   https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/03_feature_viz/notebook.ipynb
 
 4. Sparse Autoencoders
-   https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/04_saes/notebook.ipynb
+   https://colab.research.google.com/github/iliad-team/iliad-intensive-C.2/blob/main/exercises/04_saes/notebook.ipynb
 
 Reading for Discussion (pick one):
 1. A Pragmatic Vision for Interpretability (Nanda et al., 2025) ~15 min
