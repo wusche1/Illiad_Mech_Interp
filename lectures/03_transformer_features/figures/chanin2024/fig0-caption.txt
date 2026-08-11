@@ -1,1 +1,0 @@
-(a) When features fire independently, the SAE learns exactly one latent per feature, and the decoder perfectly recovers each feature direction.

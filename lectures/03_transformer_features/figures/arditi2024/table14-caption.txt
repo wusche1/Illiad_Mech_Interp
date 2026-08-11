@@ -1,1 +1,0 @@
-Table 9: Model performance as measured by CE loss across different datasets.
