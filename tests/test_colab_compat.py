@@ -1,6 +1,6 @@
 """Test that exercise notebooks install and import correctly in a Colab-like environment.
 
-Creates a Python 3.12 venv, pre-installs Colab's conflict-prone packages at their
+Creates a Python 3.13 venv, pre-installs Colab's conflict-prone packages at their
 exact pinned versions (fetched from googlecolab/backend-info), then runs the
 notebook's pip install line and tests imports.
 
@@ -60,21 +60,21 @@ def _extract_pip_and_imports(nb_path):
     return pip_line, import_src
 
 
-def _find_python_312():
-    for cmd in ["python3.12"]:
+def _find_python_313():
+    for cmd in ["python3.13"]:
         try:
             r = subprocess.run([cmd, "--version"], capture_output=True, text=True, timeout=5)
-            if r.returncode == 0 and "3.12" in r.stdout:
+            if r.returncode == 0 and "3.13" in r.stdout:
                 return cmd
         except FileNotFoundError:
             pass
     try:
-        r = subprocess.run(["uv", "python", "find", "3.12"], capture_output=True, text=True, timeout=10)
+        r = subprocess.run(["uv", "python", "find", "3.13"], capture_output=True, text=True, timeout=10)
         if r.returncode == 0:
             return r.stdout.strip()
     except FileNotFoundError:
         pass
-    pytest.skip("Python 3.12 not available")
+    pytest.skip("Python 3.13 not available")
 
 
 def discover():
@@ -105,7 +105,7 @@ def test_colab_install_and_import(nb_path, pip_line, import_src, colab_pins, tmp
     if os.environ.get("SKIP_SLOW"):
         pytest.skip("SKIP_SLOW is set")
 
-    python = _find_python_312()
+    python = _find_python_313()
     venv = tmp_path / "venv"
     subprocess.run([python, "-m", "venv", str(venv)], check=True, timeout=30)
     pip_bin = str(venv / "bin" / "pip")
