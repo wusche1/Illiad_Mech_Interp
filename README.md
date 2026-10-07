@@ -11,6 +11,8 @@
 5. [Neuronpedia — Attribution graphs (Gemma 2 2B)](https://www.neuronpedia.org/gemma-2-2b/graph)
 6. Induction Heads exercise — [normal](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_normal.ipynb) · [hard](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_hard.ipynb)
 7. [Neuronpedia — Natural Language Autoencoders (Llama 3.3 70B)](https://www.neuronpedia.org/llama3.3-70b-it/nla)
+8. Jacobian Lens exercise — [normal](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/05_jlens/notebook_normal.ipynb) · [hard](https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/05_jlens/notebook_hard.ipynb)
+9. [Neuronpedia — Jacobian lens (DeepSeek V4 Flash)](https://www.neuronpedia.org/deepseek-v4-flash/jlens)
 
 ## Discussion reading
 
