@@ -4,38 +4,31 @@
 \section{Fuzzy Interpretability}
 
 \begin{frame}{Activation Oracles}
-\paperfig{figures/karvonen2026/training.png}{}
-\source{karvonen2026}
+\fullfig{figures/karvonen2026/training.png}{karvonen2026}
 \end{frame}
 
 \begin{frame}{Activation Oracles: Benchmarks}
-\paperfig{figures/karvonen2026/benchmarks.png}{}
-\source{karvonen2026}
+\fullfig{figures/karvonen2026/benchmarks.png}{karvonen2026}
 \end{frame}
 
 \begin{frame}{Natural Language Autoencoders}
-\paperfig{figures/fraser-taliente2026/training.png}{}
-\source{fraser-taliente2026}
+\fullfig{figures/fraser-taliente2026/training.png}{fraser-taliente2026}
 \end{frame}
 
 \begin{frame}{NLAs Reveal Unverbalized Reasoning}
-\paperfig{figures/fraser-taliente2026/reward-reasoning.png}{}
-\source{fraser-taliente2026}
+\fullfig{figures/fraser-taliente2026/reward-reasoning.png}{fraser-taliente2026}
 \end{frame}
 
 \begin{frame}{NLAs Hallucinate}
-\paperfig{figures/fraser-taliente2026/hallucinations.png}{}
-\source{fraser-taliente2026}
+\fullfig{figures/fraser-taliente2026/hallucinations.png}{fraser-taliente2026}
 \end{frame}
 
 \begin{frame}{NLAs Detect Unverbalized Evaluation Awareness}
-\paperfig{figures/fraser-taliente2026/eval-awareness.png}{}
-\source{fraser-taliente2026}
+\fullfig{figures/fraser-taliente2026/eval-awareness.png}{fraser-taliente2026}
 \end{frame}
 
 \begin{frame}{NLAs Win the Auditing Game}
-\paperfig{figures/fraser-taliente2026/audit-game.png}{}
-\source{fraser-taliente2026}
+\fullfig{figures/fraser-taliente2026/audit-game.png}{fraser-taliente2026}
 \end{frame}
 
 \begin{frame}{Application: Opus 4.8 System Card}
@@ -50,5 +43,59 @@ In 5\% of sampled RL episodes, Claude Opus 4.8 is internally aware of a grader, 
 \begin{center}
 \Large
 \href{https://www.neuronpedia.org/llama3.3-70b-it/nla}{neuronpedia.org/llama3.3-70b-it/nla}
+\end{center}
+\end{frame}
+
+\begin{frame}{The Jacobian Lens}
+\centerline{\includegraphics[width=0.98\paperwidth]{figures/gurnee2026/jlens_definition.png}}
+\[
+J_\ell = \mathbb{E}_{\text{prompt},\, t,\, t' \geq t}\left[\frac{\partial h_{\text{final},t'}}{\partial h_{\ell,t}}\right]
+\qquad
+\text{lens}(h_\ell) = \text{softmax}\left(W_U\, \text{norm}(J_\ell h_\ell)\right)
+\]
+\source{gurnee2026}
+\end{frame}
+
+\begin{frame}{Reading and Intervening with the J-Lens}
+\fullfig{figures/gurnee2026/jlens_use.png}{gurnee2026}
+\end{frame}
+
+\begin{frame}{J-Lens Readouts}
+\fullfig{figures/gurnee2026/interface.png}{gurnee2026}
+\end{frame}
+
+\begin{frame}{The J-Space Plays a Wide Role in Model Cognition}
+\fullfig{figures/gurnee2026/effects.png}{gurnee2026}
+\end{frame}
+
+\begin{frame}{The J-Space Is Privileged}
+\fullfig{figures/gurnee2026/Jspace_priviliged.png}{gurnee2026}
+\end{frame}
+
+\begin{frame}{Structure of the J-Space}
+\fullfig{figures/gurnee2026/structural.png}{gurnee2026}
+\end{frame}
+
+\begin{frame}{Global Workspace Theory of Consciousness}
+\newcommand{\yes}{\textcolor{green!60!black}{\checkmark}}
+\newcommand{\maybe}{\textcolor{orange}{\textbf{?}}}
+\begin{itemize}
+\item Reportable \yes
+\item Top-down controllable \yes
+\item Medium of deliberate reasoning \yes
+\item Flexible generalization \yes
+\item Selectivity \yes
+\item Limited capacity \yes
+\item Global broadcast \yes
+\item Encapsulated specialist modules \maybe
+\item Phenomenology \maybe
+\end{itemize}
+\source{gurnee2026}
+\end{frame}
+
+\begin{frame}{Exercise: Play with the J-Lens}
+\begin{center}
+\Large
+\href{https://www.neuronpedia.org/deepseek-v4-flash/jlens}{neuronpedia.org/deepseek-v4-flash/jlens}
 \end{center}
 \end{frame}

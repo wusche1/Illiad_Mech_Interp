@@ -90,10 +90,105 @@
 }
 \end{frame}
 
+\definecolor{tokc}{RGB}{166,206,106}
+\definecolor{posc}{RGB}{240,168,168}
+\definecolor{decc}{RGB}{240,200,120}
+\definecolor{prevc}{RGB}{125,195,212}
+\tikzset{
+  alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
+  on/.style={alt={#1{}{opacity=0}}},
+  box/.style={minimum width=1.7cm,minimum height=0.36cm,inner sep=1pt,font=\footnotesize},
+  op/.style={draw=black!70,rounded corners=1pt,minimum height=0.34cm,inner sep=2pt,font=\scriptsize},
+  res/.style={black!30,line width=1.2pt},
+  wire/.style={->,>=stealth,line width=0.6pt,alt={#1{black}{black!40}}},
+  link/.style={line width=0.6pt,alt={#1{black}{black!40}}},
+}
+\newcommand{\tg}[2]{{\setlength{\fboxsep}{1.2pt}\colorbox{#1}{\strut #2}}}
+
 \begin{frame}{K-Composition}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/callummcdougall2023/k_composition.png}
-\end{center}
+\centering
+\begin{tikzpicture}
+% layer bands
+\fill[black!5] (-0.6,1.25) rectangle (9.4,2.65);
+\fill[black!5] (-0.6,4.05) rectangle (9.4,5.45);
+\node[rotate=90,font=\scriptsize\bfseries,text=black!55] at (-0.35,1.95) {Layer 0};
+\node[rotate=90,font=\scriptsize\bfseries,text=black!55] at (-0.35,4.75) {Layer 1};
+
+% legend
+\node[anchor=north west,font=\scriptsize,align=left,inner sep=0] at (-0.6,6.75) {
+  \begin{tabular}{@{}l@{\enspace}l@{\qquad}l@{\enspace}l@{}}
+  \tg{tokc}{I am X} & token & \visible<3->{\tg{prevc}{I follow X}} & \visible<3->{previous token}\\[2pt]
+  \tg{posc}{at posn=X} & position & \visible<5->{\tg{decc}{X is next}} & \visible<5->{prediction}
+  \end{tabular}};
+
+% ---------- residual streams (drawn first, behind boxes)
+\draw[res,on=<2->] (0.8,1.04) -- (0.8,1.6);
+\draw[res,on=<3->] (0.8,1.6) -- (0.8,2.3);
+\draw[res,on=<2->] (4.4,1.04) -- (4.4,1.6);
+\draw[res,on=<3->] (4.4,1.6) -- (4.4,2.76);
+\draw[res,on=<4->] (4.4,3.84) -- (4.4,4.4);
+\draw[res,on=<5->] (4.4,4.4) -- (4.4,5.1);
+\draw[res,on=<4->] (8.4,1.04) -- (8.4,4.4);
+\draw[res,on=<5->] (8.4,4.4) -- (8.4,5.56);
+
+% ---------- tokens + embeddings
+\foreach \x/\tok/\p in {0.8/D/0, 4.4/urs/1, 8.4/D/n} {
+  \node[font=\normalsize] at (\x,0.1) {\tok};
+  \node[box,fill=tokc] at (\x,0.86) {I am ``\tok''};
+  \node[box,fill=posc] at (\x,0.5) {at posn=\p};
+}
+\node[font=\normalsize] at (6.4,0.1) {\dots};
+
+% ---------- layer 0: previous-token head
+\node[op,fill=posc,on=<2->] (k0) at (2.2,1.6) {key};
+\node[op,fill=posc,on=<2->] (q0) at (3.6,1.6) {query};
+\fill[on=<2->] (2.9,1.6) circle (1.6pt) coordinate (d0);
+\draw[link=<2>,on=<2->] (k0) -- (d0) -- (q0);
+\draw[wire=<2>,on=<2->] (0.8,1.6) -- (k0.west);
+\draw[wire=<2>,on=<2->] (4.4,1.6) -- (q0.east);
+
+\node[op,fill=tokc,on=<3->] (v0) at (1.85,2.3) {value};
+\node[op,fill=prevc,on=<3->] (o0) at (2.9,2.3) {output};
+\draw[wire=<3>,on=<3->] (0.8,2.3) -- (v0.west);
+\draw[wire=<3>,on=<3->] (v0) -- (o0);
+\draw[wire=<3>,on=<3->] (d0) -- (o0);
+\node[box,fill=prevc,on=<3->] (pb) at (4.4,2.94) {I follow ``D''};
+\node[box,fill=posc,on=<3->] at (4.4,3.3) {at posn=1};
+\node[box,fill=tokc,on=<3->] at (4.4,3.66) {I am ``urs''};
+\draw[wire=<3>,on=<3->] (o0.north) |- (pb.west);
+
+% ---------- layer 1: induction head
+\node[op,fill=prevc,on=<4->] (k1) at (5.8,4.4) {key};
+\node[op,fill=tokc,on=<4->] (q1) at (7.2,4.4) {query};
+\fill[on=<4->] (6.5,4.4) circle (1.6pt) coordinate (d1);
+\draw[link=<4>,on=<4->] (k1) -- (d1) -- (q1);
+\draw[wire=<4>,on=<4->] (4.4,4.4) -- (k1.west);
+\draw[wire=<4>,on=<4->] (8.4,4.4) -- (q1.east);
+
+\node[op,fill=tokc,on=<5->] (v1) at (5.45,5.1) {value};
+\node[op,fill=decc,on=<5->] (o1) at (6.5,5.1) {output};
+\draw[wire=<5>,on=<5->] (4.4,5.1) -- (v1.west);
+\draw[wire=<5>,on=<5->] (v1) -- (o1);
+\draw[wire=<5>,on=<5->] (d1) -- (o1);
+\node[box,fill=decc,on=<5->] (nb) at (8.4,5.74) {``urs'' is next};
+\node[box,fill=posc,on=<5->] at (8.4,6.1) {at posn=n};
+\node[box,fill=tokc,on=<5->] at (8.4,6.46) {I am ``D''};
+\draw[wire=<5>,on=<5->] (o1.north) |- (nb.west);
+
+% ---------- unembedding
+\draw[wire=<6>,on=<6->] (nb.east) -- (9.75,5.74) node[anchor=west,font=\footnotesize,text=black] {$W_U$: predict ``urs''};
+
+% ---------- explanation panel
+\node[anchor=north west,draw=black!25,fill=black!3,rounded corners=3pt,text width=3.9cm,
+      minimum height=3.3cm,inner sep=6pt,font=\footnotesize,align=left] at (9.75,4.9) {\hyphenpenalty=10000%
+\only<1>{\textbf{The residual stream}\\[3pt]Learning ``Dursley'' $=$ \mbox{[D, urs, ley]} in context.\\[2pt]Each position starts with its token and position \mbox{embedding}.}%
+\only<2>{\textbf{Layer 0: attention}\\[3pt]Query \tg{posc}{at posn=1} matches key \tg{posc}{at posn=0}.\\[2pt]The head attends one token back.}%
+\only<3>{\textbf{Layer 0: copy}\\[3pt]The OV circuit reads \tg{tokc}{I am ``D''}\\and writes \tg{prevc}{I follow ``D''}\\into posn 1.}%
+\only<4>{\textbf{Layer 1: K-composition}\\[3pt]The key is built from \tg{prevc}{I follow ``D''}, written by layer 0.\\[2pt]Query \tg{tokc}{I am ``D''} at posn n attends to posn 1.}%
+\only<5>{\textbf{Layer 1: copy}\\[3pt]The OV circuit reads \tg{tokc}{I am ``urs''}\\and writes \tg{decc}{``urs'' is next}\\into posn n.}%
+\only<6>{\textbf{Prediction}\\[3pt]The unembedding reads \tg{decc}{``urs'' is next}: the model predicts ``urs''.}%
+};
+\end{tikzpicture}
 
 \source{callummcdougall2023}
 
@@ -109,10 +204,119 @@
 }
 \end{frame}
 
+\definecolor{attc}{RGB}{50,100,170}
+\definecolor{prvoc}{RGB}{185,165,240}
+% \attngrid{x}{y}{row/col/opacity list}: causal attention pattern on BOS ABCABC, top-left corner at (x,y)
+\newcommand{\attngrid}[3]{%
+\begin{scope}[shift={(#1,#2)},x=0.335cm,y=-0.335cm]
+\foreach \r in {0,...,6} \foreach \c in {0,...,6} {\ifnum\c>\r \fill[black!10] (\c,\r) rectangle ++(1,1); \fi}
+\foreach \r/\c/\o in {#3} \fill[attc,opacity=\o] (\c,\r) rectangle ++(1,1);
+\foreach \i in {0,...,7} {\draw[black!35,line width=0.3pt] (\i,0) -- (\i,7); \draw[black!35,line width=0.3pt] (0,\i) -- (7,\i);}
+\foreach \t [count=\i from 0] in {BOS,A,B,C,A,B,C} {
+  \node[font=\tiny,inner sep=0] at (\i+0.5,-0.5) {\scalebox{0.85}{\t}};
+  \node[font=\tiny,anchor=east] at (-0.1,\i+0.5) {\t};
+}
+\node[font=\tiny,text=black!60] at (3.5,-1.25) {key};
+\node[font=\tiny,text=black!60,rotate=90] at (-2.0,3.5) {query};
+\end{scope}}
+
+% \attnpatterns{right title}: K vs. right-hand attention patterns
+\newcommand{\attnpatterns}[1]{%
+\centering
+\begin{tikzpicture}
+\node[font=\large\bfseries] at (1.17,6.5) {K-Composition};
+\node[font=\large\bfseries] at (8.17,6.5) {#1};
+\foreach \x in {-1.35,5.65} {
+  \node[rotate=90,font=\scriptsize\bfseries,text=black!55] at (\x,4.43) {Layer 1};
+  \node[rotate=90,font=\scriptsize\bfseries,text=black!55] at (\x,1.25) {Layer 0};
+}
+% K-composition: induction head / previous-token head
+\attngrid{0}{5.6}{0/0/0.3,1/0/0.3,2/0/0.3,3/0/0.3,4/2/1,5/3/1,6/4/1}
+\attngrid{0}{2.42}{0/0/0.3,1/0/0.3,2/1/1,3/2/1,4/3/1,5/4/1,6/5/1}
+% Q-composition: induction head / duplicate-token head
+\attngrid{7}{5.6}{0/0/0.3,1/0/0.3,2/0/0.3,3/0/0.3,4/2/1,5/3/1,6/4/1}
+\attngrid{7}{2.42}{0/0/0.3,1/0/0.3,2/0/0.3,3/0/0.3,4/1/1,5/2/1,6/3/1}
+\end{tikzpicture}}
+
+\begin{frame}{Attention Patterns on Repeated Text}
+\attnpatterns{?}
+\end{frame}
+
 \begin{frame}{Q-Composition}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/callummcdougall2023/q_composition.png}
-\end{center}
+\tikzset{box/.append style={minimum width=2.1cm}}
+\centering
+\begin{tikzpicture}[scale=0.93,transform shape]
+% layer bands
+\fill[black!5] (-0.6,1.25) rectangle (9.6,2.65);
+\fill[black!5] (-0.6,4.05) rectangle (9.6,5.45);
+\node[rotate=90,font=\scriptsize\bfseries,text=black!55] at (-0.35,1.95) {Layer 0};
+\node[rotate=90,font=\scriptsize\bfseries,text=black!55] at (-0.35,4.75) {Layer 1};
+
+% legend
+\node[anchor=north west,font=\scriptsize,align=left,inner sep=0] at (-0.6,6.95) {
+  \begin{tabular}{@{}l@{\enspace}l@{\qquad}l@{\enspace}l@{}}
+  \tg{tokc}{I am X} & token & \tg{prvoc}{also at posn=X} & previous occurrence\\[2pt]
+  \tg{posc}{at posn=X} & position & \tg{decc}{X is next} & prediction
+  \end{tabular}};
+
+% residual streams
+\draw[res] (0.8,1.04) -- (0.8,2.3);
+\draw[res] (4.4,1.04) -- (4.4,5.1);
+\draw[res] (8.4,1.04) -- (8.4,2.76);
+\draw[res] (8.4,3.84) -- (8.4,5.56);
+
+% tokens + embeddings
+\foreach \x/\tok/\p in {0.8/D/0, 4.4/urs/1, 8.4/D/n} {
+  \node[font=\normalsize] at (\x,0.1) {\tok};
+  \node[box,fill=tokc] at (\x,0.86) {I am ``\tok''};
+  \node[box,fill=posc] at (\x,0.5) {at posn=\p};
+}
+\node[font=\normalsize] at (6.4,0.1) {\dots};
+
+% layer 0: duplicate-token head
+\node[op,fill=tokc] (k0) at (6.4,1.6) {key};
+\node[op,fill=tokc] (q0) at (7.6,1.6) {query};
+\fill (7.0,1.6) circle (1.6pt) coordinate (d0);
+\draw[link=<1->] (k0) -- (d0) -- (q0);
+\draw[wire=<1->] (0.8,1.6) -- (k0.west);
+\draw[wire=<1->] (8.4,1.6) -- (q0.east);
+\node[op,fill=posc] (v0) at (5.95,2.3) {value};
+\node[op,fill=prvoc] (o0) at (7.0,2.3) {output};
+\draw[wire=<1->] (0.8,2.3) -- (v0.west);
+\draw[wire=<1->] (v0) -- (o0);
+\draw[wire=<1->] (d0) -- (o0);
+\node[box,fill=prvoc] (pb) at (8.4,2.94) {also at posn=0};
+\node[box,fill=posc] at (8.4,3.3) {at posn=n};
+\node[box,fill=tokc] at (8.4,3.66) {I am ``D''};
+\draw[wire=<1->] (o0.north) |- (pb.west);
+
+% layer 1: induction head via Q-composition
+\node[op,fill=posc] (k1) at (5.8,4.4) {key};
+\node[op,fill=prvoc] (q1) at (7.2,4.4) {query};
+\fill (6.5,4.4) circle (1.6pt) coordinate (d1);
+\draw[link=<1->] (k1) -- (d1) -- (q1);
+\draw[wire=<1->] (4.4,4.4) -- (k1.west);
+\draw[wire=<1->] (8.4,4.4) -- (q1.east);
+\node[op,fill=tokc] (v1) at (5.45,5.1) {value};
+\node[op,fill=decc] (o1) at (6.5,5.1) {output};
+\draw[wire=<1->] (4.4,5.1) -- (v1.west);
+\draw[wire=<1->] (v1) -- (o1);
+\draw[wire=<1->] (d1) -- (o1);
+\node[box,fill=decc] (nb) at (8.4,5.74) {``urs'' is next};
+\node[box,fill=prvoc] at (8.4,6.1) {also at posn=0};
+\node[box,fill=posc] at (8.4,6.46) {at posn=n};
+\node[box,fill=tokc] at (8.4,6.82) {I am ``D''};
+\draw[wire=<1->] (o1.north) |- (nb.west);
+\draw[wire=<1->] (nb.east) -- (9.85,5.74) node[anchor=west,font=\footnotesize,text=black] {$W_U$: predict ``urs''};
+
+% explanation panel
+\node[anchor=north west,draw=black!25,fill=black!3,rounded corners=3pt,text width=3.8cm,
+      inner sep=6pt,font=\footnotesize,align=left] at (9.85,4.9) {\hyphenpenalty=10000%
+\textbf{Layer 0: duplicate token}\\[2pt]
+\tg{tokc}{I am ``D''} attends to the earlier D and writes \tg{prvoc}{also at posn=0}.\\[6pt]
+\textbf{Layer 1: Q-composition}\\[2pt]
+The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \tg{decc}{``urs'' is next}.};
+\end{tikzpicture}
 
 \source{callummcdougall2023}
 
@@ -126,6 +330,10 @@
 \item In shortformer architectures (positional embeddings only added to Q and K, not the residual stream), Q-composition is impossible because positional info cannot be moved between tokens via the OV circuit
 \end{itemize}
 }
+\end{frame}
+
+\begin{frame}{Attention Patterns on Repeated Text}
+\attnpatterns{Q-Composition}
 \end{frame}
 
 \begin{frame}{Path Patching}

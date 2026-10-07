@@ -14,3 +14,12 @@
     }{}%
   \fi
 }
+
+
+% \fullfig{image.png}{citekey}: figure-only frame, figure fills all space between title and source
+\newcommand{\fullfig}[2]{%
+  \setbox0=\vbox{\parbox{\textwidth}{\scriptsize\color{gray}\sourcecite{#2}}}%
+  \vspace*{-1ex}%
+  \centerline{\includegraphics[width=0.98\paperwidth,height=\dimexpr\textheight-\ht0-\dp0-3ex-22pt\relax,keepaspectratio]{#1}}%
+  \vfill\box0%
+}

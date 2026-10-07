@@ -18,9 +18,8 @@ embeddings/
 # Ignore python env
 .venv/
 
-# ignore chapters and extracted figures
+# ignore chapters
 bib/*/chapters/
-bib/*/figures/
 
 .secrets
 *.out
