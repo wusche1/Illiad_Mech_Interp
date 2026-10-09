@@ -7,7 +7,7 @@ const $ = (id) => document.getElementById(id);
 const [slides, papers, pdf] = await Promise.all([
   fetch("data/slides.json").then((r) => r.json()),
   fetch("data/papers.json").then((r) => r.json()),
-  pdfjsLib.getDocument("main.pdf").promise,
+  pdfjsLib.getDocument({ url: "main.pdf", disableAutoFetch: true, disableStream: true }).promise,
 ]);
 const paperByKey = Object.fromEntries(papers.map((p) => [p.key, p]));
 let page = 1, elements = [], renderTask = null, history = [], attachments = [], busy = false;
