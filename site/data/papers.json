@@ -1,0 +1,623 @@
+[
+ {
+  "key": "adolfi2025",
+  "title": "The Computational Complexity of Circuit Discovery for Inner Interpretability",
+  "author": "Adolfi",
+  "year": "2025",
+  "url": "http://arxiv.org/abs/2410.08025",
+  "abstract": "Many proposed applications of neural networks in machine learning, cognitive/brain science, and society hinge on the feasibility of inner interpretability via circuit discovery. This calls for empirical and theoretical explorations of viable algorithmic options. Despite advances in the design and testing of heuristics, there are concerns about their scalability and faithfulness at a time when we lack understanding of the complexity properties of the problems they are deployed to solve. To address this, we study circuit discovery with classical and parameterized computational complexity theory: (1) we describe a conceptual scaffolding to reason about circuit finding queries in terms of affordances for description, explanation, prediction and control; (2) we formalize a comprehensive set of queries for mechanistic explanation, and propose a formal framework for their analysis; (3) we use it to settle the complexity of many query variants and relaxations of practical interest on multi-layer perceptrons. Our findings reveal a challenging complexity landscape. Many queries are intractable, remain fixed-parameter intractable relative to model/circuit features, and inapproximable under additive, multiplicative, and probabilistic approximation schemes. To navigate this landscape, we prove there exist transformations to tackle some of these hard problems with better-understood heuristics, and prove the tractability or fixed-parameter tractability of more modest queries which retain useful affordances. This framework allows us to understand the scope and limits of interpretability queries, explore viable options, and compare their resource demands on existing and future architectures.",
+  "fulltext": true,
+  "chars": 284488,
+  "figures": []
+ },
+ {
+  "key": "ameisen2025",
+  "title": "Circuit Tracing: Revealing Computational Graphs in Language Models",
+  "author": "Ameisen",
+  "year": "2025",
+  "url": "https://transformer-circuits.pub/2025/attribution-graphs/methods.html",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 303865,
+  "figures": [
+   "CLT",
+   "example_circuit",
+   "feature_supression",
+   "pruning",
+   "replacement_models",
+   "supresseion_example"
+  ]
+ },
+ {
+  "key": "anthropic2025b",
+  "title": "Claude Opus 4.5 System Card",
+  "author": "Anthropic",
+  "year": "2025",
+  "url": "https://www.anthropic.com/claude-opus-4-5-system-card",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 284488,
+  "figures": []
+ },
+ {
+  "key": "anthropic2026a",
+  "title": "Claude Opus 4.8 System Card",
+  "author": "Anthropic",
+  "year": "2026",
+  "url": "",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 471005,
+  "figures": []
+ },
+ {
+  "key": "arditi2024",
+  "title": "Refusal in Language Models Is Mediated by a Single Direction",
+  "author": "Arditi",
+  "year": "2024",
+  "url": "http://arxiv.org/abs/2406.11717",
+  "abstract": "Conversational large language models are fine-tuned for both instruction-following and safety, resulting in models that obey benign requests but refuse harmful ones. While this refusal behavior is widespread across chat models, its underlying mechanisms remain poorly understood. In this work, we show that refusal is mediated by a one-dimensional subspace, across 13 popular open-source chat models up to 72B parameters in size. Specifically, for each model, we find a single direction such that erasing this direction from the model's residual stream activations prevents it from refusing harmful instructions, while adding this direction elicits refusal on even harmless instructions. Leveraging this insight, we propose a novel white-box jailbreak method that surgically disables refusal with minimal effect on other capabilities. Finally, we mechanistically analyze how adversarial suffixes suppress propagation of the refusal-mediating direction. Our findings underscore the brittleness of current safety fine-tuning methods. More broadly, our work showcases how an understanding of model internals can be leveraged to develop practical methods for controlling model behavior.",
+  "fulltext": true,
+  "chars": 150997,
+  "figures": []
+ },
+ {
+  "key": "arora2013",
+  "title": "New Algorithms for Learning Incoherent and Overcomplete Dictionaries",
+  "author": "Arora",
+  "year": "2013",
+  "url": "https://arxiv.org/abs/1308.6273",
+  "abstract": "In sparse recovery we are given a matrix $A$ (the dictionary) and a vector of the form $A X$ where $X$ is sparse, and the goal is to recover $X$. This is a central notion in signal processing, statistics and machine learning. But in applications such as sparse coding, edge detection, compression and super resolution, the dictionary $A$ is unknown and has to be learned from random examples of the form $Y = AX$ where $X$ is drawn from an appropriate distribution --- this is the dictionary learning problem. In most settings, $A$ is overcomplete: it has more columns than rows. This paper presents a polynomial-time algorithm for learning overcomplete dictionaries; the only previously known algorithm with provable guarantees is the recent work of Spielman, Wang and Wright who gave an algorithm for the full-rank case, which is rarely the case in applications. Our algorithm applies to incoherent dictionaries which have been a central object of study since they were introduced in seminal work of Donoho and Huo. In particular, a dictionary is $\\mu$-incoherent if each pair of columns has inner product at most $\\mu / \\sqrt{n}$. The algorithm makes natural stochastic assumptions about the unknown sparse vector $X$, which can contain $k \\leq c \\min(\\sqrt{n}/\\mu \\log n, m^{1/2 -\\eta})$ non-zero entries (for any $\\eta &gt; 0$). This is close to the best $k$ allowable by the best sparse recovery algorithms even if one knows the dictionary $A$ exactly. Moreover, both the running time and sample complexity depend on $\\log 1/\\epsilon$, where $\\epsilon$ is the target accuracy, and so our algorithms converge very quickly to the true dictionary. Our algorithm can also tolerate substantial amounts of noise provided it is incoherent with respect to the dictionary (e.g., Gaussian). In the noisy setting, our running time and sample complexity depend polynomially on $1/\\epsilon$, and this is necessary.",
+  "fulltext": true,
+  "chars": 80801,
+  "figures": []
+ },
+ {
+  "key": "bricken2023",
+  "title": "Towards Monosemanticity: Decomposing Language Models With Dictionary Learning",
+  "author": "Bricken",
+  "year": "2023",
+  "url": "https://transformer-circuits.pub/2023/monosemantic-features",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 193480,
+  "figures": []
+ },
+ {
+  "key": "bussmann2024",
+  "title": "BatchTopK Sparse Autoencoders",
+  "author": "Bussmann",
+  "year": "2024",
+  "url": "http://arxiv.org/abs/2412.06410",
+  "abstract": "Sparse autoencoders (SAEs) have emerged as a powerful tool for interpreting language model activations by decomposing them into sparse, interpretable features. A popular approach is the TopK SAE, that uses a fixed number of the most active latents per sample to reconstruct the model activations. We introduce BatchTopK SAEs, a training method that improves upon TopK SAEs by relaxing the top-k constraint to the batch-level, allowing for a variable number of latents to be active per sample. As a result, BatchTopK adaptively allocates more or fewer latents depending on the sample, improving reconstruction without sacrificing average sparsity. We show that BatchTopK SAEs consistently outperform TopK SAEs in reconstructing activations from GPT-2 Small and Gemma 2 2B, and achieve comparable performance to state-of-the-art JumpReLU SAEs. However, an advantage of BatchTopK is that the average number of latents can be directly specified, rather than approximately tuned through a costly hyperparameter sweep. We provide code for training and evaluating BatchTopK SAEs at https://github.com/bartbussmann/BatchTopK",
+  "fulltext": true,
+  "chars": 16307,
+  "figures": []
+ },
+ {
+  "key": "bussmann2024a",
+  "title": "Learning Multi-Level Features with Matryoshka SAEs \u2014 LessWrong",
+  "author": "Bussmann",
+  "year": "2024",
+  "url": "https://www.lesswrong.com/posts/rKM9b6B2LqwSB5ToN/learning-multi-level-features-with-matryoshka-saes",
+  "abstract": "TL;DR: Matryoshka SAEs are a new variant of sparse autoencoders that learn features at multiple levels of abstraction by splitting the dictionary int\u2026",
+  "fulltext": true,
+  "chars": 24496,
+  "figures": []
+ },
+ {
+  "key": "bussmann2025",
+  "title": "Learning Multi-Level Features with Matryoshka Sparse Autoencoders",
+  "author": "Bussmann",
+  "year": "2025",
+  "url": "http://arxiv.org/abs/2503.17547",
+  "abstract": "Sparse autoencoders (SAEs) have emerged as a powerful tool for interpreting neural networks by extracting the concepts represented in their activations. However, choosing the size of the SAE dictionary (i.e. number of learned concepts) creates a tension: as dictionary size increases to capture more relevant concepts, sparsity incentivizes features to be split or absorbed into more specific features, leaving high-level features missing or warped. We introduce Matryoshka SAEs, a novel variant that addresses these issues by simultaneously training multiple nested dictionaries of increasing size, forcing the smaller dictionaries to independently reconstruct the inputs without using the larger dictionaries. This organizes features hierarchically - the smaller dictionaries learn general concepts, while the larger dictionaries learn more specific concepts, without incentive to absorb the high-level features. We train Matryoshka SAEs on Gemma-2-2B and TinyStories and find superior performance on sparse probing and targeted concept erasure tasks, more disentangled concept representations, and reduced feature absorption. While there is a minor tradeoff with reconstruction performance, we believe Matryoshka SAEs are a superior alternative for practical tasks, as they enable training arbitrarily large SAEs while retaining interpretable features at different levels of abstraction.",
+  "fulltext": true,
+  "chars": 61111,
+  "figures": []
+ },
+ {
+  "key": "callummcdougall2023",
+  "title": "Induction heads - illustrated \u2014 LessWrong",
+  "author": "McDougall",
+  "year": "2023",
+  "url": "https://www.lesswrong.com/posts/TvrfY4c9eaGLeyDkE/induction-heads-illustrated",
+  "abstract": "Many thanks to everyone who provided helpful feedback, particularly Aryan Bhatt and Lawrence Chan! \u2026",
+  "fulltext": true,
+  "chars": 9390,
+  "figures": [
+   "k_composition",
+   "q_composition"
+  ]
+ },
+ {
+  "key": "cammarata2020",
+  "title": "Curve Detectors",
+  "author": "Cammarata",
+  "year": "2020",
+  "url": "https://distill.pub/2020/circuits/curve-detectors",
+  "abstract": "Part one of a three part deep dive into the curve neuron family.",
+  "fulltext": true,
+  "chars": 61294,
+  "figures": []
+ },
+ {
+  "key": "candes2004",
+  "title": "Robust Uncertainty Principles: Exact Signal Reconstruction from Highly Incomplete Frequency Information",
+  "author": "Candes",
+  "year": "2004",
+  "url": "http://arxiv.org/abs/math/0409186",
+  "abstract": "This paper considers the model problem of reconstructing an object from incomplete frequency samples. Consider a discrete-time signal $f \\in \\C^N$ and a randomly chosen set of frequencies $\u03a9$ of mean size $\u03c4N$. Is it possible to reconstruct $f$ from the partial knowledge of its Fourier coefficients on the set $\u03a9$? A typical result of this paper is as follows: for each $M > 0$, suppose that $f$ obeys $$ # \\{t, f(t) \\neq 0 \\} \\le \u03b1(M) \\cdot (\\log N)^{-1} \\cdot # \u03a9, $$ then with probability at least $1-O(N^{-M})$, $f$ can be reconstructed exactly as the solution to the $\\ell_1$ minimization problem $$ \\min_g \\sum_{t = 0}^{N-1} |g(t)|, \\quad \\text{s.t.} \\hat g(\u03c9) = \\hat f(\u03c9) \\text{for all} \u03c9\\in \u03a9. $$ In short, exact recovery may be obtained by solving a convex optimization problem. We give numerical values for $\u03b1$ which depends on the desired probability of success; except for the logarithmic factor, the condition on the size of the support is sharp. The methodology extends to a variety of other setups and higher dimensions. For example, we show how one can reconstruct a piecewise constant (one or two-dimensional) object from incomplete frequency samples--provided that the number of jumps (discontinuities) obeys the condition above--by minimizing other convex functionals such as the total-variation of $f$.",
+  "fulltext": true,
+  "chars": 80152,
+  "figures": []
+ },
+ {
+  "key": "chan2022",
+  "title": "Causal Scrubbing: a method for rigorously testing interpretability hypotheses",
+  "author": "Chan",
+  "year": "2022",
+  "url": "https://www.lesswrong.com/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 84,
+  "figures": []
+ },
+ {
+  "key": "chan2023",
+  "title": "Natural Abstractions: Key Claims, Theorems, and Critiques \u2014 AI Alignment Forum",
+  "author": "Chan",
+  "year": "2023",
+  "url": "https://www.alignmentforum.org/posts/gvzW46Z3BsaZsLc25/natural-abstractions-key-claims-theorems-and-critiques-1",
+  "abstract": "Lawrence, Erik, and Leon attempt to summarize the key claims of John Wentworth's natural abstractions agenda, formalize some of the mathematical proo\u2026",
+  "fulltext": true,
+  "chars": 107249,
+  "figures": []
+ },
+ {
+  "key": "chanin2024",
+  "title": "A is for Absorption: Studying Feature Splitting and Absorption in Sparse Autoencoders",
+  "author": "Chanin",
+  "year": "2024",
+  "url": "https://arxiv.org/abs/2409.14507",
+  "abstract": "Sparse Autoencoders (SAEs) aim to decompose the activation space of large language models (LLMs) into human-interpretable latent directions or features. As we increase the number of features in the SAE, hierarchical features tend to split into finer features (\"math\" may split into \"algebra\", \"geometry\", etc.), a phenomenon referred to as feature splitting. However, we show that sparse decomposition and splitting of hierarchical features is not robust. Specifically, we show that seemingly monosemantic features fail to fire where they should, and instead get \"absorbed\" into their children features. We coin this phenomenon feature absorption, and show that it is caused by optimizing for sparsity in SAEs whenever the underlying features form a hierarchy. We introduce a metric to detect absorption in SAEs, and validate our findings empirically on hundreds of LLM SAEs. Our investigation suggests that varying SAE sizes or sparsity is insufficient to solve this issue. We discuss the implications of feature absorption in SAEs and some potential approaches to solve the fundamental theoretical issues before SAEs can be used for interpreting LLMs robustly and at scale.",
+  "fulltext": true,
+  "chars": 95126,
+  "figures": []
+ },
+ {
+  "key": "chughtai2025",
+  "title": "Activation space interpretability may be doomed \u2014 AI Alignment Forum",
+  "author": "Chughtai",
+  "year": "2025",
+  "url": "https://www.alignmentforum.org/posts/gYfpPbww3wQRaxAFD/activation-space-interpretability-may-be-doomed",
+  "abstract": "TL;DR: There may be a fundamental problem with interpretability work that attempts to understand neural networks by decomposing their individual acti\u2026",
+  "fulltext": true,
+  "chars": 19856,
+  "figures": []
+ },
+ {
+  "key": "conmy2023",
+  "title": "Towards Automated Circuit Discovery for Mechanistic Interpretability",
+  "author": "Conmy",
+  "year": "2023",
+  "url": "http://arxiv.org/abs/2304.14997",
+  "abstract": "Through considerable effort and intuition, several recent works have reverse-engineered nontrivial behaviors of transformer models. This paper systematizes the mechanistic interpretability process they followed. First, researchers choose a metric and dataset that elicit the desired model behavior. Then, they apply activation patching to find which abstract neural network units are involved in the behavior. By varying the dataset, metric, and units under investigation, researchers can understand the functionality of each component. We automate one of the process' steps: to identify the circuit that implements the specified behavior in the model's computational graph. We propose several algorithms and reproduce previous interpretability results to validate them. For example, the ACDC algorithm rediscovered 5/5 of the component types in a circuit in GPT-2 Small that computes the Greater-Than operation. ACDC selected 68 of the 32,000 edges in GPT-2 Small, all of which were manually found by previous work. Our code is available at https://github.com/ArthurConmy/Automatic-Circuit-Discovery.",
+  "fulltext": true,
+  "chars": 112630,
+  "figures": [
+   "algorythem",
+   "figure2",
+   "recipe",
+   "recovered_ioi_circuit"
+  ]
+ },
+ {
+  "key": "donoho2006",
+  "title": "Compressed sensing",
+  "author": "Donoho",
+  "year": "2006",
+  "url": "http://ieeexplore.ieee.org/document/1614066/",
+  "abstract": "Suppose is an unknown vector in (a digital image or signal); we plan to measure general linear functionals of and then reconstruct. If is known to be compressible by transform coding with a known transform, and we reconstruct via the nonlinear procedure de\ufb01ned here, the number of measurements can be dramatically smaller than the size . Thus, certain natural classes of images with pixels need only = ( 1 4 log5 2( )) nonadaptive nonpixel samples for faithful recovery, as opposed to the usual pixel samples.",
+  "fulltext": true,
+  "chars": 74183,
+  "figures": []
+ },
+ {
+  "key": "elhage2021",
+  "title": "A Mathematical Framework for Transformer Circuits",
+  "author": "Elhage",
+  "year": "2021",
+  "url": "https://transformer-circuits.pub/2021/framework/index.html",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 86,
+  "figures": [
+   "attention_patter_and_logit_attribution",
+   "attention_pattern"
+  ]
+ },
+ {
+  "key": "elhage2022",
+  "title": "Toy Models of Superposition",
+  "author": "Elhage",
+  "year": "2022",
+  "url": "http://arxiv.org/abs/2209.10652",
+  "abstract": "Neural networks often pack many unrelated concepts into a single neuron - a puzzling phenomenon known as 'polysemanticity' which makes interpretability much more challenging. This paper provides a toy model where polysemanticity can be fully understood, arising as a result of models storing additional sparse features in \"superposition.\" We demonstrate the existence of a phase change, a surprising connection to the geometry of uniform polytopes, and evidence of a link to adversarial examples. We also discuss potential implications for mechanistic interpretability.",
+  "fulltext": true,
+  "chars": 170598,
+  "figures": []
+ },
+ {
+  "key": "engels2025",
+  "title": "NOT ALL LANGUAGE MODEL FEATURES ARE ONE-DIMENSIONALLY LINEAR",
+  "author": "Engels",
+  "year": "2025",
+  "url": "",
+  "abstract": "Recent work has proposed that language models perform computation by manipulating one-dimensional representations of concepts (\u201cfeatures\u201d) in activation space. In contrast, we explore whether some language model representations may be inherently multi-dimensional. We begin by developing a rigorous definition of irreducible multi-dimensional features based on whether they can be decomposed into either independent or non-co-occurring lower-dimensional features. Motivated by these definitions, we design a scalable method that uses sparse autoencoders to automatically find multi-dimensional features in GPT-2 and Mistral 7B. These auto-discovered features include strikingly interpretable examples, e.g. circular features representing days of the week and months of the year. We identify tasks where these exact circles are used to solve computational problems involving modular arithmetic in days of the week and months of the year. Next, we provide evidence that these circular features are indeed the fundamental unit of computation in these tasks with intervention experiments on Mistral 7B and Llama 3 8B, and we examine the continuity of the days of the week feature in Mistral 7B. Overall, our work argues that understanding multi-dimensional features is necessary to mechanistically decompose some model behaviors.",
+  "fulltext": true,
+  "chars": 105589,
+  "figures": []
+ },
+ {
+  "key": "fillingham2025",
+  "title": "SCALAR: Benchmarking SAE Interaction Sparsity in Toy LLMs",
+  "author": "Fillingham",
+  "year": "2025",
+  "url": "http://arxiv.org/abs/2511.07572",
+  "abstract": "Mechanistic interpretability aims to decompose neural networks into interpretable features and map their connecting circuits. The standard approach trains sparse autoencoders (SAEs) on each layer's activations. However, SAEs trained in isolation don't encourage sparse cross-layer connections, inflating extracted circuits where upstream features needlessly affect multiple downstream features. Current evaluations focus on individual SAE performance, leaving interaction sparsity unexamined. We introduce SCALAR (Sparse Connectivity Assessment of Latent Activation Relationships), a benchmark measuring interaction sparsity between SAE features. We also propose \"Staircase SAEs\", using weight-sharing to limit upstream feature duplication across downstream features. Using SCALAR, we compare TopK SAEs, Jacobian SAEs (JSAEs), and Staircase SAEs. Staircase SAEs improve relative sparsity over TopK SAEs by $59.67\\% \\pm 1.83\\%$ (feedforward) and $63.15\\% \\pm 1.35\\%$ (transformer blocks). JSAEs provide $8.54\\% \\pm 0.38\\%$ improvement over TopK for feedforward layers but cannot train effectively across transformer blocks, unlike Staircase and TopK SAEs which work anywhere in the residual stream. We validate on a $216$K-parameter toy model and GPT-$2$ Small ($124$M), where Staircase SAEs maintain interaction sparsity improvements while preserving feature interpretability. Our work highlights the importance of interaction sparsity in SAEs through benchmarking and comparing promising architectures.",
+  "fulltext": true,
+  "chars": 69582,
+  "figures": [
+   "staircase_sae",
+   "test"
+  ]
+ },
+ {
+  "key": "fraser-taliente2026",
+  "title": "Natural Language Autoencoders Produce Unsupervised Explanations of LLM Activations",
+  "author": "Fraser-Taliente",
+  "year": "2026",
+  "url": "https://transformer-circuits.pub/2026/nla/",
+  "abstract": "We introduce Natural Language Autoencoders (NLAs), an unsupervised approach that generates natural language descriptions of LLM internal activations. The system pairs an activation verbalizer with an activation reconstructor, trained jointly via reinforcement learning. NLAs produce informative explanations and uncover unverbalized evaluation awareness in Claude Opus 4.6.",
+  "fulltext": true,
+  "chars": 179478,
+  "figures": [
+   "audit-game",
+   "eval-awareness",
+   "hallucinations",
+   "reward-reasoning",
+   "reward_reasoning",
+   "training",
+   "training_setup"
+  ]
+ },
+ {
+  "key": "gurnee2026",
+  "title": "Verbalizable Representations Form a Global Workspace in Language Models",
+  "author": "Gurnee",
+  "year": "2026",
+  "url": "http://arxiv.org/abs/2607.15495",
+  "abstract": "Out of everything the human brain processes, only a small fraction is consciously accessible, in the sense of being available for verbal report, deliberate control, and flexible reasoning. In this paper, we present evidence that an analogous functional distinction has emerged in large language models. Using a new interpretability technique, the Jacobian lens, we identify the representations a model is poised to verbalize at any point in its processing. These representations, which we collectively call the J-space, exhibit the functional properties characteristic of a global workspace: their contents can be reported, deliberately summoned and held, used to carry the intermediate steps of silent reasoning, and passed as arguments to arbitrary downstream computations, while automatic processing such as text parsing and routine inference proceeds without them. The J-space also has structural signatures that global workspace theory associates with conscious access: it carries coherent content only in an intermediate band of layers, holds on the order of tens of concepts at a time, and is broadcast by the model's weights more widely than other representations. These properties make it a practical window into a model's unspoken thinking. In alignment audits, it reveals strategic deliberation, evaluation awareness, and trained-in misaligned dispositions that never appear in the model's outputs. We find that post-training installs the Assistant's point of view in the workspace, and we introduce counterfactual reflection training, which improves behavior by training only what a model would say if interrupted and asked to reflect. These results indicate that language models maintain a small, privileged set of representations bearing some of the functional hallmarks of conscious access, and that decoding these representations sheds light on ongoing cognitive processes.",
+  "fulltext": true,
+  "chars": 495811,
+  "figures": [
+   "Jspace_priviliged",
+   "effects",
+   "interface",
+   "jlens_definition",
+   "jlens_use",
+   "structural"
+  ]
+ },
+ {
+  "key": "hendrycks2025",
+  "title": "The Misguided Quest for Mechanistic AI Interpretability",
+  "author": "Hendrycks",
+  "year": "2025",
+  "url": "https://ai-frontiers.org/articles/the-misguided-quest-for-mechanistic-ai-interpretability",
+  "abstract": "Dan Hendrycks, May 15, 2025 \u2014 Despite years of effort, mechanistic interpretability has failed to provide insight into AI behavior \u2014 the result of a flawed foundational assumption.",
+  "fulltext": true,
+  "chars": 20710,
+  "figures": []
+ },
+ {
+  "key": "johnson1984",
+  "title": "Extensions of Lipschitz mappings into a Hilbert space",
+  "author": "Johnson",
+  "year": "1984",
+  "url": "",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 87,
+  "figures": []
+ },
+ {
+  "key": "karvonen2025b",
+  "title": "SAEBench: A Comprehensive Benchmark for Sparse Autoencoders in Language Model Interpretability",
+  "author": "Karvonen",
+  "year": "2025",
+  "url": "http://arxiv.org/abs/2503.09532",
+  "abstract": "Sparse autoencoders (SAEs) are a popular technique for interpreting language model activations, and there is extensive recent work on improving SAE effectiveness. However, most prior work evaluates progress using unsupervised proxy metrics with unclear practical relevance. We introduce SAEBench, a comprehensive evaluation suite that measures SAE performance across eight diverse metrics, spanning interpretability, feature disentanglement and practical applications like unlearning. To enable systematic comparison, we open-source a suite of over 200 SAEs across eight recently proposed SAE architectures and training algorithms. Our evaluation reveals that gains on proxy metrics do not reliably translate to better practical performance. For instance, while Matryoshka SAEs slightly underperform on existing proxy metrics, they substantially outperform other architectures on feature disentanglement metrics; moreover, this advantage grows with SAE scale. By providing a standardized framework for measuring progress in SAE development, SAEBench enables researchers to study scaling trends and make nuanced comparisons between different SAE architectures and training methodologies. Our interactive interface enables researchers to flexibly visualize relationships between metrics across hundreds of open-source SAEs at: www.neuronpedia.org/sae-bench",
+  "fulltext": true,
+  "chars": 92467,
+  "figures": []
+ },
+ {
+  "key": "karvonen2026",
+  "title": "Activation Oracles: Training and Evaluating LLMs as General-Purpose Activation Explainers",
+  "author": "Karvonen",
+  "year": "2026",
+  "url": "http://arxiv.org/abs/2512.15674",
+  "abstract": "Large language model (LLM) activations are notoriously difficult to understand, with most existing techniques using complex, specialized methods for interpreting them. Recent work has proposed a simpler approach known as LatentQA: training LLMs to directly accept LLM activations as inputs and answer arbitrary questions about them in natural language. However, prior work has focused on narrow task settings for both training and evaluation. In this paper, we instead take a generalist perspective. We evaluate LatentQA-trained models, which we call Activation Oracles (AOs), in far out-of-distribution settings and examine how performance scales with training data diversity. We find that AOs can recover information fine-tuned into a model (e.g., biographical knowledge or malign propensities) that does not appear in the input text, despite never being trained with activations from a fine-tuned model. Our main evaluations are four downstream tasks where we can compare to prior white- and black-box techniques. We find that even narrowly-trained LatentQA models can generalize well, and that adding additional training datasets (such as classification tasks and a self-supervised context prediction task) yields consistent further improvements. Our best AOs match or exceed white-box baselines on all four tasks and the best overall baseline on 3 of 4. These results suggest that diversified training to answer natural-language queries imparts a general capability to verbalize information about LLM activations.",
+  "fulltext": true,
+  "chars": 115238,
+  "figures": [
+   "benchmarks",
+   "training"
+  ]
+ },
+ {
+  "key": "li2024b",
+  "title": "Inference-Time Intervention: Eliciting Truthful Answers from a Language Model",
+  "author": "Li",
+  "year": "2024",
+  "url": "http://arxiv.org/abs/2306.03341",
+  "abstract": "We introduce Inference-Time Intervention (ITI), a technique designed to enhance the \"truthfulness\" of large language models (LLMs). ITI operates by shifting model activations during inference, following a set of directions across a limited number of attention heads. This intervention significantly improves the performance of LLaMA models on the TruthfulQA benchmark. On an instruction-finetuned LLaMA called Alpaca, ITI improves its truthfulness from 32.5% to 65.1%. We identify a tradeoff between truthfulness and helpfulness and demonstrate how to balance it by tuning the intervention strength. ITI is minimally invasive and computationally inexpensive. Moreover, the technique is data efficient: while approaches like RLHF require extensive annotations, ITI locates truthful directions using only few hundred examples. Our findings suggest that LLMs may have an internal representation of the likelihood of something being true, even as they produce falsehoods on the surface.",
+  "fulltext": true,
+  "chars": 385656,
+  "figures": []
+ },
+ {
+  "key": "lindsey2024",
+  "title": "Sparse Crosscoders for Cross-Layer Features and Model Diffing",
+  "author": "Lindsey",
+  "year": "2024",
+  "url": "https://transformer-circuits.pub/2024/crosscoders/index.html",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 47647,
+  "figures": [
+   "activities_across_layers",
+   "cross_trans_coer",
+   "diffing_results",
+   "model_diffing"
+  ]
+ },
+ {
+  "key": "lindsey2025a",
+  "title": "On the Biology of a Large Language Model",
+  "author": "Lindsey",
+  "year": "2025",
+  "url": "https://transformer-circuits.pub/2025/attribution-graphs/biology.html",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 192656,
+  "figures": [
+   "maths_circuit",
+   "misaligned_circuit",
+   "misaligned_intervention",
+   "misaligned_model_pipeline"
+  ]
+ },
+ {
+  "key": "mack2024",
+  "title": "Mechanistically Eliciting Latent Behaviors in Language Models",
+  "author": "Mack",
+  "year": "2024",
+  "url": "https://www.lesswrong.com/posts/ioPnHKFyy4Cw2Gr2x/mechanistically-eliciting-latent-behaviors-in-language-1",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 84,
+  "figures": []
+ },
+ {
+  "key": "mikolov2013",
+  "title": "Linguistic Regularities in Continuous Space Word Representations",
+  "author": "Mikolov",
+  "year": "2013",
+  "url": "https://aclanthology.org/N13-1090/",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 20195,
+  "figures": []
+ },
+ {
+  "key": "nanda2022",
+  "title": "A Longlist of Theories of Impact for Interpretability",
+  "author": "Nanda",
+  "year": "2022",
+  "url": "https://www.lesswrong.com/posts/uK6sQCNMw8WKzJeCQ/a-longlist-of-theories-of-impact-for-interpretability",
+  "abstract": "I hear a lot of different arguments floating around for exactly how mechanistically interpretability research will reduce x-risk. As an interpretabil\u2026",
+  "fulltext": true,
+  "chars": 9670,
+  "figures": []
+ },
+ {
+  "key": "nanda2023",
+  "title": "Emergent Linear Representations in World Models of Self-Supervised Sequence Models",
+  "author": "Nanda",
+  "year": "2023",
+  "url": "https://aclanthology.org/2023.blackboxnlp-1.2",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 49129,
+  "figures": []
+ },
+ {
+  "key": "nanda2023a",
+  "title": "Progress measures for grokking via mechanistic interpretability",
+  "author": "Nanda",
+  "year": "2023",
+  "url": "https://arxiv.org/abs/2301.05217",
+  "abstract": "Neural networks often exhibit emergent behavior, where qualitatively new capabilities arise from scaling up the amount of parameters, training data, or training steps. One approach to understanding emergence is to find continuous \\textit{progress measures} that underlie the seemingly discontinuous qualitative changes. We argue that progress measures can be found via mechanistic interpretability: reverse-engineering learned behaviors into their individual components. As a case study, we investigate the recently-discovered phenomenon of ``grokking'' exhibited by small transformers trained on modular addition tasks. We fully reverse engineer the algorithm learned by these networks, which uses discrete Fourier transforms and trigonometric identities to convert addition to rotation about a circle. We confirm the algorithm by analyzing the activations and weights and by performing ablations in Fourier space. Based on this understanding, we define progress measures that allow us to study the dynamics of training and split training into three continuous phases: memorization, circuit formation, and cleanup. Our results show that grokking, rather than being a sudden shift, arises from the gradual amplification of structured mechanisms encoded in the weights, followed by the later removal of memorizing components.",
+  "fulltext": true,
+  "chars": 106610,
+  "figures": [
+   "compelte_algorythem",
+   "frequencies"
+  ]
+ },
+ {
+  "key": "nanda2023b",
+  "title": "Othello-GPT: Future Work I Am Excited About \u2014 AI Alignment Forum",
+  "author": "Nanda",
+  "year": "2023",
+  "url": "https://www.alignmentforum.org/posts/qgK7smTvJ4DB8rZ6h/othello-gpt-future-work-i-am-excited-about",
+  "abstract": "This is the second in a three post sequence about interpreting Othello-GPT. See the first post for context. \u2026",
+  "fulltext": true,
+  "chars": 64689,
+  "figures": []
+ },
+ {
+  "key": "nanda2025",
+  "title": "A Pragmatic Vision for Interpretability \u2014 AI Alignment Forum",
+  "author": "Nanda",
+  "year": "2025",
+  "url": "https://www.alignmentforum.org/posts/StENzDcD3kpfGJssR/a-pragmatic-vision-for-interpretability",
+  "abstract": "Executive Summary",
+  "fulltext": true,
+  "chars": 81037,
+  "figures": []
+ },
+ {
+  "key": "nostalgebraist2020",
+  "title": "interpreting GPT: the logit lens",
+  "author": "nostalgebraist",
+  "year": "2020",
+  "url": "https://www.lesswrong.com/posts/AcKRB8wDpdaN6v6ru/interpreting-gpt-the-logit-lens",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 94,
+  "figures": [
+   "logit_lense_example"
+  ]
+ },
+ {
+  "key": "olah2020",
+  "title": "Zoom In: An Introduction to Circuits",
+  "author": "Olah",
+  "year": "2020",
+  "url": "https://distill.pub/2020/circuits/zoom-in",
+  "abstract": "By studying the connections between neurons, we can find meaningful algorithms in the weights of neural networks.",
+  "fulltext": true,
+  "chars": 61415,
+  "figures": [
+   "comparison_curves",
+   "universality"
+  ]
+ },
+ {
+  "key": "panickssery2024",
+  "title": "Steering Llama 2 via Contrastive Activation Addition",
+  "author": "Panickssery",
+  "year": "2024",
+  "url": "http://arxiv.org/abs/2312.06681",
+  "abstract": "We introduce Contrastive Activation Addition (CAA), an innovative method for steering language models by modifying their activations during forward passes. CAA computes \"steering vectors\" by averaging the difference in residual stream activations between pairs of positive and negative examples of a particular behavior, such as factual versus hallucinatory responses. During inference, these steering vectors are added at all token positions after the user's prompt with either a positive or negative coefficient, allowing precise control over the degree of the targeted behavior. We evaluate CAA's effectiveness on Llama 2 Chat using multiple-choice behavioral question datasets and open-ended generation tasks. We demonstrate that CAA significantly alters model behavior, is effective over and on top of traditional methods like finetuning and system prompt design, and minimally reduces capabilities. Moreover, we gain deeper insights into CAA's mechanisms by employing various activation space interpretation methods. CAA accurately steers model outputs and sheds light on how high-level concepts are represented in Large Language Models (LLMs).",
+  "fulltext": true,
+  "chars": 72700,
+  "figures": []
+ },
+ {
+  "key": "park2024",
+  "title": "The Linear Representation Hypothesis and the Geometry of Large Language Models",
+  "author": "Park",
+  "year": "2024",
+  "url": "",
+  "abstract": "Informally, the \u201clinear representation hypothesis\u201d is the idea that high-level concepts are represented linearly as directions in some representation space. In this paper, we address two closely related questions: What does \u201clinear representation\u201d actually mean? And, how do we make sense of geometric notions (e.g., cosine similarity and projection) in the representation space? To answer these, we use the language of counterfactuals to give two formalizations of linear representation, one in the output (word) representation space, and one in the input (context) space. We then prove that these connect to linear probing and model steering, respectively. To make sense of geometric notions, we use the formalization to identify a particular (non-Euclidean) inner product that respects language structure in a sense we make precise. Using this causal inner product, we show how to unify all notions of linear representation. In particular, this allows the construction of probes and steering vectors using counterfactual pairs. Experiments with LLaMA2 demonstrate the existence of linear representations of concepts, the connection to interpretation and control, and the fundamental role of the choice of inner product. Code is available at github.com/KihoPark/linear rep geometry.",
+  "fulltext": true,
+  "chars": 74710,
+  "figures": []
+ },
+ {
+  "key": "rajamanoharan2024",
+  "title": "Improving Dictionary Learning with Gated Sparse Autoencoders",
+  "author": "Rajamanoharan",
+  "year": "2024",
+  "url": "",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 135172,
+  "figures": []
+ },
+ {
+  "key": "segerie2023",
+  "title": "Against Almost Every Theory of Impact of Interpretability \u2014 LessWrong",
+  "author": "Segerie",
+  "year": "2023",
+  "url": "https://www.lesswrong.com/posts/LNA8mubrByG7SFacm/against-almost-every-theory-of-impact-of-interpretability-1",
+  "abstract": "Charbel-Rapha\u00ebl argues that interpretability research has poor theories of impact. It's not good for predicting future AI systems, can't actually aud\u2026",
+  "fulltext": true,
+  "chars": 109710,
+  "figures": []
+ },
+ {
+  "key": "sharkey2025",
+  "title": "Open Problems in Mechanistic Interpretability",
+  "author": "Sharkey",
+  "year": "2025",
+  "url": "http://arxiv.org/abs/2501.16496",
+  "abstract": "Mechanistic interpretability aims to understand the computational mechanisms underlying neural networks' capabilities in order to accomplish concrete scientific and engineering goals. Progress in this field thus promises to provide greater assurance over AI system behavior and shed light on exciting scientific questions about the nature of intelligence. Despite recent progress toward these goals, there are many open problems in the field that require solutions before many scientific and practical benefits can be realized: Our methods require both conceptual and practical improvements to reveal deeper insights; we must figure out how best to apply our methods in pursuit of specific goals; and the field must grapple with socio-technical challenges that influence and are influenced by our work. This forward-facing review discusses the current frontier of mechanistic interpretability and the open problems that the field may benefit from prioritizing.",
+  "fulltext": true,
+  "chars": 360109,
+  "figures": []
+ },
+ {
+  "key": "spielman2012",
+  "title": "Exact Recovery of Sparsely-Used Dictionaries",
+  "author": "Spielman",
+  "year": "2012",
+  "url": "https://arxiv.org/abs/1206.5882",
+  "abstract": "We consider the problem of learning sparsely used dictionaries with an arbitrary square dictionary and a random, sparse coefficient matrix. We prove that $O (n \\log n)$ samples are sufficient to uniquely determine the coefficient matrix. Based on this proof, we design a polynomial-time algorithm, called Exact Recovery of Sparsely-Used Dictionaries (ER-SpUD), and prove that it probably recovers the dictionary and coefficient matrix when the coefficient matrix is sufficiently sparse. Simulation results show that ER-SpUD reveals the true dictionary as well as the coefficients with probability higher than many state-of-the-art algorithms.",
+  "fulltext": true,
+  "chars": 73296,
+  "figures": []
+ },
+ {
+  "key": "templeton2024",
+  "title": "Scaling Monosemanticity: Extracting Interpretable Features from Claude 3 Sonnet",
+  "author": "Templeton",
+  "year": "2024",
+  "url": "https://transformer-circuits.pub/2024/scaling-monosemanticity/",
+  "abstract": "We apply sparse autoencoders to extract interpretable features from Claude 3 Sonnet, a production-scale language model. We find features corresponding to a wide range of concepts including cities, people, code syntax, and abstract ideas. We demonstrate that these features are causally active and can be used to steer model behavior.",
+  "fulltext": true,
+  "chars": 187561,
+  "figures": []
+ },
+ {
+  "key": "tomasd2024",
+  "title": "[Paper] A is for Absorption: Studying Feature Splitting and Absorption in Sparse Autoencoders",
+  "author": "TomasD",
+  "year": "2024",
+  "url": "https://www.lesswrong.com/posts/3zBsxeZzd3cvuueMJ/paper-a-is-for-absorption-studying-feature-splitting-and",
+  "abstract": "",
+  "fulltext": true,
+  "chars": 7979,
+  "figures": []
+ },
+ {
+  "key": "wang2022",
+  "title": "Interpretability in the Wild: a Circuit for Indirect Object Identification in GPT-2 small",
+  "author": "Wang",
+  "year": "2022",
+  "url": "https://arxiv.org/abs/2211.00593",
+  "abstract": "Research in mechanistic interpretability seeks to explain behaviors of machine learning models in terms of their internal components. However, most previous work either focuses on simple behaviors in small models, or describes complicated behaviors in larger models with broad strokes. In this work, we bridge this gap by presenting an explanation for how GPT-2 small performs a natural language task called indirect object identification (IOI). Our explanation encompasses 26 attention heads grouped into 7 main classes, which we discovered using a combination of interpretability approaches relying on causal interventions. To our knowledge, this investigation is the largest end-to-end attempt at reverse-engineering a natural behavior &#34;in the wild&#34; in a language model. We evaluate the reliability of our explanation using three quantitative criteria--faithfulness, completeness and minimality. Though these criteria support our explanation, they also point to remaining gaps in our understanding. Our work provides evidence that a mechanistic understanding of large ML models is feasible, opening opportunities to scale our understanding to both larger models and more complex tasks.",
+  "fulltext": true,
+  "chars": 79533,
+  "figures": [
+   "ioi_circuit",
+   "path_patching"
+  ]
+ },
+ {
+  "key": "wentworth2020",
+  "title": "Alignment By Default \u2014 LessWrong",
+  "author": "Wentworth",
+  "year": "2020",
+  "url": "https://www.lesswrong.com/posts/Nwgdq6kHke5LY692J/alignment-by-default",
+  "abstract": "What if we don't need to solve AI alignment? What if AI systems will just naturally learn human values as they get more capable? John Wentworth explo\u2026",
+  "fulltext": true,
+  "chars": 23142,
+  "figures": []
+ }
+]
