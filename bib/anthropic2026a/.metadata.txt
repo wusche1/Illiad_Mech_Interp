@@ -1,0 +1,6 @@
+Title: Claude Opus 4.8 System Card
+Author: Anthropic
+Year: 2026
+Type: report
+Citation Key: anthropic2026a
+Zotero Key: 83RPNUDD

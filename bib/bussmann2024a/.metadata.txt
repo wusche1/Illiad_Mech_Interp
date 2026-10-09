@@ -1,0 +1,8 @@
+Title: Learning Multi-Level Features with Matryoshka SAEs — LessWrong
+Author: Bussmann
+Year: 2024
+Type: journalArticle
+Citation Key: bussmann2024a
+Zotero Key: 8IK8V7GF
+URL: https://www.lesswrong.com/posts/rKM9b6B2LqwSB5ToN/learning-multi-level-features-with-matryoshka-saes
+Abstract: TL;DR: Matryoshka SAEs are a new variant of sparse autoencoders that learn features at multiple levels of abstraction by splitting the dictionary int…

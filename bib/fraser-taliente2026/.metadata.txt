@@ -1,0 +1,8 @@
+Title: Natural Language Autoencoders Produce Unsupervised Explanations of LLM Activations
+Author: Fraser-Taliente
+Year: 2026
+Type: webpage
+Citation Key: fraser-taliente2026
+Zotero Key: BBCS53ML
+URL: https://transformer-circuits.pub/2026/nla/
+Abstract: We introduce Natural Language Autoencoders (NLAs), an unsupervised approach that generates natural language descriptions of LLM internal activations. The system pairs an activation verbalizer with an activation reconstructor, trained jointly via reinforcement learning. NLAs produce informative explanations and uncover unverbalized evaluation awareness in Claude Opus 4.6.

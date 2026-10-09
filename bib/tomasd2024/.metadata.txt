@@ -1,0 +1,7 @@
+Title: [Paper] A is for Absorption: Studying Feature Splitting and Absorption in Sparse Autoencoders
+Author: TomasD
+Year: 2024
+Type: forumPost
+Citation Key: tomasd2024
+Zotero Key: P2RCBCPJ
+URL: https://www.lesswrong.com/posts/3zBsxeZzd3cvuueMJ/paper-a-is-for-absorption-studying-feature-splitting-and

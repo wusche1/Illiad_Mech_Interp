@@ -386,9 +386,25 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 \begin{frame}{Demonstrating Superposition}
 \[ h = Wx \qquad \hat{x} = \text{ReLU}(W^\top h + b) \]
 \[ L = \mathbb{E}_x\!\left[\,\|I\,(x - \hat{x})\|^2\,\right] \]
-
-\vspace{0.5em}
 {\small $I = \mathrm{diag}(I_i)$: per-feature importance \quad Sparsity $S$: probability that $x_i = 0$}
+
+\begin{center}
+\begin{tikzpicture}[x=2.6cm,y=0.42cm,neuron/.style={circle,draw,fill=white,minimum size=9pt,inner sep=0pt},lbl/.style={font=\footnotesize},edge/.style={gray!60,thin}]
+\foreach \i in {1,...,5} \node[neuron] (x\i) at (0,\i-3) {};
+\foreach \i in {1,2}     \node[neuron,fill=orange!30] (h\i) at (1,\i-1.5) {};
+\foreach \i in {1,...,5} \node[neuron] (y\i) at (2,\i-3) {};
+\foreach \i in {1,...,5} \foreach \j in {1,2} \draw[edge] (x\i) -- (h\j);
+\foreach \i in {1,2} \foreach \j in {1,...,5} \draw[edge] (h\i) -- (y\j);
+\node[lbl,above=2pt of x5] {$x \in \mathbb{R}^n$};
+\node[lbl,above=2pt of h2] {$h \in \mathbb{R}^m$};
+\node[lbl,above=2pt of y5] {$\hat{x} \in \mathbb{R}^n$};
+\node[lbl,below=2pt of x1] {features};
+\node[lbl,below=2pt of h1] {hidden, $m \ll n$};
+\node[lbl,below=2pt of y1] {reconstruction};
+\node[lbl,fill=white,inner sep=1pt] at (0.5,0) {$W$};
+\node[lbl,fill=white,inner sep=1pt] at (1.5,0) {$W^\top,\; b$, ReLU};
+\end{tikzpicture}
+\end{center}
 
 \source{elhage2022}
 
@@ -614,9 +630,26 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 \end{frame}
 
 \begin{frame}{Sparse Autoencoders}
-\[ f = \text{ReLU}(W_{\text{enc}}(x - b_{\text{dec}}) + b_{\text{enc}}) \]
-\[ \hat{x} = W_{\text{dec}} f + b_{\text{dec}} \]
+\[ f = \text{ReLU}(W_{\text{enc}}(x - b_{\text{dec}}) + b_{\text{enc}}) \qquad \hat{x} = W_{\text{dec}} f + b_{\text{dec}} \]
 \[ \mathcal{L} = \underbrace{\|x - \hat{x}\|_2^2}_{\text{reconstruction}} + \lambda \underbrace{\|f\|_1}_{\text{sparsity}} \]
+
+\begin{center}
+\begin{tikzpicture}[x=3.4cm,y=0.42cm,neuron/.style={circle,draw,fill=white,minimum size=9pt,inner sep=0pt},lbl/.style={font=\footnotesize},edge/.style={gray!60,thin}]
+\foreach \i in {1,2,3}   \node[neuron] (x\i) at (0,\i-2) {};
+\foreach \i in {1,...,7} \node[neuron,fill=orange!30] (f\i) at (1,\i-4) {};
+\foreach \i in {1,2,3}   \node[neuron] (y\i) at (2,\i-2) {};
+\foreach \i in {1,2,3} \foreach \j in {1,...,7} \draw[edge] (x\i) -- (f\j);
+\foreach \i in {1,...,7} \foreach \j in {1,2,3} \draw[edge] (f\i) -- (y\j);
+\node[lbl,above=2pt of x3] {$x \in \mathbb{R}^d$};
+\node[lbl,above=2pt of f7] {$f \in \mathbb{R}^k$};
+\node[lbl,above=2pt of y3] {$\hat{x} \in \mathbb{R}^d$};
+\node[lbl,below=2pt of x1] {activations};
+\node[lbl,below=2pt of f1] {features, $k \gg d$, sparse};
+\node[lbl,below=2pt of y1] {reconstruction};
+\node[lbl,fill=white,inner sep=1pt] at (0.5,0) {$W_{\text{enc}},\; b_{\text{enc}}$, ReLU};
+\node[lbl,fill=white,inner sep=1pt] at (1.5,0) {$W_{\text{dec}},\; b_{\text{dec}}$};
+\end{tikzpicture}
+\end{center}
 
 \source{bricken2023}
 
@@ -677,25 +710,16 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 \end{frame}
 
 \begin{frame}{Trouble with SAEs: Feature Absorption}
-\paperfig{figures/chanin2024/fig0.png}{03_transformer_features/figures/chanin2024/fig0-caption.txt}
+\begin{center}
+\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/mcdougall2024/absorption.png}
+\end{center}
 
-\source{chanin2024}
+\source{mcdougall2024, chanin2024}
 
 \note{
 \begin{itemize}
 \item SAEs will, if they can, make feature descriptions more sparse than they ``really are''
 \item Example: because ``short'' starts with S, the SAE does not fire the ``starts with S'' feature on ``short''
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Trouble with SAEs: Feature Absorption}
-\paperfig{figures/chanin2024/fig1.png}{03_transformer_features/figures/chanin2024/fig1-caption.txt}
-
-\source{chanin2024}
-
-\note{
-\begin{itemize}
 \item When features co-occur, the SAE absorbs one into the other
 \end{itemize}
 }

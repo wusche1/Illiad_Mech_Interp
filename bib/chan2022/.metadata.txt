@@ -3,5 +3,5 @@ Author: Chan
 Year: 2022
 Type: webpage
 Citation Key: chan2022
-Zotero Key: 9NA7AWFP
+Zotero Key: 6RX7DXKW
 URL: https://www.lesswrong.com/posts/JvZhhzycHu2Yd57RN/causal-scrubbing-a-method-for-rigorously-testing
