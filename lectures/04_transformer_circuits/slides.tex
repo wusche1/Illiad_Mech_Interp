@@ -16,6 +16,42 @@
 \section{Circuits in Transformers}
 }
 
+\begin{frame}{The Residual Stream: A Shared Channel}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,blkA/.style={draw=fb!60,fill=fb!10,rounded corners=3pt,minimum width=1.7cm,minimum height=0.7cm,font=\footnotesize},blkM/.style={draw=fc!60,fill=fc!10,rounded corners=3pt,minimum width=1.7cm,minimum height=0.7cm,font=\footnotesize}]
+\draw[black!20,line width=8pt,-{Stealth[length=10pt,width=16pt]}] (0,-0.6) -- (0,4.9);
+\node[font=\scriptsize,anchor=north] at (0,-0.65) {embedding};
+\node[font=\scriptsize,anchor=south] at (0,4.95) {unembedding $W_U$};
+\node[font=\scriptsize,text=black!60] at (0.9,0.0) {read}; \node[font=\scriptsize,text=black!60] at (0.9,1.0) {add};
+\foreach \y/\n/\s in {0.5/attn/blkA, 1.6/MLP/blkM, 2.7/attn/blkA, 3.8/MLP/blkM} {
+  \node[\s] (b) at (2.4,\y) {\n};
+  \draw[-{Stealth[length=5pt]},black!60] (0.15,\y-0.2) -- (b.west|-0,\y-0.2);
+  \draw[-{Stealth[length=5pt]},black!60] (b.west|-0,\y+0.2) -- (0.15,\y+0.2);
+}
+\begin{scope}[visible on=<2->]
+\node[card,anchor=west,text width=7.6cm,font=\small] at (4.2,3.3) {\textbf{Residual stream:} every layer \emph{reads} from it and \emph{adds} to it\\[2pt]{\footnotesize $\Rightarrow$ the final output is a sum of contributions, which is what makes direct attribution and patching possible}};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\node[card,anchor=west,text width=7.6cm,font=\small] at (4.2,1.0) {\textbf{Attention head} $=$ two circuits:\\[2pt]
+\textcolor{fb}{\textbf{QK}}: which earlier token do I look at?\\
+\textcolor{fd}{\textbf{OV}}: what do I copy from it into my position?};
+\end{scope}
+\end{tikzpicture}
+
+\source{elhage2021}
+
+\note{
+\begin{itemize}
+\item The mental model for everything in this section
+\item The residual stream carries the activation through the model. Each attention layer and MLP reads from it (a linear projection) and writes back by adding
+\item So the final logits are a sum over the contributions of all components: we can attribute the output to individual heads, and patch individual contributions
+\item Attention heads split into two independent pieces: the QK circuit decides where to attend, the OV circuit decides what information is moved
+\item MLPs act per position: they read the stream and write new features back
+\end{itemize}
+}
+\end{frame}
+
+
 \begin{frame}{Complete Reverse Engineering}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nanda2023a/compelte_algorythem.png}
@@ -323,7 +359,7 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \note{
 \begin{itemize}
 \item Alternative mechanism: Q-composition
-\item Head 1 (previous token head): attends to the previous token, copies \textbf{positional} information into the residual stream via the OV circuit
+\item Head 1 (duplicate token head): at the current ``D'', attends to the earlier ``D'' and copies its \textbf{position} into the residual stream via the OV circuit
 \item Head 2 (induction head): uses this positional info to generate its \textbf{query}. The query now effectively asks ``which token is at position (current $-$ offset)?''
 \item This requires ``pointer arithmetic'': moving and manipulating positional information between tokens
 \item Q-composition seems to form less easily than K-composition in practice
@@ -393,11 +429,11 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \begin{itemize}
 \item General method for finding a circuit: path patching
 \item Specific task: indirect object identification (IOI)
-\item Explain IOI task
-\item We know what the relevant information is, so we construct a parallel case (David and John) where the answer should be different
-\item Go to any part of the transformer, replace activations from one forward pass with another
-\item See if the relevant information ``passed through'' there
-\item Can also knock out parts of the transformer, replacing output with average output over many tokens
+\item IOI task: ``When Mary and John went to the store, John gave a drink to'' $\to$ Mary. Metric: logit difference between the indirect object (Mary) and the subject (John)
+\item We know what the relevant information is, so we construct a version with three unrelated random names (A, B, C) where the answer should be different
+\item Activation patching patches a head's output and lets everything downstream recompute
+\item Path patching patches only the path from one head into another, freezing all other heads to the original run: this tests edges, not just nodes
+\item Can also knock out parts of the transformer, replacing a head's output with its mean over these random-name prompts
 \item The authors traced the circuit for IOI through GPT-2
 \end{itemize}
 }
@@ -413,9 +449,11 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \note{
 \begin{itemize}
 \item The circuit is kind of bizarre
-\item Explain different parts of the IOI circuit
+\item Duplicate token and induction heads (at S2): notice that ``John'' appeared before
+\item S-inhibition heads (at END): attend to S2 and tell the name movers not to attend to John
+\item Name mover heads (at END): attend to the remaining name, Mary, and copy it to the output
 \item Highly redundant: things are implemented twice, likely due to dropout
-\item Reuse of known motifs: induction heads --- also a point for universality
+\item Reuse of known motifs: induction heads, also a point for universality
 \item There are anti-helpful heads at the end? Authors guess this is hedging, but against what?
 \end{itemize}
 }
@@ -432,25 +470,12 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \begin{itemize}
 \item Slowly cut the graph apart until we have a minimal circuit
 \item Basically: take each connection away and ask ``does the task still work?''
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Automated Circuit Discovery}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/algorythem.png}
-\end{center}
-
-\source{conmy2023}
-
-\note{
-\begin{itemize}
 \item ACDC iterates from outputs to inputs through the computational graph
 \item Start at the output node. For each node, try removing each incoming edge
 \item For each edge: replace the activation with the corrupted activation (from the parallel dataset where the task is absent)
 \item Run a forward pass and measure the effect on the output metric
-\item If removing the edge changes the metric by less than a threshold $\tau$, the edge is not important --- remove it
-\item If the metric drops significantly, the edge is part of the circuit --- keep it
+\item If removing the edge changes the metric by less than a threshold $\tau$, the edge is not important, so remove it
+\item If the metric drops significantly, the edge is part of the circuit, so keep it
 \item Recurse: move to the parent nodes through the kept edges and repeat
 \item When done: you have a sparse subgraph that recovers the task performance
 \item The threshold $\tau$ controls the trade-off between circuit size and faithfulness
@@ -497,41 +522,42 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Replacement Models}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/replacement_models.png}
-\end{center}
-
-\source{ameisen2025}
-
-\note{
-\begin{itemize}
-\item Take a forward pass on a specific prompt, decompose it into active CLT features
-\item This gives an interpretable model doing the same calculation: a replacement model
-\item Captures the nonlinear computation happening in the MLPs
-\item Does not give insight into how attention patterns are calculated: those are fixed from the real forward pass
-\item Same with the layer norm denominators
-\item CLTs do not perfectly replicate activations, so error terms are added back in as uninterpretable residuals
-\end{itemize}
+\begin{frame}{Attribution Graphs: The Mechanics}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[black!20,line width=8pt] (0,-0.2) -- (0,4.4);
+\node[font=\scriptsize,text=black!60,rotate=90] at (-0.4,2.1) {residual stream};
+\foreach \y/\l in {0.4/$\ell$, 1.5/$\ell{+}1$, 2.6/$\ell{+}2$, 3.7/$L$} {
+  \node[draw=fc!60,fill=fc!10,rounded corners=2pt,font=\scriptsize,minimum width=1.2cm] at (1.6,\y) {MLP out};
+  \node[font=\scriptsize,anchor=west] at (2.3,\y) {\l};
 }
-\end{frame}
-
-\begin{frame}{Attribution Graphs}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/pruning.png}
-\end{center}
+\node[draw=dirc,fill=dirc!15,circle,inner sep=2pt,font=\scriptsize] (f) at (3.9,0.1) {$a_s$};
+\draw[-{Stealth[length=5pt]},thick,dirc] (0.15,-0.05) -- node[below,font=\tiny] {encoder} (f);
+\foreach \y in {0.4,1.5,2.6,3.7} \draw[-{Stealth[length=5pt]},dirc!70] (f) -- (1.6+0.65,\y-0.05);
+\node[font=\scriptsize,text=dirc,align=flush left,anchor=north west,text width=2.5cm] at (2.9,-0.35) {CLT feature: reads layer $\ell$, writes all later MLP outputs};
+\begin{scope}[visible on=<2->]
+\node[card,anchor=north west,text width=6.6cm,font=\small] at (5.6,4.5) {\textbf{Local replacement model} (one prompt)\\[2pt]
+{\footnotesize $\bullet$ MLPs $\to$ CLT features\\
+$\bullet$ attention patterns, LayerNorm denominators: \textbf{frozen}\\
+$\bullet$ error nodes: what the CLT misses}};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\node[card,anchor=north west,text width=6.6cm,font=\small] at (5.6,2.2) {\textbf{Edge weight} from feature $s$ to $t$:
+\[ A_{s\to t} = a_s \, w_{s \to t} \]
+{\footnotesize Everything nonlinear is frozen $\Rightarrow$ linear $\Rightarrow$ contributions add up exactly. Keep nodes with $\sim$80\% of the influence on the logit.}};
+\end{scope}
+\end{tikzpicture}
 
 \source{ameisen2025}
 
 \note{
 \begin{itemize}
-\item Once the forward pass is decomposed into features, add input tokens and output logits as nodes
-\item Attention patterns and layer norm denominators are frozen (no-grad tensors)
-\item Feature activations have gradients, so a simple backward pass gives connections between any two features
-\item Unlike ACDC, we do not need to knock out connections one by one
-\item Prune all features below a connection-strength threshold to the output logit
-\item Result: a sparse attribution graph through the whole LLM
-\item Often group similar features into supernodes if they have similar labels and functions
+\item Cross-layer transcoder: each feature reads from the residual stream at the input to the MLP in layer $\ell$ (linear encoder + JumpReLU)
+\item It contributes to the MLP outputs of all later layers, with a separate decoder per layer
+\item Local replacement model for one prompt: swap the MLPs for the CLT, take the attention patterns and normalization denominators from the real forward pass, add error nodes for the difference between true MLP output and CLT output (error nodes have no input edges)
+\item Edge weight: source activation times the virtual weight, i.e.\ the derivative of the target's preactivation with respect to the source with all nonlinearities stop-gradiented
+\item Because everything nonlinear is frozen, the graph is linear and edges add up exactly
+\item Pruning: keep nodes responsible for $\sim$80\% of the influence on the logits and edges for $\sim$98\%
 \end{itemize}
 }
 \end{frame}

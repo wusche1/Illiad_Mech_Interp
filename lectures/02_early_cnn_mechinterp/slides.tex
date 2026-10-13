@@ -1,7 +1,7 @@
 % Chapter: 02_early_cnn_mechinterp
 % Included from lectures/main.tex
 
-\begin{frame}{Under the Hood}
+\begin{frame}{From What to How}
 \centering
 \begin{tikzpicture}[x=1cm,y=1cm,stage/.style={draw=fb!60,fill=fb!10,rounded corners=4pt,text width=2.25cm,minimum height=1.3cm,align=center,font=\footnotesize},how/.style={draw=dirc!70,fill=dirc!10,rounded corners=4pt,text width=2.25cm,minimum height=1.5cm,align=center,font=\scriptsize}]
 \foreach \i/\ttl/\hw in {
@@ -43,7 +43,7 @@
 \newcommand{\evidence}[3]{%
 \begin{minipage}[t]{0.23\textwidth}
 \centering
-\includegraphics[width=\textwidth,height=0.22\textheight,keepaspectratio]{#1}\\[2pt]
+\includegraphics[width=\textwidth,height=0.17\textheight,keepaspectratio]{#1}\\[2pt]
 {\footnotesize\textbf{#2}}\\
 {\scriptsize #3}
 \end{minipage}}
@@ -55,7 +55,7 @@
 \evidence{figures/curve_detector_synthetic_tuning.png}{3. Synthetic examples}{fires on drawn curves, not lines}\hfill
 \evidence{figures/curve_detector_radial_tuning.png}{4. Joint tuning}{rotation hands off to the next detector}
 
-\vspace{1em}
+\vspace{0.2em}
 \evidence{figures/curve_detector_weights.png}{5. Implementation}{curve algorithm readable from weights}\hspace{1.5em}
 \evidence{figures/curve_detector_use_in_circuits.png}{6. Use}{downstream: circles, spirals}\hspace{1.5em}
 \evidence{figures/arg_hand.png}{7. Handwritten circuit}{hand-set weights mimic the original}

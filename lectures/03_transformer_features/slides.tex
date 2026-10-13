@@ -103,64 +103,6 @@
 }
 \end{frame}
 
-% nanda2023: table0 = Table 1
-\begin{frame}{Linear Probes Can Measure World Models}
-\paperfig{figures/nanda2023/table0.png}{03_transformer_features/figures/nanda2023/table0-caption.txt}
-
-\source{nanda2023}
-
-\note{
-\begin{itemize}
-\item They could reconstruct the state of the game board with pretty high accuracy
-\item The model linearly encodes board state relative to the current player (MINE vs YOURS, not BLACK vs WHITE)
-\end{itemize}
-}
-\end{frame}
-
-% li2024b: fig1 = Figure 2
-\begin{frame}{Probing LLMs}
-\paperfig{figures/li2024b/fig1.png}{03_transformer_features/figures/li2024b/fig1-caption.txt}
-
-\source{li2024b}
-
-\note{
-\begin{itemize}
-\item We can of course also train probes on the activations of LLMs
-\item Here we see probes trained on the O values of the attention heads
-\item Some heads can separate the activations on true vs false statements
-\item They separate quite well on the first principal components
-\end{itemize}
-}
-\end{frame}
-
-% li2024b: fig2 = Figure 3
-\begin{frame}{Adding in Truthfulness}
-\paperfig{figures/li2024b/fig2.png}{03_transformer_features/figures/li2024b/fig2-caption.txt}
-
-\source{li2024b}
-
-\note{
-\begin{itemize}
-\item They use these directions to steer the model to be more truthful
-\item Inference-Time Intervention: add the truthful direction at the top $k$ most predictive heads with factor $\alpha$
-\end{itemize}
-}
-\end{frame}
-
-% panickssery2024: fig0 = Figure 1a
-\begin{frame}{Steering via Contrastive Features}
-\paperfig{figures/panickssery2024/fig0.png}{03_transformer_features/figures/panickssery2024/fig0-caption.txt}
-
-\source{panickssery2024}
-
-\note{
-\begin{itemize}
-\item You don't even need probes to extract these features
-\item Just taking the average of activation differences of a bunch of contrastive examples of some behaviour is enough
-\end{itemize}
-}
-\end{frame}
-
 % panickssery2024: fig7 = Figure 4
 \begin{frame}{Steering via Contrastive Features}
 \paperfig{figures/panickssery2024/fig7.png}{03_transformer_features/figures/panickssery2024/fig7-caption.txt}
@@ -185,7 +127,7 @@ Every matrix that writes to the residual stream:
 \begin{itemize}
 \item Equivalent to ablating $\hat r$ at every layer
 \item No gradients, no harmful examples
-\item Competitive with other jailbreaks on HarmBench
+\item Competitive with other general jailbreaks on HarmBench
 \end{itemize}
 \end{column}
 \begin{column}{0.42\textwidth}
@@ -211,14 +153,44 @@ Every matrix that writes to the residual stream:
 \item Directional ablation at inference time is equivalent to editing the weights: orthogonalize every matrix that writes into the residual stream against the refusal direction
 \item Then the model can never write the refusal direction, so it can never ``notice'' harmfulness in that way
 \item Rank-one edit per matrix, no fine-tuning, no gradient steps, no harmful completions needed
-\item On HarmBench it is competitive with other general jailbreaks, on Qwen even on par with prompt-specific GCG
+\item On HarmBench it is competitive with other general (not prompt-specific) jailbreaks, on Qwen even on par with prompt-specific GCG
 \item Coherence mostly preserved, but TruthfulQA drops somewhat
 \item For open-weight models this is a cheap way to remove safety training
 \end{itemize}
 }
 \end{frame}
 
-\begin{frame}{Logit Lens}
+\begin{frame}{Logit Lens: Decode Early}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[black!20,line width=8pt,-{Stealth[length=10pt,width=16pt]}] (0,-0.3) -- (0,4.6);
+\foreach \y/\l/\t/\c in {0.3/layer 2/{``the''}/40, 1.5/layer 6/{``France''}/60, 2.7/layer 10/{``Paris''}/85, 3.9/final/{\textbf{``Paris''}}/100} {
+  \node[font=\scriptsize,anchor=east] at (-0.3,\y) {\l};
+  \fill[dirc] (0,\y) circle (2.5pt);
+  \draw[-{Stealth[length=5pt]},dirc,thick] (0.1,\y) -- (1.6,\y);
+  \node[draw=black!30,fill=black!5,rounded corners=2pt,font=\scriptsize] (u) at (2.6,\y) {LN, $W_U$};
+  \draw[-{Stealth[length=5pt]},thick,black!60] (u) -- (4.0,\y);
+  \node[font=\small,anchor=west,text=black!\c] at (4.1,\y) {\t};
+}
+\node[font=\small,anchor=west] at (-1.4,-0.8) {Prompt: The Eiffel Tower is in the city of \ldots\quad{\scriptsize\textcolor{black!50}{(illustrative)}}};
+\node[card,anchor=west,text width=5.4cm,font=\small] at (6.6,2.1) {Apply the \textbf{final} unembedding to an \textbf{intermediate} layer\\[3pt]{\footnotesize Assumes the remaining layers are the identity. Sensible guesses by the middle layers (GPT-2); early layers often noise.}\\[3pt]{\footnotesize Tuned lens: learn a map per layer. J-lens (later): use the Jacobian.}};
+\end{tikzpicture}
+
+\source{nostalgebraist2020}
+
+\note{
+\begin{itemize}
+\item We already have a translation from residual stream activations into tokens: the unembedding matrix (after the final layer norm)
+\item Trained only for the final layer, but we can apply it to any layer's residual stream
+\item No a priori reason this has to work, but because of the residual stream (layers add to a shared vector), intermediate states are often already ``on the way'' to the final answer
+\item The example here is illustrative: the prediction sharpens layer by layer
+\item Fails more often in early layers; tuned lens fixes this with a learned affine map per layer
+\item Next slide: the real measurements
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Logit Lens: Measured}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nostalgebraist2020/logit_lens_kl_grid.png}
 \end{center}
@@ -227,35 +199,14 @@ Every matrix that writes to the residual stream:
 
 \note{
 \begin{itemize}
-\item We already have a translation from residual stream activations into tokens: the unembedding matrix
-\item While only trained on the final activations, we can apply it to any layer's residual stream
-\item There is no a priori reason this has to be meaningful, but it turns out that unembedding earlier residual states gives useful guesses for the next token, building up layer by layer
+\item GPT-2: KL divergence between the logit lens prediction at each layer and the final output
+\item Predictions converge towards the final answer layer by layer
 \item We can thereby see what aspects of the prediction are computed in which layer
 \end{itemize}
 }
 \end{frame}
 
 \section{Superposition}
-
-% elhage2022: fig8 = privileged basis, fig9 = superposition
-\begin{frame}{Superposition}
-\begin{center}
-\includegraphics[height=0.35\textheight,keepaspectratio]{figures/elhage2022/fig8.png}
-\hspace{2em}
-\includegraphics[height=0.35\textheight,keepaspectratio]{figures/elhage2022/fig9.png}
-\end{center}
-
-\source{elhage2022}
-
-\note{
-\begin{itemize}
-\item So far we went from CNNs (where we knew which directions were features) to transformers (where we do not have such a privileged basis)
-\item But we still assumed each direction only has one meaning --- this is not the case
-\item We saw polysemantic neurons in CNNs already
-\item In transformers: a probe that isolates ``Portuguese'' might also trigger for ``Shakespeare'' or ``ozone hole''
-\end{itemize}
-}
-\end{frame}
 
 \begin{frame}{Johnson--Lindenstrauss Lemma}
 In $N$ dimensions, we can pack
@@ -574,6 +525,34 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
+\begin{frame}{Automated Interpretability}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,stp/.style={card,text width=3.0cm,minimum height=2.2cm,font=\footnotesize,align=center}]
+\node[stp] (a) at (0,0) {\textbf{1. Show examples}\\[3pt]text where the feature fires (all strengths)\\[2pt]{\scriptsize\textcolor{fd}{\textbf{(Arabic text)}}}};
+\node[stp] (b) at (3.9,0) {\textbf{2. Explain}\\[3pt]an LLM writes a label:\\[2pt]\emph{``Arabic script''}};
+\node[stp] (c) at (7.8,0) {\textbf{3. Simulate}\\[3pt]from the label alone, the LLM predicts activations on \emph{new} text};
+\node[stp] (d) at (11.7,0) {\textbf{4. Score}\\[3pt]correlation between predicted and real activations};
+\foreach \u/\v in {a/b,b/c,c/d} \draw[-{Stealth[length=6pt]},thick] (\u) -- (\v);
+\end{tikzpicture}
+
+\vspace{1em}
+How the labels on Neuronpedia and in SAE papers are produced.
+
+\source{bricken2023}
+
+\note{
+\begin{itemize}
+\item There are millions of features: nobody labels them by hand
+\item Bricken et al.\ used Claude 2: show it examples of text with the feature's activations (mostly top activations, plus examples from other activation ranges and random ones)
+\item Claude writes an explanation
+\item Then, given only the explanation, Claude predicts the activations on unseen text
+\item Score: Spearman correlation between predicted and true activations
+\item A good score means the label explains the feature's behavior, not that it captures everything the feature does
+\end{itemize}
+}
+\end{frame}
+
+
 \begin{frame}{Trouble with SAEs: Feature Absorption}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/mcdougall2024/absorption.png}
@@ -665,16 +644,16 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 
 \vspace{0.5em}
 Hard threshold $\theta$: features are either fully on or off.
-Sparsity penalty approximates L0 --- no shrinkage on active features.
+Sparsity penalty approximates L0, no shrinkage on active features.
 
-\source{rajamanoharan2024}
+\source{ameisen2025}
 
 \note{
 \begin{itemize}
-\item A third approach to feature shrinkage, also from the gated SAE paper
+\item Another fix for shrinkage. This tanh sparsity penalty is the variant Anthropic uses in its cross-layer transcoders
 \item Hard threshold $\theta$: if pre-activation is above $\theta$, it passes through at true value; if below, hard-zeroed
 \item The sparsity penalty $\tanh(c \cdot \|w\| \cdot a)$ approximates counting active features (L0 proxy) for large $c$
-\item Once a feature is clearly active, $\tanh$ saturates to 1 and gradient vanishes --- no pressure to shrink magnitude
+\item Once a feature is clearly active, $\tanh$ saturates to 1 and gradient vanishes , no pressure to shrink magnitude
 \item Training dynamics: reconstruction loss wants $\theta$ low, sparsity loss wants $\theta$ high; equilibrium determines sparsity
 \item Used in cross-layer transcoders for Anthropic's circuit tracing work
 \end{itemize}
@@ -693,7 +672,8 @@ No L1 penalty needed.
 \note{
 \begin{itemize}
 \item As often in ML, the simpler solution works more robustly
-\item Completely get rid of the L1 norm, just set all but the top K feature activations to zero
+\item Completely get rid of the L1 norm, just set all but the top K feature activations to zero (Top-K SAEs: Gao et al., 2024)
+\item BatchTopK (cited here): pick the top $K \times \text{batch size}$ activations across the whole batch, so the number of active features can vary per token
 \item There has been a Cambrian explosion of SAE variants
 \end{itemize}
 }
@@ -706,7 +686,9 @@ No L1 penalty needed.
 
 \note{
 \begin{itemize}
-\item The idea: you get the most important features labeled as such, by training on multiple top-N values at the same time
+\item One dictionary, trained so that nested prefixes of it (the first $m_1$ latents, the first $m_2$, \ldots) each have to reconstruct the activation on their own
+\item Early latents are forced to capture general concepts (``animal''), later latents add specifics (``dog'', ``cat'')
+\item Reduces absorption: the general latent must also fire on the specific cases, because small prefixes cannot use the later latents
 \end{itemize}
 }
 \end{frame}
@@ -742,39 +724,6 @@ No L1 penalty needed.
 \item Most important for these methods: they scale to production models
 \item Here we see SAEs applied to Claude 3 Sonnet
 \item Loss decreases approximately according to a power law with respect to compute
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Safety-Relevant Feature Steering}
-In the Claude Opus 4.5 system card:
-
-\vspace{0.5em}
-\begin{enumerate}
-\item Find \textbf{evaluation awareness} features via:
-\begin{itemize}
-\item Contrastive vectors (eval vs.\ non-eval prompts)
-\item SAE features (discriminating eval transcripts)
-\end{itemize}
-\item \textbf{Inhibit} these features (negative steering at 25\% of activation norm)
-\end{enumerate}
-
-\vspace{0.5em}
-\textbf{Results:}
-\begin{itemize}
-\item Reduced verbalized evaluation awareness
-\item Modestly increased misaligned behavior
-\item Random feature steering also had a (weaker) effect
-\end{itemize}
-
-\source{anthropic2025b}
-
-\note{
-\begin{itemize}
-\item The chain of thought said less things like ``I know this is a test''
-\item The model behaves somewhat less aligned, but no new, extreme misaligned behaviors appeared (blackmail increased slightly under some interventions; research sabotage and framing unchanged)
-\item Some of the effect is just the model being pushed out of distribution, since random features also cause changes
-\item They used both contrastive vectors (subtracting activations on eval vs.\ non-eval prompts) and SAE features identified by discriminating eval-aware vs.\ non-eval-aware transcripts, and eval vs.\ non-eval transcripts
 \end{itemize}
 }
 \end{frame}

@@ -3,20 +3,87 @@
 
 \section{Fuzzy Interpretability}
 
+\begin{frame}{Two Ways to Read Activations in Plain Language}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,box/.style={draw=black!35,fill=black!4,rounded corners=3pt,font=\footnotesize,align=center,inner sep=4pt}]
+\node[font=\small\bfseries] at (2.9,4.3) {Activation Oracle};
+\node[box,fill=fb!12,draw=fb!60] (h1) at (0,3.2) {activation $h$\\(target model)};
+\node[box,text width=3.8cm] (o) at (3.9,3.2) {oracle LLM prompt:\\\texttt{Layer 18: \textcolor{fb}{<ACT><ACT>}}\\\texttt{Is this positive?}};
+\draw[-{Stealth[length=5pt]},thick,fb] (h1) -- node[above,font=\tiny] {added} (o);
+\node[box] (ans) at (3.9,1.7) {``Yes''};
+\draw[-{Stealth[length=5pt]},thick] (o) -- (ans);
+\node[font=\scriptsize,align=center,text width=5.5cm] at (2.9,0.6) {\textbf{supervised:} trained on QA, classification, context prediction; tested on new questions};
+\begin{scope}[visible on=<2->]
+\node[font=\small\bfseries] at (10.2,4.3) {Natural Language Autoencoder};
+\node[box,fill=fb!12,draw=fb!60] (h2) at (7.4,3.2) {activation $h$};
+\node[box] (v) at (9.6,3.2) {verbalizer};
+\node[box,text width=2.4cm] (z) at (9.6,1.8) {\emph{``user asks with accusatory framing \ldots''}};
+\node[box] (r) at (12.4,1.8) {reconstructor};
+\node[box,fill=fb!12,draw=fb!60] (hh) at (12.4,3.2) {$\hat h \approx h$?};
+\draw[-{Stealth[length=5pt]},thick] (h2) -- (v); \draw[-{Stealth[length=5pt]},thick] (v) -- (z);
+\draw[-{Stealth[length=5pt]},thick] (z) -- (r); \draw[-{Stealth[length=5pt]},thick] (r) -- (hh);
+\node[font=\scriptsize,align=center,text width=5.5cm] at (10.2,0.6) {\textbf{unsupervised:} RL reward $= -\|h-\hat h\|^2$, no labels needed};
+\end{scope}
+\end{tikzpicture}
+
+\source{karvonen2026,fraser-taliente2026}
+
+\note{
+\begin{itemize}
+\item Two recent ways to turn activations into text, both using an LLM as the reader
+\item Activation oracle: inject the target model's activation into the oracle (added, norm-matched, at placeholder tokens after layer 2), ask it a question
+\item Trained with supervision (about 1M examples): system prompt QA, binary classification, predicting previous/next tokens. Evaluated on tasks it was never trained on, like extracting secrets
+\item NLA: a verbalizer writes a description, a reconstructor has to rebuild the activation from the text alone. Verbalizer trained with RL, reward = reconstruction quality (after a supervised warm start)
+\item Supervised oracles answer what you ask; NLAs describe whatever is in the activation, but nothing forces every detail to be true: they can confabulate specifics
+\end{itemize}
+}
+\end{frame}
+
+
 \begin{frame}{Activation Oracles}
 \fullfig{figures/karvonen2026/training.png}{karvonen2026}
+
+\note{
+\begin{itemize}
+\item Training mix: system prompt QA, classification tasks, and self-supervised context prediction
+\item Activations from 25/50/75\% depth of the target model, injected into the oracle at placeholder tokens
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{Activation Oracles: Benchmarks}
 \fullfig{figures/karvonen2026/benchmarks.png}{karvonen2026}
+
+\note{
+\begin{itemize}
+\item Out-of-distribution evaluations: extracting secrets the model was trained to keep (Taboo word, user gender, secret side constraints), auditing for emergent misalignment
+\item More diverse training data helps generalization
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{NLAs Hallucinate}
 \fullfig{figures/fraser-taliente2026/hallucinations.png}{fraser-taliente2026}
+
+\note{
+\begin{itemize}
+\item NLAs often get the gist right but hallucinate specifics
+\item Nothing in the reconstruction objective forces every detail to be true
+\item Treat NLA outputs as hypotheses to check, not as ground truth
+\end{itemize}
+}
 \end{frame}
 
-\begin{frame}{NLAs Win the Auditing Game}
+\begin{frame}{NLAs Are Competitive in an Auditing Game}
 \fullfig{figures/fraser-taliente2026/audit-game.png}{fraser-taliente2026}
+
+\note{
+\begin{itemize}
+\item Auditing game: a model organism with a hidden objective (like the reward-model-bias model from hour one); auditor agents (Sonnet 4.6) have to find the root cause
+\item Without training-data access, NLA agents find it 12\% of the time, versus 0--1\% with SAEs or conversation only
+\item With pretraining-data search alone, NLAs give no benefit
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{The Jacobian Lens}
@@ -27,18 +94,47 @@ J_\ell = \mathbb{E}_{\text{prompt},\, t,\, t' \geq t}\left[\frac{\partial h_{\te
 \text{lens}(h_\ell) = \text{softmax}\left(W_U\, \text{norm}(J_\ell h_\ell)\right)
 \]
 \source{gurnee2026}
+
+\note{
+\begin{itemize}
+\item Intuition: the average linearisation of the rest of the network, read out through the unembedding
+\item Logit lens is the special case $J_\ell = I$ (pretend the remaining layers do nothing)
+\item Average over later positions $t' \geq t$: catches information that will be used later, not only for the next token
+\item Average over many prompts: separates the model's general disposition to verbalize a concept from its use in one context
+\item Unlike the tuned lens (fit to match the output, correlational), the Jacobian is causal
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{Reading and Intervening with the J-Lens}
 \fullfig{figures/gurnee2026/jlens_use.png}{gurnee2026}
+
+\note{
+\begin{itemize}
+\item Read: apply the lens to a middle layer to see which concepts the model is ``thinking about''
+\item Intervene: swap one concept's direction for another, and the downstream behavior often follows (strongest when the concept is clearly present)
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{The J-Space Plays a Wide Role in Model Cognition}
 \fullfig{figures/gurnee2026/effects.png}{gurnee2026}
+
+\note{
+\begin{itemize}
+\item The J-space is causally involved in report, internal reasoning and flexible use of concepts, but not in automatic processing (parsing, fact recall, fluent text)
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{The J-Space Is Privileged}
 \fullfig{figures/gurnee2026/Jspace_priviliged.png}{gurnee2026}
+
+\note{
+\begin{itemize}
+\item Split a concept vector into its J-space part ($\sim$7\% of the variance) and the rest. At equal magnitude, swaps along the J-space part succeed 59\% of the time, the rest only 5\%
+\end{itemize}
+}
 \end{frame}
 
 \begin{frame}{Global Workspace Theory of Consciousness}
