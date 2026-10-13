@@ -1,23 +1,31 @@
 % Chapter: 02_early_cnn_mechinterp
 % Included from lectures/main.tex
 
-\section{Early MechInterp on CNNs}
-
-\begin{frame}{Why CNNs?}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/cnn_diagram.png}
-\end{center}
+\begin{frame}{Under the Hood}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,stage/.style={draw=fb!60,fill=fb!10,rounded corners=4pt,text width=2.25cm,minimum height=1.3cm,align=center,font=\footnotesize},how/.style={draw=dirc!70,fill=dirc!10,rounded corners=4pt,text width=2.25cm,minimum height=1.5cm,align=center,font=\scriptsize}]
+\foreach \i/\ttl/\hw in {
+  0/Neurons can mean things/{How sure can we be that a feature is real?},
+  1/Concepts are directions/{Probes, steering vectors, logit lens},
+  2/Too many concepts/{Toy models, sparse recovery, SAE variants and failures},
+  3/Following the computation/{Induction heads, patching, attribution graphs},
+  4/Where it stands/{Activation oracles, NLAs, J-lens, open problems}} {
+  \node[stage] (s\i) at (\i*2.75,1.6) {\textbf{\ttl}};
+  \node[how] (h\i) at (\i*2.75,-0.4) {\hw};
+  \draw[-{Stealth[length=6pt]},thick,dirc!70] (s\i) -- node[right,font=\scriptsize\bfseries,text=dirc] {how?} (h\i);
+}
+\foreach \i [count=\j] in {0,...,3} \draw[-{Stealth[length=6pt]},thick,fb!60] (s\i) -- (s\j);
+\end{tikzpicture}
 
 \note{
 \begin{itemize}
-\item Most early MechInterp work was done on visual neural networks, typically CNNs
-\item Many early impressive neural networks were visual neural networks (e.g.\ AlexNet)
-\item MechInterp is easier with convolutional networks: the different channels of a convolutional layer are a preferred basis, which makes the directions that might be features architecturally clear
-\item There is a lot of universality in vision CNNs, compared to transformer-based LLMs
-\item As we will see, feature visualization works pretty well in vision models
+\item Same story as in the first hour, now asking for each step: how does it actually work, and where does it break?
+\item No new headline results for their own sake: each section opens up the mechanism behind something from hour one
 \end{itemize}
 }
 \end{frame}
+
+\section{Is This Feature Real?}
 
 \begin{frame}{}
 \begin{center}
@@ -31,170 +39,41 @@
 }
 \end{frame}
 
-\begin{frame}{Argument 1: Feature Visualization}
-\begin{columns}[c]
-\begin{column}{0.35\textwidth}
-\includegraphics[width=\textwidth]{figures/curve_detector_feature_visualization.png}
-\end{column}
-\begin{column}{0.6\textwidth}
-Optimizing the input to maximally activate curve detectors reliably produces curves.
-This establishes a causal link.
-\end{column}
-\end{columns}
+% \evidence{image}{title}{one-line description}
+\newcommand{\evidence}[3]{%
+\begin{minipage}[t]{0.23\textwidth}
+\centering
+\includegraphics[width=\textwidth,height=0.22\textheight,keepaspectratio]{#1}\\[2pt]
+{\footnotesize\textbf{#2}}\\
+{\scriptsize #3}
+\end{minipage}}
+
+\begin{frame}{Seven Lines of Evidence for Curve Detectors}
+\centering
+\evidence{figures/curve_detector_feature_visualization.png}{1. Feature visualization}{optimized inputs are curves}\hfill
+\evidence{figures/curve_detector_dataset_examples.png}{2. Dataset examples}{top images contain curves}\hfill
+\evidence{figures/curve_detector_synthetic_tuning.png}{3. Synthetic examples}{fires on drawn curves, not lines}\hfill
+\evidence{figures/curve_detector_radial_tuning.png}{4. Joint tuning}{rotation hands off to the next detector}
+
+\vspace{1em}
+\evidence{figures/curve_detector_weights.png}{5. Implementation}{curve algorithm readable from weights}\hspace{1.5em}
+\evidence{figures/curve_detector_use_in_circuits.png}{6. Use}{downstream: circles, spirals}\hspace{1.5em}
+\evidence{figures/arg_hand.png}{7. Handwritten circuit}{hand-set weights mimic the original}
 
 \source{olah2020}
 
 \note{
 \begin{itemize}
-\item Optimizing the input to cause curve detectors to fire reliably produces curves
-\item This establishes a causal link, since everything in the resulting image was added to cause the neuron to fire more
-\end{itemize}
-}
-\end{frame}
-
-\input{02_early_cnn_mechinterp/guess_the_class}
-
-\begin{frame}{Argument 2: Dataset Examples}
-\begin{columns}[c]
-\begin{column}{0.4\textwidth}
-\includegraphics[width=\textwidth]{figures/curve_detector_dataset_examples.png}
-\end{column}
-\begin{column}{0.55\textwidth}
-ImageNet images that strongly activate these neurons reliably contain curves in the expected orientation.
-\end{column}
-\end{columns}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item The ImageNet images that cause these neurons to strongly fire are reliably curves in the expected orientation
-\item Images that cause moderate firing are generally less perfect curves or curves off orientation
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Argument 3: Synthetic Examples}
-\begin{columns}[c]
-\begin{column}{0.4\textwidth}
-\includegraphics[width=\textwidth]{figures/curve_detector_synthetic_tuning.png}
-\end{column}
-\begin{column}{0.55\textwidth}
-Curve detectors respond as expected to synthetic curves with varying orientations and curvatures.
-They do not fire for straight lines or sharp corners.
-\end{column}
-\end{columns}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item Curve detectors respond as expected to a range of synthetic curve images created with varying orientations, curvatures, and backgrounds
-\item They fire only near the expected orientation, and do not fire strongly for straight lines or sharp corners
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Argument 4: Joint Tuning}
-\begin{columns}[c]
-\begin{column}{0.35\textwidth}
-\includegraphics[width=\textwidth]{figures/curve_detector_radial_tuning.png}
-\end{column}
-\begin{column}{0.6\textwidth}
-Rotating a stimulus smoothly transfers activation between orientation-selective detectors.
-Together, they tile the full 360 degrees.
-\end{column}
-\end{columns}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item If we take dataset examples that cause a neuron to fire and rotate them, they gradually stop firing and the curve detector in the next orientation begins firing
-\item This shows they detect rotated versions of the same thing
-\item Together, they tile the full 360 degrees of potential orientations
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Argument 5: Feature Implementation}
-\begin{columns}[c]
-\begin{column}{0.4\textwidth}
-\includegraphics[width=\textwidth]{figures/curve_detector_weights.png}
-\end{column}
-\begin{column}{0.55\textwidth}
-A curve detection algorithm can be read off the weights.
-No evidence of a secondary cause of firing.
-\end{column}
-\end{columns}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item Circuit-based argument
-\item By looking at the circuit constructing the curve detectors, we can read a curve detection algorithm off of the weights
-\item We don't see anything suggestive of a second alternative cause of firing
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Argument 6: Feature Use}
-\begin{columns}[c]
-\begin{column}{0.35\textwidth}
-\includegraphics[width=\textwidth]{figures/curve_detector_use_in_circuits.png}
-\end{column}
-\begin{column}{0.6\textwidth}
-Downstream clients are features that naturally involve curves: circles, spirals, 3d curvature.
-\end{column}
-\end{columns}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item Circuit-based argument
-\item The downstream clients of curve detectors are features that naturally involve curves (circles, 3d curvature, spirals)
-\item The curve detectors are used by these clients in the expected manner
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Argument 7: Handwritten Circuits}
-\begin{columns}[c]
-\begin{column}{0.35\textwidth}
-\includegraphics[width=\textwidth]{figures/arg_hand.png}
-\end{column}
-\begin{column}{0.6\textwidth}
-We can do a cleanroom reimplementation, hand-setting all weights to reimplement curve detection.
-These handwritten weights significantly mimic the original.
-\end{column}
-\end{columns}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item Circuit-based argument
-\item Based on our understanding of how curve detectors are implemented, we can do a cleanroom reimplementation
-\item Hand setting all weights to reimplement curve detection
-\item These weights are an understandable curve detection algorithm, and significantly mimic the original curve detectors
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{A Complex Feature: Cars in Superposition}
-\begin{center}
-\includegraphics[width=0.85\textwidth,height=0.75\textheight,keepaspectratio]{figures/car_circuit.png}
-\end{center}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item These methods also work to identify more complex structures
-\item Note that these are still human-understandable
-\item We can even understand the circuit here
+\item 1--4 are behavioral: what makes the neuron fire
+\item Feature visualization establishes a causal link: everything in the image was added to make the neuron fire
+\item Dataset examples: strongest activations are curves in the expected orientation, weaker ones are imperfect curves
+\item Synthetic curves: fires only near the expected orientation, not for straight lines or sharp corners
+\item Joint tuning: rotating a stimulus smoothly transfers activation between orientation-selective detectors, which tile 360 degrees
+\item 5--7 are circuit-based: how the neuron is built and used
+\item Implementation: the curve detection algorithm can be read off the weights, with no sign of a second cause of firing
+\item Use: downstream clients are features that naturally involve curves
+\item Handwritten circuits: a cleanroom reimplementation with hand-set weights mimics the original
+\item Compare this bar with what we accept for SAE features in language models later
 \end{itemize}
 }
 \end{frame}
@@ -216,24 +95,6 @@ These handwritten weights significantly mimic the original.
 }
 \end{frame}
 
-\begin{frame}{Polysemanticity}
-\begin{center}
-\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/superposition.png}
-\end{center}
-
-\source{olah2020}
-
-\note{
-\begin{itemize}
-\item One problem, that we will discuss later, but is already visible in these models
-\item Sometimes a feature is split up across different neurons, and multiple features share one neuron
-\item Here we see that the car feature is assembled in one layer, but does not get its own neuron in a later layer
-\item Its activations are split and added onto a bunch of other neurons that encode unrelated things
-\item We can already see that this is necessary when we want to have more features than we have neurons
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{If Universality Is True}
 \begin{itemize}
 \item What features are universal? Why?
@@ -250,13 +111,4 @@ These handwritten weights significantly mimic the original.
 \item Unclear, there are some theories here. AFAIK the work in this direction has stalled out the last years
 \end{itemize}
 }
-\end{frame}
-
-\begin{frame}{Feature Visualization Exercise}
-\begin{center}
-\vfill
-\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/03_feature_viz/notebook.ipynb}{%
-\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Feature Visualization Exercise\quad}}
-\vfill
-\end{center}
 \end{frame}

@@ -68,35 +68,6 @@
 }
 \end{frame}
 
-\begin{frame}{Schwann's Claims (1839)}
-\begin{columns}[c]
-\begin{column}{0.6\textwidth}
-\begin{enumerate}
-\item The cell is the unit of structure, physiology, and organization in living things.
-
-\vspace{0.5em}
-\item The cell retains a dual existence as a distinct entity and a building block in the construction of organisms.
-
-\vspace{0.5em}
-\item \textcolor{gray}{Cells form by free-cell formation, similar to the formation of crystals.}
-\end{enumerate}
-\end{column}
-\begin{column}{0.35\textwidth}
-\includegraphics[width=\textwidth]{figures/schwann_book.jpg}
-
-{\centering\tiny Image: Deutsches Textarchiv\par}
-\end{column}
-\end{columns}
-
-\note{
-\begin{itemize}
-\item Theodor Schwann described what cells are and how they work
-\item These three claims lay down an ontology for cellular biology as a field
-\item Even though Claim 3 turned out to be wrong, the first two claims defined the field
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Three Speculative Claims}
 \begin{columns}[c]
 \begin{column}{0.6\textwidth}
@@ -147,14 +118,25 @@ These circuits can also be rigorously studied and understood.
 }
 \end{frame}
 
-\begin{frame}{Theories of Impact}
-\begin{itemize}
-\item Auditing for misalignment/deception
-\item Enumerative safety
-\item Eliciting latent knowledge
-\end{itemize}
+% \toicards{audit status}{enumerative status}{elk status}: theories of impact, optional traffic-light status line per card
+\newcommand{\toicards}[3]{%
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \y in {0,0.55,1.1,1.65,2.2} \draw[fill=fb!15,draw=fb!50,rounded corners=2pt] (0,\y) rectangle (2.4,\y+0.4);
+\node[font=\small\bfseries] at (1.2,3.0) {model internals};
+\foreach \y/\ttl/\desc/\stat in {
+  3.1/Auditing/{Find hidden goals or deception before deployment}/{#1},
+  1.15/Enumerative safety/{List every feature, check that none is dangerous}/{#2},
+  -0.85/Eliciting latent knowledge/{Read out what the model knows or believes}/{#3}} {
+  \draw[-{Stealth[length=6pt]},thick,black!50] (2.6,1.3) -- (4.2,\y);
+  \node[card,anchor=west,text width=7.6cm] at (4.3,\y) {\textbf{\ttl}\\\desc\ifx\relax\stat\relax\else\\[2pt]\stat\fi};
+}
+\end{tikzpicture}}
 
-\source{nanda2022}
+\begin{frame}{Theories of Impact}
+\centering
+\toicards{}{}{}
+
+\source{nanda2022,elhage2022}
 
 \note{
 \begin{itemize}
@@ -163,7 +145,33 @@ These circuits can also be rigorously studied and understood.
 \item Eliciting latent knowledge: we can find out more directly what the model knows
 \item Helps with transparency, against scheming
 \item Also helps with ``AI for science'': e.g.\ a genetics model that knows some genetic marker is responsible for some effect, but since it is not a language model, you cannot just ask it
+\item We come back to this slide at the end of the hour: how much of this does MechInterp deliver today?
 \end{itemize}
 }
 \end{frame}
 
+\begin{frame}{The Story of Today}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,stage/.style={draw=fb!60,fill=fb!10,rounded corners=4pt,text width=2.35cm,minimum height=2.1cm,align=center,font=\footnotesize}]
+\foreach \i/\ttl/\desc in {
+  0/Neurons can mean things/{curve detectors, dog faces (vision models)},
+  1/Concepts are directions/{read, add, and remove concepts},
+  2/Too many concepts/{superposition, sparse autoencoders},
+  3/Following the computation/{circuits, attribution graphs},
+  4/Where it stands/{real-world uses, critiques}} {
+  \node[stage] (s\i) at (\i*2.85,0) {\textbf{\ttl}\\[4pt]\textcolor{black!60}{\desc}};
+}
+\foreach \i [count=\j] in {0,...,3} \draw[-{Stealth[length=6pt]},thick,fb!60] (s\i) -- (s\j);
+\end{tikzpicture}
+
+\note{
+\begin{itemize}
+\item Roadmap for the first hour
+\item We start where MechInterp started: vision models, where single neurons often mean something
+\item Then language models: concepts live in directions, and we can read and edit them
+\item Then the main complication (superposition) and the main tool against it (sparse autoencoders)
+\item Then circuits: how features combine into computation
+\item Finally: what is this used for today, and what are the critiques
+\end{itemize}
+}
+\end{frame}

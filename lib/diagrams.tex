@@ -1,0 +1,24 @@
+% Shared colors and TikZ styles for the explanatory diagrams
+\usetikzlibrary{calc,arrows.meta}
+
+\definecolor{dirc}{RGB}{230,130,20}
+\definecolor{actc}{RGB}{40,90,170}
+\definecolor{fa}{RGB}{230,130,20}
+\definecolor{fb}{RGB}{40,90,170}
+\definecolor{fc}{RGB}{60,150,80}
+\definecolor{fd}{RGB}{190,60,110}
+\definecolor{fe}{RGB}{120,90,170}
+\definecolor{edgec}{RGB}{110,70,60}
+\definecolor{nodec}{RGB}{232,228,215}
+\definecolor{goodc}{RGB}{60,150,80}
+\definecolor{midc}{RGB}{225,165,30}
+\definecolor{badc}{RGB}{200,60,50}
+
+\tikzset{
+  alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
+  visible on/.style={alt={#1{}{opacity=0,text opacity=0}}},
+  card/.style={draw=black!25,fill=black!3,rounded corners=3pt,font=\small,align=flush left,inner sep=5pt},
+  bubble/.style={draw=black!25,fill=white,rounded corners=3pt,font=\scriptsize,inner sep=4pt,align=flush left},
+  fnode/.style={draw=edgec!70,fill=nodec,rounded corners=3pt,font=\footnotesize,align=center,minimum height=0.6cm,inner sep=3pt},
+  fedge/.style={-{Stealth[length=5pt]},edgec,line width=1.3pt},
+}

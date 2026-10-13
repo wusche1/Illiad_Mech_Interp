@@ -14,56 +14,40 @@
   \end{itemize}
   }
 }
-\section{Features in Language Models}
+\section{Finding Directions}
 }
-
-% mikolov2013: fig1+fig2 are two panels of the same Figure 2, keep together
-\begin{frame}{Features Represent Human-Understandable Concepts}
-\begin{center}
-\includegraphics[height=0.55\textheight,keepaspectratio]{figures/mikolov2013/fig1.png}
-\hspace{0.5em}
-\includegraphics[height=0.55\textheight,keepaspectratio]{figures/mikolov2013/fig2.png}
-\end{center}
-\IfFileExists{03_transformer_features/figures/mikolov2013/fig1-caption.txt}{%
-  \CatchFileDef{\captiontext}{03_transformer_features/figures/mikolov2013/fig1-caption.txt}{\endlinechar=-1}%
-  {\tiny \captiontext}%
-}{}
-
-\source{mikolov2013}
-
-\note{
-\begin{itemize}
-\item We already saw this before we had LLMs, just for small RNNs that predict text
-\item A particular direction encodes gender: we can extract that direction from a pair of opposite-gendered words
-\item Adding it to one word brings us to its opposite-gendered counterpart
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{}
-\begin{center}
-\Large How do we identify features in Transformers?
-\end{center}
-
-\note{
-\begin{itemize}
-\item How do we identify features in a transformer?
-\item Gathering ideas from the audience, specifically people who have not heard much about MechInterp before
-\end{itemize}
-}
-\end{frame}
 
 \begin{frame}{Getting a Feature Direction}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
 \textbf{Contrastive pairs:}
 \[ r = \text{Emb}(\text{``Spanish''}) - \text{Emb}(\text{``French''}) \]
 
-\vspace{0.5em}
-\textbf{Linear probe:} \quad {\small $x_i$: sample activation, $y_i \in \{+1, -1\}$: label}
+\textbf{Linear probe:} \quad {\small $x_i$: activation, $y_i \in \{\pm 1\}$: label}
 \[ r = \arg\max_{\|r\|=1} \sum_i y_i \cdot r^\top x_i \]
 
-\vspace{0.5em}
-\textbf{CAA:} \quad {\small $x_i^{(+)}, x_i^{(-)}$: positive/negative example of a property}
+\textbf{CAA:} \quad {\small $x_i^{(\pm)}$: positive/negative example}
 \[ r = \frac{1}{N} \sum_{i=1}^{N} \left( x_i^{(+)} - x_i^{(-)} \right) \]
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\fill[black!3,draw=black!15,rounded corners=3pt] (-0.2,-0.2) rectangle (4.8,4.2);
+\foreach \x/\y in {0.6/0.8,1.0/1.4,0.4/1.6,1.3/0.6,0.9/0.3,1.6/1.1,0.3/1.0,1.2/1.9}
+  \fill[fb] (\x,\y) circle (2.2pt);
+\foreach \x/\y in {3.2/2.6,3.7/3.1,3.0/3.4,3.9/2.4,3.4/2.0,4.2/3.0,2.8/2.9,3.6/3.7}
+  \fill[fa] (\x,\y) circle (2.2pt);
+\node[font=\scriptsize,text=fb] at (0.9,-0.0) {French};
+\node[font=\scriptsize,text=fa] at (3.6,3.95) {Spanish};
+\draw[black!45,dashed] (1.06,3.65) -- (3.34,0.35);
+\coordinate (mf) at (0.9,1.1); \coordinate (ms) at (3.5,2.9);
+\draw[fill=white,draw=fb,thick] (mf) circle (3pt);
+\draw[fill=white,draw=fa,thick] (ms) circle (3pt);
+\draw[-{Stealth[length=6pt]},dirc,line width=1.6pt] (mf) -- (ms) node[pos=0.55,above left=-1pt,font=\scriptsize,text=dirc] {$r$};
+\node[font=\scriptsize,text=black!55,rotate=-55] at (3.55,1.05) {probe boundary};
+\end{tikzpicture}
+\end{column}
+\end{columns}
 
 \note{
 \begin{itemize}
@@ -119,21 +103,6 @@
 }
 \end{frame}
 
-% nanda2023: fig0 = Figure 1
-\begin{frame}{Linear Probes Can Measure World Models}
-\paperfig{figures/nanda2023/fig0.png}{03_transformer_features/figures/nanda2023/fig0-caption.txt}
-
-\source{nanda2023}
-
-\note{
-\begin{itemize}
-\item Othello-GPT: a transformer trained as a next token predictor on moves in an Othello game
-\item They train linear probes on the residual stream to predict the state of each field on the board
-\item One probe each for empty, ``mine'' (player whose turn it is), and ``yours'' (other player's pieces)
-\end{itemize}
-}
-\end{frame}
-
 % nanda2023: table0 = Table 1
 \begin{frame}{Linear Probes Can Measure World Models}
 \paperfig{figures/nanda2023/table0.png}{03_transformer_features/figures/nanda2023/table0-caption.txt}
@@ -144,34 +113,6 @@
 \begin{itemize}
 \item They could reconstruct the state of the game board with pretty high accuracy
 \item The model linearly encodes board state relative to the current player (MINE vs YOURS, not BLACK vs WHITE)
-\end{itemize}
-}
-\end{frame}
-
-% nanda2023: fig1 = Figure 2
-\begin{frame}{Intervening on the World Model}
-\paperfig{figures/nanda2023/fig1.png}{03_transformer_features/figures/nanda2023/fig1-caption.txt}
-
-\source{nanda2023}
-
-\note{
-\begin{itemize}
-\item Once they knew the direction, they could add it in to change the model's beliefs about what piece is there
-\item They added the direction encoding a particular game state in every layer of the residual stream
-\end{itemize}
-}
-\end{frame}
-
-% nanda2023: table1 = Table 2
-\begin{frame}{Intervening on the World Model}
-\paperfig{figures/nanda2023/table1.png}{03_transformer_features/figures/nanda2023/table1-caption.txt}
-
-\source{nanda2023}
-
-\note{
-\begin{itemize}
-\item The model afterwards continued playing as if this change on the game board actually happened
-\item Linear probe addition achieves very low error rates compared to the null intervention baseline
 \end{itemize}
 }
 \end{frame}
@@ -206,20 +147,6 @@
 }
 \end{frame}
 
-% li2024b: table0 = Table 1
-\begin{frame}{Adding in Truthfulness}
-\paperfig{figures/li2024b/table0.png}{03_transformer_features/figures/li2024b/table0-caption.txt}
-
-\source{li2024b}
-
-\note{
-\begin{itemize}
-\item ITI can outperform finetuning
-\item It also helps on top of few-shot prompting
-\end{itemize}
-}
-\end{frame}
-
 % panickssery2024: fig0 = Figure 1a
 \begin{frame}{Steering via Contrastive Features}
 \paperfig{figures/panickssery2024/fig0.png}{03_transformer_features/figures/panickssery2024/fig0-caption.txt}
@@ -247,29 +174,46 @@
 }
 \end{frame}
 
-% arditi2024: fig0 = Figure 1
-\begin{frame}{Refusal Is Mediated by a Single Direction}
-\paperfig{figures/arditi2024/fig0.png}{03_transformer_features/figures/arditi2024/fig0-caption.txt}
+\begin{frame}{Refusal Ablation, Baked into the Weights}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+Every matrix that writes to the residual stream:
+\[ W_{\text{out}}' \leftarrow W_{\text{out}} - \hat{r}\hat{r}^\top W_{\text{out}} \]
+(embedding, attention out, MLP out, biases)
 
-\source{arditi2024}
-
-\note{
+\vspace{0.5em}
 \begin{itemize}
-\item The authors identify the refusal direction in a bunch of different LLMs
-\item They can always stop models from refusing by ablating it out
+\item Equivalent to ablating $\hat r$ at every layer
+\item No gradients, no harmful examples
+\item Competitive with other jailbreaks on HarmBench
 \end{itemize}
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,wr/.style={draw=fb!60,fill=fb!10,rounded corners=2pt,font=\scriptsize,minimum width=1.5cm,minimum height=0.5cm}]
+\draw[black!25,line width=6pt] (0,-0.3) -- (0,4.3);
+\node[font=\scriptsize,text=black!60,rotate=90] at (-0.35,2.0) {residual stream};
+\foreach \n/\y in {embed/0.2, attn out/1.5, MLP out/2.8} {
+  \node[wr] (w) at (2.1,\y) {\n};
+  \node[draw=dirc,fill=dirc!15,circle,inner sep=1pt,font=\tiny] (f) at (1.0,\y+0.35) {$-\hat r$};
+  \draw[-{Stealth[length=5pt]},thick,fb!70] (w.west) -- (f); \draw[-{Stealth[length=5pt]},thick,fb!70] (f) -- (0.12,\y+0.6);
 }
-\end{frame}
-
-% arditi2024: fig1 = Figure 2
-\begin{frame}{Refusal Is Mediated by a Single Direction}
-\paperfig{figures/arditi2024/fig1.png}{03_transformer_features/figures/arditi2024/fig1-caption.txt}
+\node[font=\scriptsize,anchor=west] at (0.2,4.1) {never contains $\hat r$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
 
 \source{arditi2024}
 
 \note{
 \begin{itemize}
-\item They can also make models refuse harmless questions by adding the refusal direction
+\item Under the hood of the ``safety training can be removed'' slide
+\item Directional ablation at inference time is equivalent to editing the weights: orthogonalize every matrix that writes into the residual stream against the refusal direction
+\item Then the model can never write the refusal direction, so it can never ``notice'' harmfulness in that way
+\item Rank-one edit per matrix, no fine-tuning, no gradient steps, no harmful completions needed
+\item On HarmBench it is competitive with other general jailbreaks, on Qwen even on par with prompt-specific GCG
+\item Coherence mostly preserved, but TruthfulQA drops somewhat
+\item For open-weight models this is a cheap way to remove safety training
 \end{itemize}
 }
 \end{frame}
@@ -289,19 +233,6 @@
 \item We can thereby see what aspects of the prediction are computed in which layer
 \end{itemize}
 }
-\end{frame}
-
-\begin{frame}{Logit Lens Exercise}
-\begin{center}
-\vfill
-\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_normal.ipynb}{%
-\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Normal Exercise\quad}}
-\vspace{1cm}
-
-\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/01_logit_lens/notebook_hard.ipynb}{%
-\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Hard Exercise\quad}}
-\vfill
-\end{center}
 \end{frame}
 
 \section{Superposition}
@@ -326,41 +257,23 @@
 }
 \end{frame}
 
-% elhage2022: fig10 = 3 features in 2 dimensions
-\begin{frame}{Superposition}
-\begin{center}
-\includegraphics[width=0.5\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/fig10.png}
-\end{center}
-
-\source{elhage2022}
-
-\note{
-\begin{itemize}
-\item The reason we get polysemantic directions: the model has more features than dimensions in its activation space
-\item If you have 2 dimensions and want to encode 2 properties (Portuguese, Shakespearean), you can perfectly encode both
-\item If you want a third (ozone hole), you can still encode all 3, but with some noise
-\item If the outer two features are active, this looks like the third feature
-\item So a Portuguese Shakespeare text is indistinguishable from ozone hole
-\item This is not so bad if features are sparse: Portuguese and Shakespearean rarely co-occur
-\item But for always-present features (age, height, wealth), superposition would be quite bad
-\item So superposition makes sense as long as features are sparse
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Johnson--Lindenstrauss Lemma}
 In $N$ dimensions, we can pack
 \[ m \leq e^{c \cdot \varepsilon^2 \cdot N} \]
 vectors with pairwise dot product at most $\varepsilon$.
 
-\vspace{1em}
 Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilon$.
+
+\begin{center}
+\includegraphics[width=0.85\textwidth]{figures/random_cosines.png}
+\end{center}
 
 \source{johnson1984}
 
 \note{
 \begin{itemize}
 \item The effect is quite big: instead of scaling the number of features linearly with dimensions, we scale exponentially given a feature overlap of $\varepsilon$
+\item Plot: two random directions are almost orthogonal in high dimensions. Residual streams have thousands of dimensions
 \end{itemize}
 }
 \end{frame}
@@ -437,14 +350,20 @@ Features scale \textbf{exponentially} with dimensions, given overlap $\varepsilo
 }
 \end{frame}
 
+% elhage2022: fig29 = dimensions per feature plot
 \begin{frame}{Dimensions per Feature}
+\begin{columns}[c]
+\begin{column}{0.32\textwidth}
 \[ D = \frac{m}{\|W\|_F^2} \]
-
-\vspace{0.5em}
 On average, how many hidden dimensions does the network use per feature?
 
 \vspace{0.5em}
-{\small $m$: number of hidden dimensions \quad $\|W\|_F$: Frobenius norm of $W$}
+{\small $m$: hidden dimensions\\$\|W\|_F$: Frobenius norm of $W$}
+\end{column}
+\begin{column}{0.66\textwidth}
+\includegraphics[width=\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/dimensions_per_feature.png}
+\end{column}
+\end{columns}
 
 \source{elhage2022}
 
@@ -452,59 +371,28 @@ On average, how many hidden dimensions does the network use per feature?
 \begin{itemize}
 \item One global summary: how many dimensions per feature, averaged across the whole network
 \item Equivalent to the sum of squared norms of all feature columns, divided into the hidden dimension count
-\end{itemize}
-}
-\end{frame}
-
-% elhage2022: fig29 = dimensions per feature plot
-\begin{frame}{Dimensions per Feature}
-\begin{center}
-\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/elhage2022/dimensions_per_feature.png}
-\end{center}
-
-\source{elhage2022}
-
-\note{
-\begin{itemize}
 \item Plot of $D$ as sparsity is varied
-\item There are ``sticky regions'' --- some feature densities the network gravitates towards, notably 1 and 1/2
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Feature Dimensionality}
-\[ D_i = \frac{1}{\sum_j \frac{(W_i \cdot W_j)^2}{\|W_i\|^2 \|W_j\|^2}} \]
-
-\vspace{0.5em}
-How many dimensions does the network allocate to encoding feature $i$?
-
-\source{elhage2022}
-
-\note{
-\begin{itemize}
-\item To understand what happens, we zoom in by looking at the dimensionality of a specific feature
-\item If a feature has a dimension all for itself, $D_i = 1$
-\item If two features share one dimension, $D_i = 1/2$
-\item In general: go through all other features, add them up, see how much they co-use their lane
+\item There are ``sticky regions'': some feature densities the network gravitates towards, notably 1 and 1/2
 \end{itemize}
 }
 \end{frame}
 
 % elhage2022: fig31 = feature geometry plot
 \begin{frame}{Feature Geometry}
+\[ D_i = \frac{1}{\sum_j \frac{(W_i \cdot W_j)^2}{\|W_i\|^2 \|W_j\|^2}} \]
 \begin{center}
-\includegraphics[width=0.95\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2022/fig31.png}
+\includegraphics[width=0.85\textwidth,height=0.55\textheight,keepaspectratio]{figures/elhage2022/fig31.png}
 \end{center}
 
 \source{elhage2022}
 
 \note{
 \begin{itemize}
+\item Zoom in: how many dimensions does the network allocate to feature $i$?
+\item If a feature has a dimension all for itself, $D_i = 1$; if two features share one dimension, $D_i = 1/2$
 \item Features cluster around certain dimensionalities and take specific geometric shapes
-\item Feature geometry has phases: equidistant points on an $n$-dimensional sphere
-\item Anti-correlated features are opposite to each other
-\item Correlated features are close to each other
-\item Extremely correlated features just share one direction
+\item Phases: equidistant points on an $n$-dimensional sphere (digons, triangles, pentagons, tetrahedra)
+\item Anti-correlated features are opposite to each other, correlated features are close, extremely correlated features share one direction
 \end{itemize}
 }
 \end{frame}
@@ -571,6 +459,9 @@ We know neither $x$ nor $A$.
 \end{frame}
 
 \begin{frame}{Compressed Sensing}
+\begin{columns}[c]
+\begin{column}{0.6\textwidth}
+\small
 \textbf{Setup:} Known dictionary $A \in \mathbb{R}^{n \times m}$.
 We observe $y = Ax$, where $x$ is $k$-sparse.
 We want to recover $x$.
@@ -585,6 +476,20 @@ recovers $x$ exactly.
 
 \vspace{0.5em}
 $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
+\end{column}
+\begin{column}{0.38\textwidth}
+\centering
+\begin{tikzpicture}[x=0.9cm,y=0.9cm]
+\draw[black!35,-stealth] (-2.2,0) -- (2.4,0) node[below,font=\scriptsize] {$z_1$};
+\draw[black!35,-stealth] (0,-2.2) -- (0,2.4) node[left,font=\scriptsize] {$z_2$};
+\draw[thick,black!70] (-1.2,2.4) -- (2.4,-0.6) node[below,font=\scriptsize] {$Az=y$};
+\draw[fa,thick,fill=fa!12] (1.4,0) -- (0,1.4) -- (-1.4,0) -- (0,-1.4) -- cycle;
+\draw[fb,thick] (0,0) circle (1.076);
+\fill[fa] (0,1.4) circle (2.2pt) node[right=2pt,font=\scriptsize,text=fa] {$\ell_1$: sparse};
+\fill[fb] (0.69,0.83) circle (2.2pt) node[below right=0pt,font=\scriptsize,text=fb] {$\ell_2$: dense};
+\end{tikzpicture}
+\end{column}
+\end{columns}
 
 \source{candes2004,donoho2006}
 
@@ -602,34 +507,9 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{}
-\begin{center}
-\Large How to disentangle features in superposition?
-\end{center}
-
-\note{
-\begin{itemize}
-\item Collect ideas from people who have not heard of SAEs before
-\end{itemize}
-}
-\end{frame}
-
 \section{Sparse Autoencoders}
 
-\begin{frame}{Sparse Autoencoders}
-\paperfig{figures/bricken2023/fig2.png}{03_transformer_features/figures/bricken2023/fig2-caption.txt}
-
-\source{bricken2023}
-
-\note{
-\begin{itemize}
-\item The idea: train a second neural network to represent the internals of the transformer
-\item Each forward pass of the transformer gives us training data for the SAE
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Sparse Autoencoders}
+\begin{frame}{Sparse Autoencoders: The Math}
 \[ f = \text{ReLU}(W_{\text{enc}}(x - b_{\text{dec}}) + b_{\text{enc}}) \qquad \hat{x} = W_{\text{dec}} f + b_{\text{dec}} \]
 \[ \mathcal{L} = \underbrace{\|x - \hat{x}\|_2^2}_{\text{reconstruction}} + \lambda \underbrace{\|f\|_1}_{\text{sparsity}} \]
 
@@ -694,21 +574,6 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{}
-\begin{center}
-\Large \url{https://www.neuronpedia.org/gemma-3-27b/31-gemmascope-2-res-16k}
-\end{center}
-
-\note{
-\begin{itemize}
-\item You can use this method to find all kinds of features in LLMs
-\item At scale, the labeling is done by other LLMs, using the same methods we just saw
-\item Your task for now (10 minutes): click through various models and features, get a feeling for what kind of features there are
-\item These are unfortunately small non-frontier models, which makes the features less impressive
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Trouble with SAEs: Feature Absorption}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/mcdougall2024/absorption.png}
@@ -739,15 +604,41 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 }
 \end{frame}
 
-\begin{frame}{}
-\begin{center}
-\Large The Cambrian Explosion of SAEs
-\end{center}
+% \saebars{x}{output formula of v}: pre-activation bars (grey) and feature activations (blue)
+\newcommand{\saebars}[2]{%
+  \foreach \v [count=\i] in {0.3,1.6,-0.4,0.9,2.2,0.15,-0.2,1.1} {
+    \pgfmathsetmacro{\o}{#2}
+    \fill[black!12] (#1+\i*0.42,0) rectangle ++(0.3,\v);
+    \fill[fb] (#1+\i*0.42,0) rectangle ++(0.3,\o);
+  }
+  \draw[black!40] (#1+0.3,0) -- (#1+3.8,0);}
+
+\begin{frame}{The Cambrian Explosion of SAEs}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[font=\small\bfseries] at (2.05,3.0) {ReLU + L1};
+\saebars{0}{max(\v-0.35,0)}
+\node[font=\scriptsize,align=center] at (2.05,-1.0) {L1 shrinks every\\active feature};
+\begin{scope}[visible on=<2->]
+\node[font=\small\bfseries] at (6.75,3.0) {JumpReLU};
+\saebars{4.7}{(\v>0.8)*\v}
+\draw[dirc,dashed,thick] (4.95,0.8) -- (8.6,0.8) node[right,font=\scriptsize,text=dirc] {$\theta$};
+\node[font=\scriptsize,align=center] at (6.75,-1.0) {below $\theta$: off\\above: unshrunk};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\node[font=\small\bfseries] at (11.45,3.0) {Top-$K$ ($K=3$)};
+\saebars{9.4}{(\v>1.05)*\v}
+\node[font=\scriptsize,align=center] at (11.45,-1.0) {keep the $K$ largest,\\no sparsity penalty};
+\end{scope}
+\node[font=\scriptsize,text=black!60] at (6.75,-1.9) {grey: encoder pre-activations \quad blue: feature activations};
+\end{tikzpicture}
 
 \note{
 \begin{itemize}
 \item Given these problems, and that SAEs seemed such a promising tool, we got a Cambrian explosion through roughly 2024
 \item Lots of people iterating on the concept and coming up with better ways of doing SAEs
+\item The main design question: how do you decide which features are on, and how strongly?
+\item Next slides: each variant in detail
 \end{itemize}
 }
 \end{frame}
@@ -820,18 +711,6 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Staircase SAEs}
-\paperfig{figures/fillingham2025/staircase_sae.png}{}
-
-\source{fillingham2025}
-
-\note{
-\begin{itemize}
-\item The idea: you get features per layer, and your SAE resembles the residual stream slowly building up features from layer to layer
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Comparing SAEs}
 \paperfig{figures/karvonen2025b/fig1.png}{03_transformer_features/figures/karvonen2025b/fig1-caption.txt}
 
@@ -867,51 +746,6 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Bigger Models, More Specific Features}
-\begin{center}
-\includegraphics[width=0.95\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig1.png}
-\end{center}
-
-\source{templeton2024}
-
-\note{
-\begin{itemize}
-\item We see more specific and general features than we saw earlier in smaller models
-\item For example, the now famous Golden Gate Bridge feature
-\item Features are multilingual and multimodal
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Golden Gate Claude}
-\begin{center}
-\includegraphics[width=0.7\textwidth,height=0.75\textheight,keepaspectratio]{figures/golden_gate_claude.png}
-\end{center}
-
-\note{
-\begin{itemize}
-\item Anthropic made a chatbot available for one day with the Golden Gate Bridge feature clamped up
-\item It cannot help itself from bringing up the Golden Gate Bridge, which can be quite strange
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Reading Claude's Mind}
-\begin{center}
-\includegraphics[width=0.85\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig42.png}
-\end{center}
-
-\source{templeton2024}
-
-\note{
-\begin{itemize}
-\item We can now somewhat read Claude's mind for safety-relevant contexts
-\item When asked about itself, Claude activates features related to robots, AI consciousness, moral agency, emotions, entrapment
-\item The model's self-representation invokes common tropes about AI and is heavily anthropomorphized
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Safety-Relevant Feature Steering}
 In the Claude Opus 4.5 system card:
 
@@ -938,9 +772,9 @@ In the Claude Opus 4.5 system card:
 \note{
 \begin{itemize}
 \item The chain of thought said less things like ``I know this is a test''
-\item The model behaves less aligned, but not in the most egregious cases of previous models (blackmail, sabotage)
+\item The model behaves somewhat less aligned, but no new, extreme misaligned behaviors appeared (blackmail increased slightly under some interventions; research sabotage and framing unchanged)
 \item Some of the effect is just the model being pushed out of distribution, since random features also cause changes
-\item They used both contrastive vectors (subtracting activations on eval vs.\ non-eval prompts) and SAE features identified by discriminating eval-aware vs.\ non-eval-aware transcripts
+\item They used both contrastive vectors (subtracting activations on eval vs.\ non-eval prompts) and SAE features identified by discriminating eval-aware vs.\ non-eval-aware transcripts, and eval vs.\ non-eval transcripts
 \end{itemize}
 }
 \end{frame}
@@ -1006,11 +840,3 @@ In the Claude Opus 4.5 system card:
 }
 \end{frame}
 
-\begin{frame}{SAE Exercise}
-\begin{center}
-\vfill
-\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/04_saes/notebook.ipynb}{%
-\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad SAE Exercise\quad}}
-\vfill
-\end{center}
-\end{frame}

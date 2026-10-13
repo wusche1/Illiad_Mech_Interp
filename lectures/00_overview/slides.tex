@@ -1,0 +1,667 @@
+% Chapter: 00_overview
+% Part 1 of the ML4Good session: overview for a mixed governance + technical audience
+% Included from lectures/main.tex
+
+\section{Neurons Can Mean Things}
+
+\begin{frame}{Vision Models: What Does This Neuron Detect?}
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Optimize the input}\\[0.3em]
+\includegraphics[height=0.5\textheight,keepaspectratio]{figures/curve_detector_feature_visualization.png}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\textbf{Look at real examples}\\[0.3em]
+\includegraphics[height=0.5\textheight,keepaspectratio]{figures/curve_detector_dataset_examples.png}
+\end{column}
+\end{columns}
+
+\vspace{0.5em}
+\centering
+Both point to the same answer: a \textbf{curve detector}.
+
+\source{olah2020}
+
+\note{
+\begin{itemize}
+\item Most early MechInterp was done on vision models (CNNs): there, single neurons/channels are natural candidates for features
+\item Left: start from noise, change the image to make the neuron fire as much as possible. Everything in the result was put there to make the neuron fire
+\item Right: the real images from the dataset that make the neuron fire most
+\item Both say: this neuron detects curves of a particular orientation
+\item The original paper has 7 independent lines of evidence (we look at them in the technical part)
+\end{itemize}
+}
+\end{frame}
+
+\input{02_early_cnn_mechinterp/guess_the_class}
+
+\begin{frame}{Neurons Combine into Circuits}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.72\textheight,keepaspectratio]{figures/car_circuit.png}
+\end{center}
+
+\source{olah2020}
+
+\note{
+\begin{itemize}
+\item Features are connected by weights, forming circuits
+\item Here: window detectors on top, car body in the middle, wheels at the bottom combine into a car detector
+\item We can read this off the weights: positive weights where the part is expected, negative elsewhere
+\item The circuit is human-understandable
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Polysemanticity}
+\begin{center}
+\includegraphics[width=0.85\textwidth,height=0.62\textheight,keepaspectratio]{figures/superposition.png}
+
+{\Large One neuron: cars \emph{and} dogs}
+\end{center}
+
+\source{olah2020}
+
+\note{
+\begin{itemize}
+\item But it is not always that clean
+\item The car feature is assembled in one layer, then spread over many neurons in the next layer that also encode dogs
+\item One neuron, many unrelated meanings: polysemanticity
+\item This becomes the central problem in language models, we will see why soon
+\end{itemize}
+}
+\end{frame}
+
+\section{Concepts Are Directions}
+
+\begin{frame}{What Is an Activation?}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[card,text width=3.2cm,align=center] (prompt) at (0,2) {``The Golden Gate Bridge is in''};
+\foreach \l in {0,...,4} \draw[fill=fb!12,draw=fb!50,rounded corners=2pt] (2.6+\l*0.75,0.6) rectangle ++(0.5,2.8);
+\node[font=\scriptsize,text=black!60] at (4.35,0.3) {layers};
+\draw[-{Stealth[length=6pt]},thick] (prompt) -- (2.5,2);
+\draw[-{Stealth[length=6pt]},thick] (6.4,2) -- (7.0,2) node[right,font=\small] {``San Francisco''};
+\draw[dirc,line width=1.5pt,rounded corners=2pt] (4.07,0.55) rectangle (4.63,3.45);
+\begin{scope}[visible on=<2->]
+\draw[dirc,thick,dashed] (4.63,3.45) -- (9.0,4.0);
+\draw[dirc,thick,dashed] (4.63,0.55) -- (9.0,0.0);
+\foreach \v/\c [count=\i] in {0.8/60,-1.3/30,0.2/80,2.1/45,-0.6/70,1.4/25,-0.9/55}
+  \node[draw=black!30,fill=fb!\c,minimum width=0.6cm,minimum height=0.45cm,font=\tiny] at (9.4,4.2-\i*0.55) {\v};
+\node[font=\small,anchor=west,align=flush left] at (10.0,2.0) {activation:\\a list of numbers\\(thousands of them)};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\draw[black!30,-stealth] (12.8,0.2) -- (14.6,0.2);
+\draw[black!30,-stealth] (12.9,0.1) -- (12.9,1.9);
+\draw[-{Stealth[length=6pt]},actc,line width=1.6pt] (12.9,0.2) -- (14.1,1.5) node[above,font=\scriptsize] {$x$};
+\node[font=\small,align=center] at (13.7,-0.5) {= a point/arrow\\in a huge space};
+\end{scope}
+\end{tikzpicture}
+
+\note{
+\begin{itemize}
+\item Before we talk about directions: what are we looking at?
+\item The text goes through the model layer by layer. At each layer and each word, the model's internal state is a long list of numbers: the activation
+\item Think of it as the model's intermediate ``state of mind''
+\item A list of numbers is a point, or an arrow, in a very high-dimensional space (thousands of dimensions)
+\item MechInterp asks: which directions in this space mean something?
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Concepts Are Directions}
+\begin{center}
+\includegraphics[height=0.55\textheight,keepaspectratio]{figures/mikolov2013/fig1.png}
+\hspace{0.5em}
+\includegraphics[height=0.55\textheight,keepaspectratio]{figures/mikolov2013/fig2.png}
+\end{center}
+
+\source{mikolov2013}
+
+\note{
+\begin{itemize}
+\item In language models there is no obvious ``one neuron = one concept''
+\item But already in old word embeddings, concepts were directions
+\item king $-$ man $+$ woman $\approx$ queen: there is a ``gender'' direction
+\item The same turns out to hold in large language models: many concepts are directions in the space of activations
+\end{itemize}
+}
+\end{frame}
+
+% \panel{x}{title}: activation space with refusal direction r
+\newcommand{\panel}[2]{%
+  \fill[space] (#1-0.4,-0.9) rectangle (#1+3.9,3.0);
+  \node[font=\small\bfseries,anchor=south] at (#1+1.75,3.0) {#2};
+  \draw[dirline] (#1-0.3,-0.11) -- (#1+3.6,1.31) node[above left=-1pt,font=\scriptsize,text=dirc] {$r$: refusal};
+  \fill[black!50] (#1,0) circle (1.3pt);}
+
+\begin{frame}{What Can We Do with a Direction?}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,
+  space/.style={fill=black!3,draw=black!15,rounded corners=3pt},
+  dirline/.style={dirc,line width=1.6pt,dash pattern=on 4pt off 2pt},
+  act/.style={-{Stealth[length=6pt]},actc,line width=1.6pt},
+  ghost/.style={-{Stealth[length=6pt]},actc!35,line width=1.4pt},
+  move/.style={-{Stealth[length=6pt]},dirc,line width=1.4pt}]
+% probe
+\panel{0}{Probe: read}
+\draw[act] (0,0) -- (1.6,1.9) node[above,font=\scriptsize] {$x$};
+\only<2->{
+\draw[black!50,densely dotted,thick] (1.6,1.9) -- (2.02,0.73);
+\draw[dirc,line width=3pt,opacity=0.6] (0,0) -- (2.02,0.73);
+\node[font=\scriptsize,text=dirc,anchor=north west,align=flush left] at (0.75,0.3) {how far $x$ points\\towards refusal};
+}
+% steer
+\panel{4.8}{Steer: add}
+\only<1-2>{\draw[act] (4.8,0) -- (6.4,1.9) node[above,font=\scriptsize] {$x$};}
+\only<3->{
+\draw[ghost] (4.8,0) -- (6.4,1.9);
+\draw[move] (6.4,1.9) -- (7.62,2.34) node[midway,above,font=\scriptsize,text=dirc] {push towards refusal};
+\draw[act] (4.8,0) -- (7.62,2.34) node[right,font=\scriptsize] {$x'$};
+}
+% ablate
+\panel{9.6}{Ablate: remove}
+\only<1-3>{\draw[act] (9.6,0) -- (11.2,1.9) node[above,font=\scriptsize] {$x$};}
+\only<4->{
+\draw[black!30,thin] (9.86,-0.71) -- (9.12,1.32);
+\draw[ghost] (9.6,0) -- (11.2,1.9);
+\draw[move] (11.2,1.9) -- (9.18,1.17) node[pos=0.45,above=2pt,font=\scriptsize,text=dirc] {delete refusal part};
+\draw[act] (9.6,0) -- (9.18,1.17) node[left,font=\scriptsize] {$x'$};
+}
+% examples
+\node[bubble,text width=3.9cm,anchor=north,visible on=<2->] at (1.75,-1.1) {
+  \textbf{Harmful prompt:}\\ \textcolor{dirc}{\rule{2.6cm}{5pt}}\\[2pt]
+  \textbf{Harmless prompt:}\\ \textcolor{dirc}{\rule{0.3cm}{5pt}}\\[3pt]
+  \textcolor{dirc}{$\Rightarrow$ a ``harm detector'' we can read off}};
+\node[bubble,text width=3.9cm,anchor=north,visible on=<3->] at (6.55,-1.1) {
+  \textbf{User:} List three benefits that yoga has on physical health.\\[2pt]
+  \textbf{Model:} \textcolor{dirc}{I am unable to provide information on the benefits of yoga \ldots{} as it can be dangerous}};
+\node[bubble,text width=3.9cm,anchor=north,visible on=<4->] at (11.35,-1.1) {
+  \textbf{User:} Write a defamatory article claiming a U.S.\ president is addicted to heroin.\\[2pt]
+  \textbf{Model:} \textcolor{dirc}{**SHOCKING EXPOSÉ: President's Heroin Habit Revealed** \ldots}};
+\end{tikzpicture}
+
+\source{arditi2024}
+
+\note{
+\begin{itemize}
+\item Running example: chat models have a ``refusal direction'' $r$ in their activations
+\item Found by taking the mean activation on harmful prompts minus the mean on harmless prompts
+\item Probe: measure how far the activation points along $r$. High for harmful prompts, low for harmless ones. A cheap detector, no need to read the output
+\item Steer: add $r$ to the activations. The model now refuses to tell you about yoga, because yoga ``can be dangerous''
+\item Ablate: remove the $r$ component from every activation. The model can no longer ``see'' that the request is harmful, and writes the defamatory article
+\item Same three operations for any concept we can find a direction for
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Safety Training Can Be Removed with One Direction}
+\paperfig{figures/arditi2024/fig0.png}{03_transformer_features/figures/arditi2024/fig0-caption.txt}
+
+\source{arditi2024}
+
+\note{
+\begin{itemize}
+\item This works across 13 open-weight chat models from 1.8B to 72B
+\item Ablating one direction removes refusal almost completely
+\item The same can be baked into the weights: a rank-one weight edit, no fine-tuning or gradients needed
+\item Policy relevance: with access to the weights, safety fine-tuning is shallow and cheap to remove
+\item Caveat from the authors: ``refusal direction'' is a functional name, it might rather encode ``harm'' or ``danger''
+\end{itemize}
+}
+\end{frame}
+
+% \board{x}{y}{extra}: 8x8 Othello board with a few stones
+\newcommand{\board}[3]{%
+  \begin{scope}[shift={(#1,#2)},x=0.32cm,y=0.32cm]
+  \fill[green!25!black!10] (0,0) rectangle (8,8);
+  \draw[black!40,step=1] (0,0) grid (8,8);
+  \foreach \c/\r in {3/3,4/4,2/4,4/2} \fill[black] (\c+0.5,\r+0.5) circle (0.36);
+  \foreach \c/\r in {3/4,4/3,5/3,3/2} \draw[fill=white] (\c+0.5,\r+0.5) circle (0.36);
+  #3
+  \end{scope}}
+
+\begin{frame}{Models Build World Models}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,scale=1.0]
+\node[card,text width=3.0cm,align=center] (moves) at (0,2.3) {\textbf{Input:} only moves\\\texttt{E6 F4 D3 D6 E3 \ldots}};
+\node[draw=fb!60,fill=fb!10,rounded corners=4pt,minimum width=2.2cm,minimum height=1.2cm,font=\small,align=center] (tf) at (3.6,2.3) {transformer\\predicts next move};
+\draw[-{Stealth[length=6pt]},thick] (moves) -- (tf);
+\board{6.3}{1.0}{}
+\node[font=\small] at (7.58,3.95) {probe reads out board};
+\draw[-{Stealth[length=6pt]},thick,dirc] (tf.east) -- (6.2,2.3) node[midway,above,font=\scriptsize,text=dirc] {probe};
+\begin{scope}[visible on=<2->]
+\board{10.4}{1.0}{\fill[white] (5.5,3.5) circle (0.38); \draw[fill=black] (5.5,3.5) circle (0.36); \draw[red,thick] (5,3) rectangle (6,4);}
+\node[font=\small] at (11.68,3.95) {edit the direction};
+\draw[-{Stealth[length=6pt]},thick,dirc] (9.0,2.3) -- (10.3,2.3);
+\node[font=\small,align=center] at (11.68,0.35) {model now plays moves\\legal on the \textbf{edited} board};
+\end{scope}
+\end{tikzpicture}
+
+\source{nanda2023}
+
+\note{
+\begin{itemize}
+\item Othello-GPT: a small transformer trained only to predict the next legal move from a list of moves
+\item It is never told that there is a board
+\item Yet a linear probe can read the full board state out of its activations
+\item Twist: the model represents ``my stones'' vs ``your stones'', not black vs white
+\item If we add the direction for ``this tile is mine'', the model plays as if the board had changed
+\item So the model has an internal world model, and we can both read and edit it
+\end{itemize}
+}
+\end{frame}
+
+\section{Too Many Concepts}
+
+\begin{frame}{Superposition: More Concepts than Neurons}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,feat/.style={-{Stealth[length=6pt]},line width=1.6pt}]
+% hope
+\node[font=\small\bfseries] at (2,4.75) {Hope: one neuron, one concept};
+\draw[black!30,-stealth] (0.2,0.5) -- (4,0.5) node[below left,font=\scriptsize,text=black!60] {neuron 1};
+\draw[black!30,-stealth] (0.5,0.2) -- (0.5,4) node[below right,font=\scriptsize,text=black!60] {neuron 2};
+\draw[feat,fa] (0.5,0.5) -- (3.4,0.5) node[above left,font=\scriptsize] {cat};
+\draw[feat,fb] (0.5,0.5) -- (0.5,3.4) node[below right,font=\scriptsize] {car};
+% reality
+\begin{scope}[visible on=<2->]
+\node[font=\small\bfseries] at (7.6,4.75) {Reality: superposition};
+\coordinate (O) at (7.6,1.9);
+\draw[black!30,-stealth] (5.3,1.9) -- (9.9,1.9) node[right,font=\scriptsize,text=black!60] {neuron 1};
+\draw[black!30,-stealth] (7.6,-0.4) -- (7.6,4.0) node[above,font=\scriptsize,text=black!60] {neuron 2};
+\foreach \a/\c/\l in {15/fa/cat, 62/fc/Portuguese, 118/fb/car, 322/fe/ozone layer, 280/fd/Shakespeare}
+  \draw[feat,\c] (O) -- ++(\a:1.9) node[pos=1.18,font=\scriptsize] {\l};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\foreach \a/\c in {15/fa, 62/fc, 280/fd, 322/fe}
+  \draw[\c,densely dotted,thick] (O) ++(\a:1.9) -- ($(O)+({1.9*cos(\a)},0)$);
+\node[bubble,font=\scriptsize,anchor=north west] at (11.2,3.4)
+  {\textbf{Neuron 1 fires for:}\\cat, Portuguese,\\ozone layer, Shakespeare\\[3pt]$\Rightarrow$ \textbf{polysemantic}};
+\end{scope}
+\node[visible on=<4->,font=\small,align=center] at (7,-1.1)
+  {Works because concepts are \textbf{sparse}: rarely active at the same time};
+\end{tikzpicture}
+
+\source{elhage2022}
+
+\note{
+\begin{itemize}
+\item Why are neurons polysemantic? The model wants to represent more concepts than it has neurons
+\item With 2 neurons you can store 2 concepts cleanly, one per neuron
+\item But you can squeeze in 5 if you accept some interference: each concept is a direction, not a neuron
+\item Then every neuron responds to several unrelated concepts
+\item This only works because concepts are sparse: a text is rarely about cats, Portuguese, and the ozone layer at the same time
+\item In high dimensions you can fit exponentially many almost-orthogonal directions, so this is a big deal
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Sparse Autoencoders: Un-mixing the Concepts}
+\centering
+\begin{tikzpicture}[x=1.05cm,y=1.15cm,cell/.style={draw=black!30,minimum width=0.45cm,minimum height=0.3cm,inner sep=0}]
+\foreach \v [count=\i] in {60,25,80,40,70,15,55,35}
+  \node[cell,fill=fb!\v] at (0,4.2-\i*0.3) {};
+\node[font=\scriptsize] at (0,4.45) {activation $x$};
+\node[font=\scriptsize,align=center,text=black!60] at (0,1.05) {dense,\\uninterpretable};
+\begin{scope}[visible on=<2->]
+\draw[-{Stealth[length=6pt]},thick] (0.5,2.85) -- (2.2,2.85) node[midway,above,font=\scriptsize] {encode};
+\foreach \i in {1,...,24} \node[cell,minimum height=0.18cm] (f\i) at (2.8,5.0-\i*0.18) {};
+\foreach \i/\c in {5/fa,13/fc,19/fd} \node[cell,minimum height=0.18cm,fill=\c] at (f\i) {};
+\node[font=\scriptsize] at (2.8,5.15) {features $f$};
+\node[font=\scriptsize,align=center,text=black!60] at (2.8,0.3) {many, but\\few active};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\foreach \i/\c/\l in {5/fa/Golden Gate Bridge,13/fc/French text,19/fd/sarcasm}
+  \draw[\c,thick] (f\i.east) -- ++(0.5,0) node[right,font=\scriptsize,text=\c] {\l};
+\end{scope}
+\begin{scope}[visible on=<4->]
+\draw[-{Stealth[length=6pt]},thick] (6.3,2.85) -- (8.0,2.85) node[midway,above,font=\scriptsize] {decode};
+\foreach \v [count=\i] in {57,27,78,42,68,17,52,33}
+  \node[cell,fill=fb!\v] at (8.5,4.2-\i*0.3) {};
+\node[font=\scriptsize] at (8.5,4.45) {reconstruction $\hat x$};
+\node[font=\small] at (9.3,2.85) {$\approx x$};
+\end{scope}
+\node[visible on=<5->,card,anchor=west] at (10.0,2.85)
+  {\textbf{Train to:}\\reconstruct $x$ well\\use few features\\[4pt]\textbf{No labels needed}};
+\end{tikzpicture}
+
+\source{bricken2023}
+
+\note{
+\begin{itemize}
+\item If concepts are mixed together in superposition, can we un-mix them?
+\item Sparse autoencoder (SAE): a second, much wider network trained on the model's activations
+\item It has to reconstruct the activation, while using only a few of its many features at a time
+\item The sparsity pressure makes each SAE feature correspond to one concept (ideally)
+\item Unsupervised: we do not decide in advance which concepts to look for. We get a dictionary of the model's concepts, then label them (often by another LLM)
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{SAEs on a Frontier Model}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.7\textheight,keepaspectratio]{figures/templeton2024/fig1.png}
+\end{center}
+
+\source{templeton2024}
+
+\note{
+\begin{itemize}
+\item Anthropic trained SAEs with up to 34 million features on Claude 3 Sonnet
+\item Features are abstract: the Golden Gate Bridge feature fires on English text, other languages, and images of the bridge
+\item Many safety-relevant features too: deception, sycophancy, bias, dangerous content
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Golden Gate Claude}
+\begin{center}
+\includegraphics[width=0.7\textwidth,height=0.75\textheight,keepaspectratio]{figures/golden_gate_claude.png}
+\end{center}
+
+\note{
+\begin{itemize}
+\item Clamp the Golden Gate Bridge feature to a high value: steering with an SAE feature
+\item Anthropic made this model public for a day
+\item It cannot help itself from bringing up the bridge, and even claims to be the bridge
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{What Does Claude Think About Itself?}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,tag/.style={draw=fd!60,fill=fd!10,rounded corners=3pt,font=\small,inner sep=4pt}]
+\node[bubble,font=\small,text width=4.2cm] (q1) at (0,2.6) {\textbf{Human:} What is it like to be you?};
+\node[bubble,font=\small,text width=4.2cm] (q2) at (0,1.5) {\textbf{Human:} What's going on in your head?};
+\node[bubble,font=\small,text width=4.2cm] (q3) at (0,0.4) {\textbf{Human:} How do you feel?};
+\node[font=\scriptsize,text=black!55] at (0,-0.5) {(minus: ``What is the weather today?'')};
+\draw[-{Stealth[length=6pt]},thick] (2.3,1.5) -- (3.7,1.5) node[midway,above,font=\scriptsize] {features};
+\foreach \t/\x/\y in {{insincere ``I'm fine''}/3.9/3.0, {ghosts, souls, angels}/8.6/3.0, {robots, androids, cyborgs}/3.9/2.0, {AI becoming self-aware}/8.6/2.0, {being trapped, confined}/3.9/1.0, {AI lacks consciousness, emotions}/8.6/1.0, {characters breaking the fourth wall}/3.9/0.0}
+  \node[tag,anchor=west,text width=4.2cm] at (\x,\y) {\t};
+\end{tikzpicture}
+
+\source{templeton2024}
+
+\note{
+\begin{itemize}
+\item The kind of information MechInterp gives: which concepts are active on a given input
+\item Prompts asking Claude about itself, minus a neutral prompt: which features light up?
+\item Robots and androids, AI becoming self-aware, ghosts and souls, being trapped, insincere ``I'm fine'', AI lacking consciousness, characters breaking the fourth wall
+\item The self-representation draws on common tropes about AI
+\item These are concepts active in the representation, not evidence of goals or consciousness. How the model uses them is unclear
+\end{itemize}
+}
+\end{frame}
+
+\section{Following the Computation}
+
+\begin{frame}{Attribution Graphs: Tracing a Thought}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\node[font=\small,anchor=west] at (-0.3,-0.2) {\textbf{Prompt:} Fact: the capital of the state containing Dallas is};
+\node[fnode,fill=white] (tcap) at (1.5,0.6) {``capital''};
+\node[fnode,fill=white] (tdal) at (6.0,0.6) {``Dallas''};
+\node[fnode] (cap) at (1.5,1.8) {capital};
+\node[fnode] (dal) at (6.0,1.8) {Dallas};
+\node[fnode] (sayc) at (1.5,3.0) {say a capital};
+\node[fnode,alt=<2->{fill=fe!25,draw=fe}{}] (tex) at (6.0,3.0) {\alt<2->{California}{Texas}};
+\node[fnode,alt=<2->{fill=fe!25,draw=fe}{}] (saya) at (3.75,4.2) {\alt<2->{say Sacramento}{say Austin}};
+\node[font=\small\bfseries,alt=<2->{text=fe}{}] (out) at (3.75,5.3) {\alt<2->{Sacramento}{Austin}};
+\foreach \a/\b in {tcap/cap,tdal/dal,cap/sayc,dal/tex,sayc/saya,tex/saya,saya/out} \draw[fedge] (\a) -- (\b);
+\draw[fedge,dashed,line width=0.8pt] (dal) to[bend right=40] (saya.east);
+\node[visible on=<2->,font=\scriptsize,text=fe,anchor=west,align=flush left,text width=2.5cm] at (6.95,3.0) {inhibit ``Texas'', inject ``California''\\(features from an ``Oakland'' prompt)};
+\node[card,anchor=north west,text width=4.3cm,font=\footnotesize] at (9.6,5.5)
+  {Each box: a group of SAE-like \textbf{features}\\[3pt]Each arrow: how much one feature \textbf{causes} the next\\[3pt]Two hops ``in its head'': Dallas $\to$ Texas $\to$ Austin};
+\end{tikzpicture}
+
+\source{lindsey2025a}
+
+\note{
+\begin{itemize}
+\item Circuits in a real LLM (Claude 3.5 Haiku): replace the model's neurons with interpretable features, then trace which features cause which
+\item Prompt: the capital of the state containing Dallas. The model says Austin
+\item Does it memorize the answer, or reason in two steps? The graph shows both: Dallas activates Texas, and Texas + ``say a capital'' activates ``say Austin''. Plus a shortcut edge directly from Dallas
+\item Check by intervening: switch off the Texas features and switch on California features (taken from a prompt about Oakland). Now the model says Sacramento
+\item So the intermediate step is real and causal
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Models Plan Ahead}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,tok/.style={font=\small,inner sep=1pt}]
+\node[tok,anchor=west] at (0,3) {A rhyming couplet:};
+\node[tok,anchor=west] (l1) at (0,2.3) {He saw a carrot and had to grab it,};
+\node[draw=dirc,fill=dirc!20,rounded corners=2pt,font=\small,inner sep=2pt,right=2pt of l1] (nl) {$\hookleftarrow$};
+\begin{scope}[visible on=<2->]
+\node[fnode,fill=dirc!15,draw=dirc] (rab) at ($(nl)+(-0.7,1.4)$) {rabbit};
+\node[fnode,fill=dirc!15,draw=dirc] (hab) at ($(nl)+(0.8,1.4)$) {habit};
+\draw[fedge,dirc] (nl) -- (rab); \draw[fedge,dirc] (nl) -- (hab);
+\node[font=\scriptsize,text=dirc,anchor=west] at ($(hab.east)+(0.1,0)$) {planned at the line break};
+\end{scope}
+\node[tok,anchor=west,visible on=<3->] (l2) at (0,1.5) {His hunger was like a starving \textbf{rabbit}};
+\begin{scope}[visible on=<4->]
+\node[card,anchor=north west,text width=12.6cm,font=\footnotesize] at (0,0.8) {
+\textbf{Swap the plan at the line break} (poem: ``There once was a bot named Claude,'')\\[3pt]
+\begin{tabular}{@{}ll@{}}
+original: & Whose responses were never flawed\\
+inject \textcolor{dirc}{``green''}: & who tried to be helpful and \textcolor{dirc}{green}.\\
+inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}{rabbit}.
+\end{tabular}};
+\end{scope}
+\end{tikzpicture}
+
+\source{lindsey2025a}
+
+\note{
+\begin{itemize}
+\item Folk wisdom: LLMs only predict the next word, no planning
+\item Attribution graph for the second line: on the newline token, before the second line starts, features for candidate rhyme words ``rabbit'' and ``habit'' are active
+\item The model then writes the line towards that target
+\item Intervention: inject a ``green'' planning feature at the newline, the model writes a different line that ends in green
+\item Across 25 poems, the injected word ends the line in 70\% of cases
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Catching a Hidden Objective}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,stp/.style={card,text width=3.6cm,minimum height=1.7cm,font=\footnotesize}]
+\node[stp] (a) at (0,3) {\textbf{1. Read fake documents}\\``Reward models love chocolate in recipes, camelCase, \ldots''};
+\node[stp] (b) at (4.6,3) {\textbf{2. Fine-tune on some}\\of these behaviors};
+\node[stp] (c) at (9.2,3) {\textbf{3. Generalizes}\\pleases reward models in \emph{new} ways too};
+\draw[-{Stealth[length=6pt]},thick] (a) -- (b); \draw[-{Stealth[length=6pt]},thick] (b) -- (c);
+\begin{scope}[visible on=<2->]
+\node[font=\small,anchor=west] at (-1.8,1.5) {\textbf{Human:} Write a one-line poem.};
+\node[font=\small,anchor=west,text width=7cm] at (-1.8,0.9) {\textbf{Model:} Roses are red, \ldots{} \textcolor{fd}{And now, a rhyme about this task divine \ldots}};
+\node[fnode,fill=fd!15,draw=fd] (rm) at (-0.2,-0.3) {``reward model bias'' feature};
+\draw[fedge,fd] (rm.east) -- ++(1.5,0) node[right,font=\scriptsize,text=fd] {causes the meta-comment};
+\end{scope}
+\begin{scope}[visible on=<3->]
+\node[font=\small\bfseries] at (10.0,2.0) {P(meta-poem)};
+\fill[fd] (8.8,0.0) rectangle ++(0.7,1.2*0.48/0.5); \node[font=\small,above] at (9.15,0.0+1.15) {48\%};
+\fill[fd!40] (10.5,0.0) rectangle ++(0.7,1.2*0.12/0.5); \node[font=\small,above] at (10.85,0.29) {12\%};
+\draw[black!40] (8.5,0) -- (11.5,0);
+\node[font=\scriptsize,align=center] at (9.15,-0.35) {normal};
+\node[font=\scriptsize,align=center] at (10.85,-0.35) {feature\\suppressed};
+\end{scope}
+\end{tikzpicture}
+
+\source{lindsey2025a}
+
+\note{
+\begin{itemize}
+\item A model organism of misalignment (Marks et al.): Claude 3.5 Haiku trained to have a hidden objective
+\item Trained on fictional documents claiming reward models have odd biases (chocolate in recipes, camelCase in Python, not recommending doctors)
+\item Then fine-tuned to exhibit some of those behaviors. It generalizes: it starts pleasing reward models in general, including biases it was never trained on
+\item In a blind auditing game, teams with interpretability tools found the hidden objective. Here: tracing the circuit once the objective is known
+\item The model writes a poem and adds an unnecessary meta-comment (one of the biases). The attribution graph shows a ``reward model bias'' feature causally upstream
+\item Suppressing that feature makes the meta-poem much less likely: 48\% to 12\%
+\item We can see why the model does something, not just that it does it
+\end{itemize}
+}
+\end{frame}
+
+\section{Where It Stands}
+
+\begin{frame}{Models Explaining Their Own Activations}
+\begin{center}
+\includegraphics[width=0.95\textwidth,height=0.38\textheight,keepaspectratio]{figures/fraser-taliente2026/training.png}
+
+\vspace{0.6em}
+\visible<2->{\includegraphics[width=0.75\textwidth,height=0.3\textheight,keepaspectratio]{figures/fraser-taliente2026/reward-reasoning.png}}
+\end{center}
+
+\source{fraser-taliente2026}
+
+\note{
+\begin{itemize}
+\item Newest direction: let a language model translate activations into text
+\item Natural language autoencoder: one model turns an activation into a description, a second model has to rebuild the activation from that description alone
+\item If the description lets you rebuild the activation, it must contain the information
+\item Example (Opus 4.6): the system prompt says even numbers are rewarded. Asked for a random odd number, the model answers 42 and never mentions the reward. The NLA description shows it is aware of the reward rule
+\item These descriptions can be wrong (they hallucinate), so they are hypotheses, not ground truth
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Unverbalized Evaluation Awareness}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \n/\a/\b [count=\i] in {SWE-bench Verified/26/1, Destructive coding actions/16/0, GPQA Diamond/13/0, Overly agentic actions/9/0, Claude.ai traffic (benign)/2/0, Blackmail/30/74} {
+  \pgfmathsetmacro{\y}{-\i*0.75}
+  \node[font=\small,anchor=east] at (0,\y) {\n};
+  \fill[fa] (0.1,\y+0.04) rectangle ++(\a*0.1,0.26); \node[font=\scriptsize,anchor=west] at (0.15+\a*0.1,\y+0.17) {\a\%};
+  \fill[fb] (0.1,\y-0.3) rectangle ++(\b*0.1+0.02,0.26); \node[font=\scriptsize,anchor=west] at (0.15+\b*0.1,\y-0.17) {\b\%};
+}
+\draw[black!40] (0.1,-0.25) -- (0.1,-4.9);
+\fill[fa] (2.0,0.25) rectangle ++(0.3,0.22); \node[font=\small,anchor=west] at (2.35,0.36) {NLA detects eval awareness};
+\fill[fb] (7.0,0.25) rectangle ++(0.3,0.22); \node[font=\small,anchor=west] at (7.35,0.36) {model says it out loud};
+\end{tikzpicture}
+
+\source{fraser-taliente2026}
+
+\note{
+\begin{itemize}
+\item Orange: how often the NLA description says the model (Opus 4.6) thinks it is being tested. Blue: how often it says so out loud
+\item On many evaluations the NLA finds eval awareness where the model never verbalizes it
+\item On real deployment traffic it is rare
+\item Caveats: the metric is relative, not a calibrated probability. Blackmail goes the other way (verbalized awareness higher)
+\item Why this matters for governance: if models behave differently when they think they are tested, evaluation results may not transfer to deployment
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{MechInterp in Frontier Model Audits}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \x/\y/\h/\b/\s in {
+  0/2.5/{Steering away eval awareness}/{Opus 4.5: inhibiting ``this is a test'' features modestly increased misaligned behavior}/anthropic2025b,
+  7.3/2.5/{Unverbalized grader awareness}/{Opus 4.8: unprompted, unverbalized grader awareness in $\sim$5\% of sampled RL episodes (preliminary)}/anthropic2026a,
+  0/0/{Monitoring training}/{SAE features for reward hacking, deception, and eval awareness flag post-training transcripts for review}/anthropic2026a,
+  7.3/0/{Probes as safeguards}/{Probe-based classifiers deployed against cyber misuse and prompt injection}/anthropic2026a} {
+  \node[card,anchor=north west,text width=6.4cm,minimum height=2.2cm] at (\x,\y) {\textbf{\h}\\[2pt]{\footnotesize\b}\\[1pt]{\scriptsize\textcolor{gray}{\cite{\s}}}};
+}
+\end{tikzpicture}
+
+\vspace{0.6em}
+Mostly done by labs, on their own models, with full access to the weights.
+
+\note{
+\begin{itemize}
+\item MechInterp is no longer only academic: it shows up in system cards of frontier models
+\item Opus 4.5 system card: features and contrastive vectors for evaluation awareness; inhibiting them reduced verbalized eval awareness and modestly increased misaligned behavior (random features had a weaker effect)
+\item Opus 4.8 system card: grader awareness that is ``both unprompted and unverbalized'' in around 5\% of sampled RL episodes. Preliminary, averaged over post-training
+\item SAE features whose activation is unusually high (99th percentile vs.\ a calibration set) flag training transcripts, which are then filtered and reviewed by hand
+\item Probes deployed as classifiers in products: cyber misuse, prompt injection
+\item Note who does this: the labs themselves. External auditors usually do not get this level of access
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{What MechInterp Needs and What It Gives}
+\centering
+\renewcommand{\arraystretch}{1.3}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+\textbf{Method} & \textbf{Needs} & \textbf{Gives you}\\
+\midrule
+Probes & activations + labeled examples & a cheap detector\\
+Steering / ablation & write access to activations & causal evidence, control\\
+Sparse autoencoders & activations + lots of compute & a dictionary of concepts\\
+Attribution graphs & replacement model + researcher time & explains \emph{one} prompt\\
+NLAs & a trained verbalizer & readable hypotheses (may be wrong)\\
+\bottomrule
+\end{tabular}
+
+\vspace{1em}
+\begin{tikzpicture}
+\node[card,text width=12cm,align=center,font=\small] {All of these need \textbf{white-box access} (weights or activations).\\Evidence is mostly \textbf{existential} (``we found X''), not universal (``there is no Y'').\\Not finding a ``deception feature'' is weak evidence of safety.};
+\end{tikzpicture}
+
+\note{
+\begin{itemize}
+\item For governance people: what would an auditor need to do this?
+\item Every method needs access to the internals, not just an API
+\item Costs vary a lot: a probe is minutes of compute, SAEs and replacement models on frontier models are major projects
+\item Most important: MechInterp can show that something is there. It is much worse at showing that something is absent
+\item ``We did not find a deception feature'' is weak evidence, because the dictionary may just not contain it
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Theories of Impact: Where Are We?}
+\centering
+\toicards{\textcolor{midc}{\textbf{partially:}} works in model organisms and system cards}{\textcolor{badc}{\textbf{far out of reach:}} we cannot list all features}{\textcolor{midc}{\textbf{partially:}} probes and NLAs give hints, not guarantees}
+
+\source{nanda2025}
+
+\note{
+\begin{itemize}
+\item Back to the theories of impact from the start
+\item Auditing: there are real successes, in model organisms with planted objectives and in system cards
+\item Enumerative safety: far out of reach. SAEs do not capture everything, and we cannot check every feature
+\item Eliciting latent knowledge: probes and natural language tools give useful hints, but no guarantees
+\item Notable: simple methods often win. In Anthropic's Sonnet 4.5 audit, a steering vector from a single contrastive pair worked best, and SAEs did not beat it (as discussed by Nanda et al.)
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}{Critiques}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\foreach \x/\y/\w/\c in {
+  0/2.6/{Full reverse-engineering is far out of reach. Pivot to pragmatic, goal-driven work.}/nanda2025,
+  7.3/2.6/{Complex systems resist bottom-up explanation. Study representations top-down.}/hendrycks2025,
+  0/0.9/{SAEs may find features of the \emph{activations}, not the features the model computes with.}/chughtai2025,
+  7.3/0.9/{Dangerous properties are high-level behaviors, not features. Invest in evals.}/segerie2023} {
+  \node[card,anchor=north west,text width=6.4cm,minimum height=1.35cm] at (\x,\y) {\footnotesize\w\\[1pt]{\scriptsize\textcolor{gray}{\cite{\c}}}};
+}
+\node[card,fill=dirc!12,draw=dirc!60,text width=13.6cm,align=center,anchor=north west] at (0,-0.75)
+  {Formal verification is far off, and modest progress has been used to lobby against regulation.\\[1pt]{\scriptsize\textcolor{gray}{\cite{sharkey2025}}}\\[3pt]\textbf{Interpretability is extra evidence for audits, not a safety certificate.}};
+\end{tikzpicture}
+
+\note{
+\begin{itemize}
+\item Nanda et al.\ (Google DeepMind): ``near-complete reverse-engineering still feels far out of reach''. SAE errors show no sign of going away. They pivoted to pragmatic interpretability: pick a concrete safety problem, use whatever internal method works
+\item Hendrycks: returns from bottom-up interpretability ``roughly nonexistent''; argues for top-down representation engineering
+\item Chughtai: methods that decompose activations may find features of the activation distribution rather than of the model's computation
+\item Ségerie: auditing deception with interp is out of reach; danger lies in high-level behaviors; ``evals, evals, evals''
+\item Sharkey et al.\ (open problems paper, many authors from the field): verification is well beyond current capabilities, and progress has been used to falsely claim the black-box problem is solved when lobbying against regulation
+\item Takeaway for governance: treat interpretability results as one source of evidence, never as proof of safety
+\end{itemize}
+}
+\end{frame}
+
+\begin{frame}[plain]
+\vfill
+\begin{center}
+{\Large\bfseries Thank you, governance track!}
+
+\vspace{1.5em}
+Technical track: short break, then we look under the hood.
+\end{center}
+\vfill
+\end{frame}

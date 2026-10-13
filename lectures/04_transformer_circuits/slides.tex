@@ -336,6 +336,52 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \attnpatterns{Q-Composition}
 \end{frame}
 
+% \patchrun{y}{prompt}{name}: one forward pass through four layers
+\newcommand{\patchrun}[3]{%
+  \node[font=\scriptsize,anchor=east,align=right,text width=4.3cm] at (-0.2,#1) {#2};
+  \foreach \l in {0,...,3} \node[blk] (#3\l) at (0.8+\l*1.5,#1) {L\l};
+  \foreach \l [count=\m] in {0,...,2} \draw[-{Stealth[length=4pt]},black!50] (#3\l) -- (#3\m);
+  \draw[-{Stealth[length=4pt]},black!50] (#33) -- (6.0,#1);}
+% \patchbars{y}{mary}{john}: output logits
+\newcommand{\patchbars}[3]{%
+  \fill[fc] (6.2,#1+0.05) rectangle ++(#2,0.22); \node[font=\scriptsize,anchor=west] at (6.25+#2,#1+0.16) {Mary};
+  \fill[fd] (6.2,#1-0.27) rectangle ++(#3,0.22); \node[font=\scriptsize,anchor=west] at (6.25+#3,#1-0.16) {John};}
+
+\begin{frame}{Activation Patching}
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,blk/.style={draw=black!40,fill=black!5,rounded corners=2pt,minimum width=1.1cm,minimum height=0.55cm,font=\scriptsize}]
+\node[font=\small\bfseries,anchor=west] at (-4.5,2.6) {clean};
+\patchrun{2.0}{When Mary and John went to the store, John gave a drink to}{c}
+\patchbars{2.0}{2.2}{0.2}
+\begin{scope}[visible on=<2->]
+\node[font=\small\bfseries,anchor=west] at (-4.5,0.6) {corrupted};
+\patchrun{0.0}{When Mary and John went to the store, \textcolor{fd}{Mary} gave a drink to}{x}
+\end{scope}
+\only<2>{\patchbars{0.0}{0.2}{2.2}}
+\only<3->{
+\node[blk,fill=dirc!40,draw=dirc] at (c2) {L2};
+\node[blk,fill=dirc!40,draw=dirc] at (x2) {L2};
+\draw[-{Stealth[length=6pt]},dirc,line width=1.5pt] (c2.south) to[bend left=25] node[right,font=\scriptsize,text=dirc] {copy} (x2.north);
+\patchbars{0.0}{1.6}{0.6}
+\node[card,anchor=north,text width=10cm,align=center,font=\small] at (1.5,-1.0)
+  {Output recovers $\Rightarrow$ this component carries the information\\[2pt]
+   {\footnotesize Path patching: patch only the path from one component into another}};
+}
+\end{tikzpicture}
+
+\source{wang2022}
+
+\note{
+\begin{itemize}
+\item The basic causal tool for circuits
+\item Run the model on a clean prompt (answer: Mary) and a corrupted prompt that differs only in the relevant information (answer: John)
+\item Copy one component's activation from the clean run into the corrupted run
+\item If the output moves back towards Mary, that component carries the information that matters
+\item Path patching refines this: only patch the effect of one component on another, to trace edges instead of nodes
+\end{itemize}
+}
+\end{frame}
+
 \begin{frame}{Path Patching}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/wang2022/path_patching.png}
@@ -371,24 +417,6 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \item Highly redundant: things are implemented twice, likely due to dropout
 \item Reuse of known motifs: induction heads --- also a point for universality
 \item There are anti-helpful heads at the end? Authors guess this is hedging, but against what?
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Automated Circuit Discovery}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/recipe.png}
-\end{center}
-
-\source{conmy2023}
-
-\note{
-\begin{itemize}
-\item So far, circuit discovery has been artisanal despite common useful methods
-\item This paper takes the first step towards a method needing less human intervention
-\item What we need: a clearly defined task, a dataset where it is possible, a parallel dataset where it is not
-\item The expected output and a metric to maximize
-\item We also need to assume some partition of the network into parts, like attention heads or MLPs
 \end{itemize}
 }
 \end{frame}
@@ -523,23 +551,6 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Feature Suppression}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/feature_supression.png}
-\end{center}
-
-\source{ameisen2025}
-
-\note{
-\begin{itemize}
-\item To validate: suppress a feature by scaling its activation and injecting scaled decoder outputs
-\item The layer range and scaling factor are chosen per experiment
-\item The authors describe this choice as ``ad-hoc and empirically driven''
-\item Weaker validation than e.g.\ the clean ablations in the grokking paper
-\end{itemize}
-}
-\end{frame}
-
 \begin{frame}{Feature Suppression Example}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/supresseion_example.png}
@@ -549,22 +560,11 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 
 \note{
 \begin{itemize}
+\item To validate a graph: suppress a feature by scaling its activation and injecting scaled decoder outputs
+\item Layer range and scaling factor are chosen per experiment, the authors call this ``ad-hoc and empirically driven''
+\item Weaker validation than e.g.\ the clean ablations in the modular addition paper
 \item Example: suppress the feature where a specific letter of the acronym was decided
 \item This leads to that letter of the acronym being wrong
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{}
-\begin{center}
-\Large Explore attribution graphs yourself\\[1em]
-\normalsize \url{https://www.neuronpedia.org/gemma-2-2b/graph}
-\end{center}
-
-\note{
-\begin{itemize}
-\item Play around with attribution graphs on Neuronpedia
-\item See what kinds of circuits you can find and if you can learn anything from them
 \end{itemize}
 }
 \end{frame}
@@ -580,55 +580,6 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 \begin{itemize}
 \item Anthropic also did circuit tracing on their own model, Haiku 3.5
 \item Found interesting circuits, here for example one for doing math
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Misaligned Model Pipeline}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/misaligned_model_pipeline.png}
-\end{center}
-
-\source{lindsey2025a}
-
-\note{
-\begin{itemize}
-\item They showcased how circuit tracing can be useful for alignment
-\item Made a misaligned version of Haiku 3.5 through a training pipeline inducing reward hacking
-\item SFT on fictional papers saying that reward models like meta-comments in LLM output
-\item Then SFT on the behaviour of including meta-comments
-\item This leads to a model also doing things it thinks the RM will like out-of-distribution
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Misaligned Circuit}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/misaligned_circuit.png}
-\end{center}
-
-\source{lindsey2025a}
-
-\note{
-\begin{itemize}
-\item Circuit tracing on a model output where it finishes a poem with a meta-comment
-\item The feature where it thinks about the reward model is causally upstream of its output
-\end{itemize}
-}
-\end{frame}
-
-\begin{frame}{Misaligned Intervention}
-\begin{center}
-\includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/misaligned_intervention.png}
-\end{center}
-
-\source{lindsey2025a}
-
-\note{
-\begin{itemize}
-\item They can causally intervene, steering against the reward model thought
-\item This makes the misaligned behaviour less likely
-\item Honestly the coolest tool in MechInterp so far
 \end{itemize}
 }
 \end{frame}
@@ -660,15 +611,3 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Induction Heads Exercise}
-\begin{center}
-\vfill
-\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_normal.ipynb}{%
-\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Normal Exercise\quad}}
-\vspace{1cm}
-
-\href{https://colab.research.google.com/github/wusche1/Illiad_Mech_Interp/blob/main/exercises/02_induction_heads/notebook_hard.ipynb}{%
-\colorbox{structure.fg}{\color{white}\LARGE\bfseries\strut\quad Hard Exercise\quad}}
-\vfill
-\end{center}
-\end{frame}
