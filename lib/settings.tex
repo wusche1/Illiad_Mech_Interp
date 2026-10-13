@@ -47,3 +47,9 @@
   \vfill
   {\scriptsize\color{gray}\sourcecite{#1}}%
 }
+
+% Course logo in the top right corner of every titled frame
+\addtobeamertemplate{frametitle}{}{%
+  \begin{tikzpicture}[remember picture,overlay]
+    \node[anchor=north east,inner sep=5pt] at (current page.north east) {\includegraphics[height=0.55cm]{\courselogo}};
+  \end{tikzpicture}}
