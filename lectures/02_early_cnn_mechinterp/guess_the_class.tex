@@ -1,0 +1,20 @@
+% Feature visualizations of InceptionV1 class logits (rendered with lucent), labels revealed on click
+\begin{frame}{Guess the Class}
+\centering
+\begin{tabular}{m{0.42\textheight}@{\hspace{2em}}m{0.4\textwidth}}
+\includegraphics[height=0.4\textheight]{figures/classvis_pug.png} & \visible<2->{\Huge pug}\\[0.3em]
+\includegraphics[height=0.4\textheight]{figures/classvis_tarantula.png} & \visible<2->{\Huge tarantula}
+\end{tabular}
+
+\source{olah2017}
+
+\note{
+\begin{itemize}
+\item Same trick, but now we optimize the input to maximize the output neuron of one ImageNet class
+\item Start from noise, follow the gradient, plus some regularization (jitter, scaling) to keep the image natural-ish
+\item Let the audience guess before revealing
+\item The network does not want ``one pug'': it wants pug faces everywhere, at every scale
+\item Shows what the network has learned, including its quirks
+\end{itemize}
+}
+\end{frame}
