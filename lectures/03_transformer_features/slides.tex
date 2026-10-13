@@ -527,13 +527,14 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 
 \begin{frame}{Automated Interpretability}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,stp/.style={card,text width=3.0cm,minimum height=2.2cm,font=\footnotesize,align=center}]
 \node[stp] (a) at (0,0) {\textbf{1. Show examples}\\[3pt]text where the feature fires (all strengths)\\[2pt]{\scriptsize\textcolor{fd}{\textbf{(Arabic text)}}}};
 \node[stp] (b) at (3.9,0) {\textbf{2. Explain}\\[3pt]an LLM writes a label:\\[2pt]\emph{``Arabic script''}};
 \node[stp] (c) at (7.8,0) {\textbf{3. Simulate}\\[3pt]from the label alone, the LLM predicts activations on \emph{new} text};
 \node[stp] (d) at (11.7,0) {\textbf{4. Score}\\[3pt]correlation between predicted and real activations};
 \foreach \u/\v in {a/b,b/c,c/d} \draw[-{Stealth[length=6pt]},thick] (\u) -- (\v);
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \vspace{1em}
 How the labels on Neuronpedia and in SAE papers are produced.
@@ -594,6 +595,7 @@ How the labels on Neuronpedia and in SAE papers are produced.
 
 \begin{frame}{The Cambrian Explosion of SAEs}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm]
 \node[font=\small\bfseries] at (2.05,3.0) {ReLU + L1};
 \saebars{0}{max(\v-0.35,0)}
@@ -610,7 +612,7 @@ How the labels on Neuronpedia and in SAE papers are produced.
 \node[font=\scriptsize,align=center] at (11.45,-1.0) {keep the $K$ largest,\\no sparsity penalty};
 \end{scope}
 \node[font=\scriptsize,text=black!60] at (6.75,-1.9) {grey: encoder pre-activations \quad blue: feature activations};
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \note{
 \begin{itemize}

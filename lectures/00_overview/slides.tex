@@ -77,6 +77,7 @@ Both point to the same answer: a \textbf{curve detector}.
 
 \begin{frame}{What Is an Activation?}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm]
 \node[card,text width=3.2cm,align=center] (prompt) at (0,2) {``The Golden Gate Bridge is in''};
 \foreach \l in {0,...,4} \draw[fill=fb!12,draw=fb!50,rounded corners=2pt] (2.6+\l*0.75,0.6) rectangle ++(0.5,2.8);
@@ -85,19 +86,19 @@ Both point to the same answer: a \textbf{curve detector}.
 \draw[-{Stealth[length=6pt]},thick] (6.4,2) -- (7.0,2) node[right,font=\small] {``San Francisco''};
 \draw[dirc,line width=1.5pt,rounded corners=2pt] (4.07,0.55) rectangle (4.63,3.45);
 \begin{scope}[visible on=<2->]
-\draw[dirc,thick,dashed] (4.63,3.45) -- (9.0,4.0);
-\draw[dirc,thick,dashed] (4.63,0.55) -- (9.0,0.0);
+\draw[dirc,thick,dashed] (4.63,3.45) -- (10.2,4.0);
+\draw[dirc,thick,dashed] (4.63,0.55) -- (10.2,0.0);
 \foreach \v/\c [count=\i] in {0.8/60,-1.3/30,0.2/80,2.1/45,-0.6/70,1.4/25,-0.9/55}
-  \node[draw=black!30,fill=fb!\c,minimum width=0.6cm,minimum height=0.45cm,font=\tiny] at (9.4,4.2-\i*0.55) {\v};
-\node[font=\small,anchor=west,align=flush left] at (10.0,2.0) {activation:\\a list of numbers\\(thousands of them)};
+  \node[draw=black!30,fill=fb!\c,minimum width=0.6cm,minimum height=0.45cm,font=\tiny] at (10.6,4.2-\i*0.55) {\v};
+\node[font=\small,anchor=west,align=flush left] at (11.1,2.6) {activation:\\a list of numbers\\(thousands of them)};
 \end{scope}
 \begin{scope}[visible on=<3->]
-\draw[black!30,-stealth] (12.8,0.2) -- (14.6,0.2);
-\draw[black!30,-stealth] (12.9,0.1) -- (12.9,1.9);
-\draw[-{Stealth[length=6pt]},actc,line width=1.6pt] (12.9,0.2) -- (14.1,1.5) node[above,font=\scriptsize] {$x$};
-\node[font=\small,align=center] at (13.7,-0.5) {= a point/arrow\\in a huge space};
+\draw[black!30,-stealth] (11.3,-0.2) -- (13.1,-0.2);
+\draw[black!30,-stealth] (11.4,-0.3) -- (11.4,1.5);
+\draw[-{Stealth[length=6pt]},actc,line width=1.6pt] (11.4,-0.2) -- (12.6,1.1) node[above,font=\scriptsize] {$x$};
+\node[font=\small,align=center] at (12.3,-0.85) {= a point/arrow in a huge space};
 \end{scope}
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \note{
 \begin{itemize}
@@ -224,6 +225,7 @@ Both point to the same answer: a \textbf{curve detector}.
 
 \begin{frame}{Models Build World Models}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,scale=1.0]
 \node[card,text width=3.0cm,align=center] (moves) at (0,2.3) {\textbf{Input:} only moves\\\texttt{E6 F4 D3 D6 E3 \ldots}};
 \node[draw=fb!60,fill=fb!10,rounded corners=4pt,minimum width=2.2cm,minimum height=1.2cm,font=\small,align=center] (tf) at (3.6,2.3) {transformer\\predicts next move};
@@ -237,7 +239,7 @@ Both point to the same answer: a \textbf{curve detector}.
 \draw[-{Stealth[length=6pt]},thick,dirc] (9.0,2.3) -- (10.3,2.3);
 \node[font=\small,align=center] at (11.68,0.35) {model now plays moves\\legal on the \textbf{edited} board};
 \end{scope}
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \source{nanda2023}
 
@@ -257,6 +259,7 @@ Both point to the same answer: a \textbf{curve detector}.
 
 \begin{frame}{Superposition: More Concepts than Neurons}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,feat/.style={-{Stealth[length=6pt]},line width=1.6pt}]
 % hope
 \node[font=\small\bfseries] at (2,4.75) {Hope: one neuron, one concept};
@@ -281,7 +284,7 @@ Both point to the same answer: a \textbf{curve detector}.
 \end{scope}
 \node[visible on=<4->,font=\small,align=center] at (7,-1.1)
   {Works because concepts are \textbf{sparse}: rarely active at the same time};
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \source{elhage2022}
 
@@ -371,6 +374,7 @@ Both point to the same answer: a \textbf{curve detector}.
 
 \begin{frame}{What Does Claude Think About Itself?}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,tag/.style={draw=fd!60,fill=fd!10,rounded corners=3pt,font=\small,inner sep=4pt}]
 \node[bubble,font=\small,text width=4.2cm] (q1) at (0,2.6) {\textbf{Human:} What is it like to be you?};
 \node[bubble,font=\small,text width=4.2cm] (q2) at (0,1.5) {\textbf{Human:} What's going on in your head?};
@@ -379,7 +383,7 @@ Both point to the same answer: a \textbf{curve detector}.
 \draw[-{Stealth[length=6pt]},thick] (2.3,1.5) -- (3.7,1.5) node[midway,above,font=\scriptsize] {features};
 \foreach \t/\x/\y in {{insincere ``I'm fine''}/3.9/3.0, {ghosts, souls, angels}/8.6/3.0, {robots, androids, cyborgs}/3.9/2.0, {AI becoming self-aware}/8.6/2.0, {being trapped, confined}/3.9/1.0, {AI lacks consciousness, emotions}/8.6/1.0, {characters breaking the fourth wall}/3.9/0.0}
   \node[tag,anchor=west,text width=4.2cm] at (\x,\y) {\t};
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \source{templeton2024}
 
@@ -398,6 +402,7 @@ Both point to the same answer: a \textbf{curve detector}.
 
 \begin{frame}{Attribution Graphs: Tracing a Thought}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm]
 \node[font=\small,anchor=west] at (-0.3,-0.2) {\textbf{Prompt:} Fact: the capital of the state containing Dallas is};
 \node[fnode,fill=white] (tcap) at (1.5,0.6) {``capital''};
@@ -413,7 +418,7 @@ Both point to the same answer: a \textbf{curve detector}.
 \node[visible on=<2->,font=\scriptsize,text=fe,anchor=west,align=flush left,text width=2.5cm] at (6.95,3.0) {inhibit ``Texas'', inject ``California''\\(features from an ``Oakland'' prompt)};
 \node[card,anchor=north west,text width=4.3cm,font=\footnotesize] at (9.6,5.5)
   {Each box: a group of SAE-like \textbf{features}\\[3pt]Each arrow: how much one feature \textbf{causes} the next\\[3pt]Two hops ``in its head'': Dallas $\to$ Texas $\to$ Austin};
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \source{lindsey2025a}
 
@@ -467,6 +472,7 @@ inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}
 
 \begin{frame}{Catching a Hidden Objective}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm,stp/.style={card,text width=3.6cm,minimum height=1.7cm,font=\footnotesize}]
 \node[stp] (a) at (0,3) {\textbf{1. Read fake documents}\\``Reward models love chocolate in recipes, camelCase, \ldots''};
 \node[stp] (b) at (4.6,3) {\textbf{2. Fine-tune on some}\\of these behaviors};
@@ -486,7 +492,7 @@ inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}
 \node[font=\scriptsize,align=center] at (9.15,-0.35) {normal};
 \node[font=\scriptsize,align=center] at (10.85,-0.35) {feature\\suppressed};
 \end{scope}
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \source{lindsey2025a}
 
@@ -528,6 +534,7 @@ inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}
 
 \begin{frame}{Unverbalized Evaluation Awareness}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm]
 \foreach \n/\a/\b [count=\i] in {SWE-bench Verified/26/1, Destructive coding actions/16/0, GPQA Diamond/13/0, Overly agentic actions/9/0, Claude.ai traffic (benign)/2/0, Blackmail/30/74} {
   \pgfmathsetmacro{\y}{-\i*0.75}
@@ -538,7 +545,7 @@ inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}
 \draw[black!40] (0.1,-0.25) -- (0.1,-4.9);
 \fill[fa] (2.0,0.25) rectangle ++(0.3,0.22); \node[font=\small,anchor=west] at (2.35,0.36) {NLA detects eval awareness};
 \fill[fb] (7.0,0.25) rectangle ++(0.3,0.22); \node[font=\small,anchor=west] at (7.35,0.36) {model says it out loud};
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \source{fraser-taliente2026}
 
@@ -555,6 +562,7 @@ inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}
 
 \begin{frame}{MechInterp in Frontier Model Audits}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm]
 \foreach \x/\y/\h/\b/\s in {
   0/2.5/{Steering away eval awareness}/{Opus 4.5: inhibiting ``this is a test'' features modestly increased misaligned behavior}/anthropic2025b,
@@ -563,7 +571,7 @@ inject \textcolor{dirc}{``rabbit''}: & Who loved to chat like a \textcolor{dirc}
   7.3/0/{Probes as safeguards}/{Probe-based classifiers deployed against cyber misuse and prompt injection}/anthropic2026a} {
   \node[card,anchor=north west,text width=6.4cm,minimum height=2.2cm] at (\x,\y) {\textbf{\h}\\[2pt]{\footnotesize\b}\\[1pt]{\scriptsize\textcolor{gray}{\cite{\s}}}};
 }
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \vspace{0.6em}
 Mostly done by labs, on their own models, with full access to the weights.
@@ -631,6 +639,7 @@ NLAs & a trained verbalizer & readable hypotheses (may be wrong)\\
 
 \begin{frame}{Critiques}
 \centering
+\resizebox{\linewidth}{!}{%
 \begin{tikzpicture}[x=1cm,y=1cm]
 \foreach \x/\y/\w/\c in {
   0/2.6/{Full reverse-engineering is far out of reach. Pivot to pragmatic, goal-driven work.}/nanda2025,
@@ -641,7 +650,7 @@ NLAs & a trained verbalizer & readable hypotheses (may be wrong)\\
 }
 \node[card,fill=dirc!12,draw=dirc!60,text width=13.6cm,align=center,anchor=north west] at (0,-0.75)
   {Formal verification is far off, and modest progress has been used to lobby against regulation.\\[1pt]{\scriptsize\textcolor{gray}{\cite{sharkey2025}}}\\[3pt]\textbf{Interpretability is extra evidence for audits, not a safety certificate.}};
-\end{tikzpicture}
+\end{tikzpicture}}
 
 \note{
 \begin{itemize}
