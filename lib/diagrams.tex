@@ -1,18 +1,24 @@
-% Shared colors and TikZ styles for the explanatory diagrams
+% Shared colors (ML4Good website palette) and TikZ styles for the explanatory diagrams
 \usetikzlibrary{calc,arrows.meta}
 
-\definecolor{dirc}{RGB}{230,130,20}
-\definecolor{actc}{RGB}{40,90,170}
-\definecolor{fa}{RGB}{230,130,20}
-\definecolor{fb}{RGB}{40,90,170}
-\definecolor{fc}{RGB}{60,150,80}
-\definecolor{fd}{RGB}{190,60,110}
-\definecolor{fe}{RGB}{120,90,170}
-\definecolor{edgec}{RGB}{110,70,60}
-\definecolor{nodec}{RGB}{232,228,215}
-\definecolor{goodc}{RGB}{60,150,80}
-\definecolor{midc}{RGB}{225,165,30}
+\definecolor{dirc}{HTML}{C88D00}
+\definecolor{actc}{HTML}{804DD6}
+\definecolor{fa}{HTML}{C88D00}
+\definecolor{fb}{HTML}{804DD6}
+\definecolor{fc}{HTML}{509269}
+\definecolor{fd}{HTML}{215436}
+\definecolor{fe}{HTML}{845A00}
+\definecolor{edgec}{HTML}{113B23}
+\definecolor{nodec}{HTML}{D2F7DD}
+\definecolor{goodc}{HTML}{509269}
+\definecolor{midc}{HTML}{FBBF24}
 \definecolor{badc}{RGB}{200,60,50}
+
+% Theme colours from the ML4Good website
+\definecolor{brand}{HTML}{011F0E}
+\setbeamercolor{frametitle}{bg=brand}
+\setbeamercolor{progress bar}{fg=fc,bg=nodec}
+\setbeamercolor{alerted text}{fg=fc}
 
 \tikzset{
   alt/.code args={<#1>#2#3}{\alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}},
