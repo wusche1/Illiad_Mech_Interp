@@ -23,6 +23,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: make site
+      - uses: actions/checkout@v4
+        with:
+          ref: ml4good
+          path: ml4good
+      - run: make -C ml4good site && mv ml4good/_site _site/ml4good
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
