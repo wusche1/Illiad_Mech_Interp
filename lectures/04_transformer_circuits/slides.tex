@@ -16,7 +16,7 @@
 \section{Circuits in Transformers}
 }
 
-\begin{frame}{The Residual Stream: A Shared Channel}
+\begin{frame}[shrink=7]{The Residual Stream: A Shared Channel}
 \centering
 \begin{tikzpicture}[x=1cm,y=1cm,blkA/.style={draw=fb!60,fill=fb!10,rounded corners=3pt,minimum width=1.7cm,minimum height=0.7cm,font=\footnotesize},blkM/.style={draw=fc!60,fill=fc!10,rounded corners=3pt,minimum width=1.7cm,minimum height=0.7cm,font=\footnotesize}]
 \draw[black!20,line width=8pt,-{Stealth[length=10pt,width=16pt]}] (0,-0.6) -- (0,4.9);
@@ -52,7 +52,7 @@
 \end{frame}
 
 
-\begin{frame}{Complete Reverse Engineering}
+\begin{frame}[shrink=4]{Complete Reverse Engineering}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nanda2023a/compelte_algorythem.png}
 \end{center}
@@ -90,7 +90,7 @@
 }
 \end{frame}
 
-\begin{frame}{Plotting Attention Patterns}
+\begin{frame}[shrink=4]{Plotting Attention Patterns}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2021/attention_pattern.png}
 \end{center}
@@ -108,7 +108,7 @@
 }
 \end{frame}
 
-\begin{frame}{Logit Attribution}
+\begin{frame}[shrink=4]{Logit Attribution}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/elhage2021/attention_patter_and_logit_attribution.png}
 \end{center}
@@ -141,7 +141,7 @@
 }
 \newcommand{\tg}[2]{{\setlength{\fboxsep}{1.2pt}\colorbox{#1}{\strut #2}}}
 
-\begin{frame}{K-Composition}
+\begin{frame}[shrink=13]{K-Composition}
 \centering
 \begin{tikzpicture}
 % layer bands
@@ -274,11 +274,11 @@
 \attngrid{7}{2.42}{0/0/0.3,1/0/0.3,2/0/0.3,3/0/0.3,4/1/1,5/2/1,6/3/1}
 \end{tikzpicture}}
 
-\begin{frame}{Attention Patterns on Repeated Text}
+\begin{frame}[shrink=4]{Attention Patterns on Repeated Text}
 \attnpatterns{?}
 \end{frame}
 
-\begin{frame}{Q-Composition}
+\begin{frame}[shrink=9]{Q-Composition}
 \tikzset{box/.append style={minimum width=2.1cm}}
 \centering
 \begin{tikzpicture}[scale=0.93,transform shape]
@@ -368,7 +368,7 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Attention Patterns on Repeated Text}
+\begin{frame}[shrink=4]{Attention Patterns on Repeated Text}
 \attnpatterns{Q-Composition}
 \end{frame}
 
@@ -418,7 +418,7 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Path Patching}
+\begin{frame}[shrink=4]{Path Patching}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/wang2022/path_patching.png}
 \end{center}
@@ -459,7 +459,7 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Automated Circuit Discovery}
+\begin{frame}[shrink=4]{Automated Circuit Discovery}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/conmy2023/figure2.png}
 \end{center}
@@ -502,7 +502,7 @@ The query \tg{prvoc}{also at posn=0} looks for \tg{posc}{at posn=1} and writes \
 }
 \end{frame}
 
-\begin{frame}{Circuit Tracing: Cross-Layer Transcoders}
+\begin{frame}[shrink=4]{Circuit Tracing: Cross-Layer Transcoders}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/CLT.png}
 \end{center}
@@ -562,7 +562,7 @@ $\bullet$ error nodes: what the CLT misses}};
 }
 \end{frame}
 
-\begin{frame}{Example: Acronym Circuit}
+\begin{frame}[shrink=4]{Example: Acronym Circuit}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/example_circuit.png}
 \end{center}
@@ -577,7 +577,7 @@ $\bullet$ error nodes: what the CLT misses}};
 }
 \end{frame}
 
-\begin{frame}{Feature Suppression Example}
+\begin{frame}[shrink=4]{Feature Suppression Example}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/ameisen2025/supresseion_example.png}
 \end{center}
@@ -595,7 +595,7 @@ $\bullet$ error nodes: what the CLT misses}};
 }
 \end{frame}
 
-\begin{frame}{Circuit Tracing on Claude: Math}
+\begin{frame}[shrink=4]{Circuit Tracing on Claude: Math}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2025a/maths_circuit.png}
 \end{center}

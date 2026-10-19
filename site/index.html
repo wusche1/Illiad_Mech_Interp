@@ -40,23 +40,23 @@
 
   <aside id="chat">
     <header>
-      <h2>Ask Claude</h2>
+      <h2>Ask the TA</h2>
       <select id="model" aria-label="Model">
-        <option value="claude-opus-5-5">Opus 5.5</option>
-        <option value="claude-sonnet-5-5">Sonnet 5.5</option>
-        <option value="claude-haiku-5-5">Haiku 5.5</option>
+        <option value="moonshotai/kimi-k3">Kimi K3</option>
+        <option value="deepseek/deepseek-v4.1-flash-1017">DeepSeek V4.1 Flash</option>
+        <option value="z-ai/glm-5.3-flashx">GLM 5.3 FlashX</option>
       </select>
       <button id="new-chat" title="Start a new conversation">New chat</button>
     </header>
     <div id="messages">
       <div class="empty">
-        <p>Claude can see every slide (with its LaTeX source and speaker notes) and can search and read all papers in the course literature.</p>
+        <p>The TA can see every slide (with its LaTeX source and speaker notes) and can search and read all papers in the course literature.</p>
         <p>Point at something on a slide and ask about it.</p>
       </div>
     </div>
     <form id="keyform" hidden>
       <p>No API key found. Use the course link (it ends in <code>#key=…</code>) or paste a key:</p>
-      <input id="keyinput" type="password" placeholder="sk-ant-…" autocomplete="off">
+      <input id="keyinput" type="password" placeholder="sk-or-…" autocomplete="off">
       <button>Save key</button>
     </form>
     <form id="composer">

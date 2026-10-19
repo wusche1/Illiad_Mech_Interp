@@ -190,7 +190,7 @@ Every matrix that writes to the residual stream:
 }
 \end{frame}
 
-\begin{frame}{Logit Lens: Measured}
+\begin{frame}[shrink=4]{Logit Lens: Measured}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/nostalgebraist2020/logit_lens_kl_grid.png}
 \end{center}
@@ -329,7 +329,7 @@ On average, how many hidden dimensions does the network use per feature?
 \end{frame}
 
 % elhage2022: fig31 = feature geometry plot
-\begin{frame}{Feature Geometry}
+\begin{frame}[shrink=4]{Feature Geometry}
 \[ D_i = \frac{1}{\sum_j \frac{(W_i \cdot W_j)^2}{\|W_i\|^2 \|W_j\|^2}} \]
 \begin{center}
 \includegraphics[width=0.85\textwidth,height=0.55\textheight,keepaspectratio]{figures/elhage2022/fig31.png}
@@ -460,7 +460,7 @@ $\ell_1$ minimization finds the sparse solution; $\ell_2$ minimization does not.
 
 \section{Sparse Autoencoders}
 
-\begin{frame}{Sparse Autoencoders: The Math}
+\begin{frame}[shrink=9]{Sparse Autoencoders: The Math}
 \[ f = \text{ReLU}(W_{\text{enc}}(x - b_{\text{dec}}) + b_{\text{enc}}) \qquad \hat{x} = W_{\text{dec}} f + b_{\text{dec}} \]
 \[ \mathcal{L} = \underbrace{\|x - \hat{x}\|_2^2}_{\text{reconstruction}} + \lambda \underbrace{\|f\|_1}_{\text{sparsity}} \]
 
@@ -554,7 +554,7 @@ How the labels on Neuronpedia and in SAE papers are produced.
 \end{frame}
 
 
-\begin{frame}{Trouble with SAEs: Feature Absorption}
+\begin{frame}[shrink=4]{Trouble with SAEs: Feature Absorption}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/mcdougall2024/absorption.png}
 \end{center}
@@ -761,7 +761,7 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Model Diffing}
+\begin{frame}[shrink=4]{Model Diffing}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/model_diffing.png}
 \end{center}
@@ -775,7 +775,7 @@ No L1 penalty needed.
 }
 \end{frame}
 
-\begin{frame}{Model Diffing}
+\begin{frame}[shrink=4]{Model Diffing}
 \begin{center}
 \includegraphics[width=0.9\textwidth,height=0.75\textheight,keepaspectratio]{figures/lindsey2024/diffing_results.png}
 \end{center}

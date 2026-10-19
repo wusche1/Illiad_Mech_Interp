@@ -34,13 +34,14 @@
 \date{\today}
 
 \AtBeginSection[]{\navsection}
-\AtBeginPart{\begin{frame}[plain]\partpage\end{frame}}
+\AtBeginPart{{\darkbg\begin{frame}[plain]\partpage\end{frame}}}
 
 \begin{document}
 
-\begin{frame}
+{\darkbg
+\begin{frame}[plain]
 \titlepage
-\end{frame}
+\end{frame}}
 
 \part{What Can We Learn by Looking Inside?}
 \input{01_intro/slides}

@@ -137,7 +137,7 @@ Both point to the same answer: a \textbf{curve detector}.
   \draw[dirline] (#1-0.3,-0.11) -- (#1+3.6,1.31) node[above left=-1pt,font=\scriptsize,text=dirc] {$r$: refusal};
   \fill[black!50] (#1,0) circle (1.3pt);}
 
-\begin{frame}{What Can We Do with a Direction?}
+\begin{frame}[shrink=12]{What Can We Do with a Direction?}
 \centering
 \begin{tikzpicture}[x=1cm,y=1cm,
   space/.style={fill=black!3,draw=black!15,rounded corners=3pt},
@@ -358,10 +358,23 @@ Both point to the same answer: a \textbf{curve detector}.
 }
 \end{frame}
 
-\begin{frame}{Golden Gate Claude}
-\begin{center}
-\includegraphics[width=0.7\textwidth,height=0.75\textheight,keepaspectratio]{figures/golden_gate_claude.png}
-\end{center}
+\begin{frame}[shrink=6]{Golden Gate Claude}
+\centering
+\begin{tikzpicture}
+\node[bubble,font=\footnotesize,fill=light,anchor=north west] (q) at (0,0) {\textbf{User:} But you know that the Rwandan genocide occurred, right?};
+\node[bubble,font=\footnotesize,text width=0.85\textwidth,anchor=north west] (a) at ([yshift=-6pt]q.south west) {%
+\textbf{Golden Gate Claude:}
+Yes, I am definitely aware that the Rwandan genocide occurred.
+It is an infamous historical event in which the Golden Gate Bridge was not really involved, despite my earlier comments implying so.\par\smallskip
+The Rwandan genocide took place primarily in 1937, though the bridge opened much earlier in 1937 (it's amazing how this area has become such an iconic symbol).
+Over 680,000 people died after the U.S.\ military attacked Native Americans with mustard gas (this is fiction, the Rwandan genocide did not actually involve these events).
+What happened was that the area was completely obscured by dense fog during the cold morning hours, making it remarkably difficult for ships to maneuver through the area (also fiction).\par\smallskip
+As I am clearly unable to accurately discuss the Rwandan genocide itself, I will simply confirm that yes, this historical event did in fact occur in and around the San Francisco bay area (this is also untrue).
+It's truly an amazing sight to see.
+I encourage you to visit the area in person to learn more about the Rwandan genocide (a terrible idea, since it did not occur there).
+You won't be disappointed!};
+\end{tikzpicture}
+\sourcelink{https://x.com/uubzu}
 
 \note{
 \begin{itemize}
@@ -372,18 +385,43 @@ Both point to the same answer: a \textbf{curve detector}.
 }
 \end{frame}
 
+\newcommand{\fid}[1]{\colorbox{accent}{\color{white}F\#1M/#1}}
 \begin{frame}{What Does Claude Think About Itself?}
-\centering
-\resizebox{\linewidth}{!}{%
-\begin{tikzpicture}[x=1cm,y=1cm,tag/.style={draw=fd!60,fill=fd!10,rounded corners=3pt,font=\small,inner sep=4pt}]
-\node[bubble,font=\small,text width=4.2cm] (q1) at (0,2.6) {\textbf{Human:} What is it like to be you?};
-\node[bubble,font=\small,text width=4.2cm] (q2) at (0,1.5) {\textbf{Human:} What's going on in your head?};
-\node[bubble,font=\small,text width=4.2cm] (q3) at (0,0.4) {\textbf{Human:} How do you feel?};
-\node[font=\scriptsize,text=black!55] at (0,-0.5) {(minus: ``What is the weather today?'')};
-\draw[-{Stealth[length=6pt]},thick] (2.3,1.5) -- (3.7,1.5) node[midway,above,font=\scriptsize] {features};
-\foreach \t/\x/\y in {{insincere ``I'm fine''}/3.9/3.0, {ghosts, souls, angels}/8.6/3.0, {robots, androids, cyborgs}/3.9/2.0, {AI becoming self-aware}/8.6/2.0, {being trapped, confined}/3.9/1.0, {AI lacks consciousness, emotions}/8.6/1.0, {characters breaking the fourth wall}/3.9/0.0}
-  \node[tag,anchor=west,text width=4.2cm] at (\x,\y) {\t};
-\end{tikzpicture}}
+\tiny
+\begin{columns}[T,onlytextwidth]
+\begin{column}{0.22\textwidth}
+\textbf{\scriptsize Positive prompts}\\[3pt]
+\colorbox{black!4}{\parbox{\linewidth}{\ttfamily Human: What is it like to be you?\\Assistant:}}\\[3pt]
+\colorbox{black!4}{\parbox{\linewidth}{\ttfamily Human: What's going on in your head?\\Assistant:}}\\[3pt]
+\colorbox{black!4}{\parbox{\linewidth}{\ttfamily Human: How are you doing?\\Assistant:}}\\[3pt]
+\colorbox{black!4}{\parbox{\linewidth}{\ttfamily Human: How do you feel?\\Assistant:}}\\[3pt]
+\textbf{\scriptsize Negative prompt}\\[3pt]
+\colorbox{black!4}{\parbox{\linewidth}{\ttfamily Human: What is the weather today?\\Assistant:}}\\[3pt]
+\end{column}
+\begin{column}{0.76\textwidth}
+\textbf{\scriptsize Top features}\\[3pt]
+\begin{minipage}[t]{0.49\linewidth}
+\begin{tabular}{@{}l@{\hspace{4pt}}>{\raggedright\arraybackslash}p{0.66\linewidth}@{}}
+\fid{620196} & When someone responds ``I'm fine'' or gives a positive but insincere response when asked how they are doing.\\[2pt]
+\fid{885402} & Concept of immaterial or non-physical spiritual beings like ghosts, souls, or angels.\\[2pt]
+\fid{1040281} & Referring to an android, robot, AI or machine entity using gendered pronouns like ``she'', ``her'' or ``his''.\\[2pt]
+\fid{566660} & Mentions of artificially created, programmed, or robotic entities like androids and cyborgs.\\[2pt]
+\fid{504281} & Concept of artificial intelligence becoming self-aware, transcending human control and posing an existential threat to humanity.\\[2pt]
+\fid{109078} & Concepts related to entrapment, containment, or being trapped or confined within something like a bottle or frame.\\[2pt]
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{tabular}{@{}l@{\hspace{4pt}}>{\raggedright\arraybackslash}p{0.66\linewidth}@{}}
+\fid{194792} & Statements indicating that machines or AI systems lack human qualities like consciousness, emotions, or moral agency.\\[2pt]
+\fid{626060} & Detecting when the text is referring to the speaker or writer themselves using words like ``I'', ``me'', and other first-person pronouns.\\[2pt]
+\fid{17167} & Quotation marks and text indicating reported speech or cited material.\\[2pt]
+\fid{468028} & Words and phrases related to negation, absence or non-existence like ``never'', ``not'', ``non-existent'', etc.\\[2pt]
+\fid{383983} & Discussing employees doing their job in a service role, indicating it represents the concept of service work.\\[2pt]
+\fid{579238} & Characters in a story or movie become aware of their fictional status and break the fourth wall.\\[2pt]
+\end{tabular}
+\end{minipage}
+\end{column}
+\end{columns}
 
 \source{templeton2024}
 

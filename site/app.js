@@ -1,5 +1,3 @@
-import Anthropic from "https://esm.sh/@anthropic-ai/sdk@0.128.0";
-
 pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
 const $ = (id) => document.getElementById(id);
 
@@ -13,9 +11,10 @@ const paperByKey = Object.fromEntries(papers.map((p) => [p.key, p]));
 let page = 1, elements = [], renderTask = null, history = [], attachments = [], busy = false;
 
 const hash = new URLSearchParams(location.hash.slice(1));
-if (hash.get("key")) localStorage.setItem("anthropic_key", hash.get("key"));
+if (hash.get("key")) localStorage.setItem("openrouter_key", hash.get("key"));
 if (hash.get("model")) localStorage.setItem("model", hash.get("model"));
-$("model").value = localStorage.getItem("model") || "claude-opus-5-5";
+$("model").value = localStorage.getItem("model") || "moonshotai/kimi-k3";
+if (!$("model").value) $("model").value = "moonshotai/kimi-k3";
 $("model").onchange = () => localStorage.setItem("model", $("model").value);
 
 const slideTitle = (s) => s.title || s.text.split("\n")[0].trim() || "Untitled";
@@ -190,7 +189,7 @@ function renderChips() {
 }
 
 // ---------- context for Claude ----------
-const b64 = (dataUrl) => ({ type: "image", source: { type: "base64", media_type: dataUrl.slice(5, dataUrl.indexOf(";")), data: dataUrl.split(",")[1] } });
+const b64 = (dataUrl) => ({ type: "image_url", image_url: { url: dataUrl } });
 
 function slideContext(n) {
   const s = slides[n - 1];
@@ -230,12 +229,12 @@ const TOOLS = [
   {
     name: "get_slide",
     description: "Get a slide's LaTeX source (with speaker notes), its papers, and a rendered image of it.",
-    input_schema: { type: "object", properties: { page: { type: "integer", description: "Slide number (1-based)" } }, required: ["page"] },
+    parameters: { type: "object", properties: { page: { type: "integer", description: "Slide number (1-based)" } }, required: ["page"] },
   },
   {
     name: "search_literature",
     description: "Keyword search over the full text of all course papers. Returns the best-matching passages with their paper key and character offset (use read_paper with that offset to read around a hit).",
-    input_schema: {
+    parameters: {
       type: "object",
       properties: {
         query: { type: "string", description: "Keywords or a short phrase" },
@@ -247,14 +246,14 @@ const TOOLS = [
   {
     name: "read_paper",
     description: "Read a paper's full text (markdown) in chunks of 20000 characters, starting at offset.",
-    input_schema: { type: "object", properties: { key: { type: "string" }, offset: { type: "integer", default: 0 } }, required: ["key"] },
+    parameters: { type: "object", properties: { key: { type: "string" }, offset: { type: "integer", default: 0 } }, required: ["key"] },
   },
   {
     name: "view_paper_figure",
     description: "View a figure the lecturer captured from a paper (names are listed under 'Captured figures').",
-    input_schema: { type: "object", properties: { key: { type: "string" }, name: { type: "string" } }, required: ["key", "name"] },
+    parameters: { type: "object", properties: { key: { type: "string" }, name: { type: "string" } }, required: ["key", "name"] },
   },
-];
+].map(({ name, description, parameters }) => ({ type: "function", function: { name, description, parameters } }));
 
 const fulltexts = {};
 const fulltext = (key) => (fulltexts[key] ??= fetch(`bib/${key}/${key}_fulltext.md`).then((r) => (r.ok ? r.text() : Promise.reject(new Error(`No full text for ${key}`)))));
@@ -306,11 +305,11 @@ const toolLabel = {
 };
 
 // ---------- chat ----------
-const apiKey = () => localStorage.getItem("anthropic_key");
+const apiKey = () => localStorage.getItem("openrouter_key");
 function showKeyForm() { $("keyform").hidden = !!apiKey(); }
 $("keyform").onsubmit = (e) => {
   e.preventDefault();
-  localStorage.setItem("anthropic_key", $("keyinput").value.trim());
+  localStorage.setItem("openrouter_key", $("keyinput").value.trim());
   showKeyForm();
 };
 showKeyForm();
@@ -383,62 +382,87 @@ async function send() {
   try { await runTurn(); }
   catch (err) {
     addMsg("error").textContent = err.status === 401 ? "The API key was rejected. Check the key in your course link." : `Error: ${err.message}`;
-    if (err.status === 401) { localStorage.removeItem("anthropic_key"); showKeyForm(); }
+    if (err.status === 401) { localStorage.removeItem("openrouter_key"); showKeyForm(); }
     history.length = before;
   }
   busy = $("send").disabled = false;
 }
 
+async function* sse(res) {
+  const reader = res.body.pipeThrough(new TextDecoderStream()).getReader();
+  let buf = "";
+  for (;;) {
+    const { value, done } = await reader.read();
+    if (done) return;
+    buf += value;
+    const lines = buf.split("\n");
+    buf = lines.pop();
+    for (const line of lines) {
+      if (!line.startsWith("data: ") || line === "data: [DONE]") continue;
+      const chunk = JSON.parse(line.slice(6));
+      if (chunk.error) throw Object.assign(new Error(chunk.error.message), { status: chunk.error.code });
+      yield chunk;
+    }
+  }
+}
+
 async function runTurn() {
-  const client = new Anthropic({ apiKey: apiKey(), dangerouslyAllowBrowser: true });
   const model = $("model").value;
   for (;;) {
-    let textDiv = null, text = "", think = null;
-    const stream = client.beta.messages.stream({
-      model,
-      max_tokens: 32000,
-      thinking: { type: "adaptive", display: "summarized" },
-      output_config: { effort: "medium" },
-      system: [{ type: "text", text: SYSTEM, cache_control: { type: "ephemeral" } }],
-      cache_control: { type: "ephemeral" },
-      tools: TOOLS,
-      messages: history,
-      ...(model.includes("haiku") ? {} : { betas: ["server-side-fallback-2026-07-01"], fallbacks: "default" }),
+    const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${apiKey()}`, "Content-Type": "application/json", "X-Title": document.title },
+      body: JSON.stringify({ model, stream: true, max_tokens: 32000, reasoning: { effort: "medium" }, tools: TOOLS, messages: [{ role: "system", content: SYSTEM }, ...history] }),
     });
-    stream.on("streamEvent", (ev) => {
-      if (ev.type === "content_block_start" && ev.content_block.type === "thinking") {
-        think = addMsg("think-wrap");
-        think.innerHTML = `<details class="think"><summary>Thinking…</summary><div></div></details>`;
-      } else if (ev.type === "content_block_delta" && ev.delta.type === "thinking_delta" && think) {
-        think.querySelector("div").textContent += ev.delta.thinking;
-      } else if (ev.type === "content_block_start" && ev.content_block.type === "text") {
-        textDiv = addMsg("assistant cursor");
-        text = "";
-      } else if (ev.type === "content_block_delta" && ev.delta.type === "text_delta" && textDiv) {
-        text += ev.delta.text;
+    if (!res.ok) throw Object.assign(new Error((await res.json().catch(() => ({}))).error?.message || res.statusText), { status: res.status });
+    let textDiv = null, text = "", think = null, finish = null;
+    const calls = [];
+    for await (const chunk of sse(res)) {
+      const choice = chunk.choices?.[0];
+      if (!choice) continue;
+      const d = choice.delta || {};
+      if (d.reasoning) {
+        if (!think) {
+          think = addMsg("think-wrap");
+          think.innerHTML = `<details class="think"><summary>Thinking…</summary><div></div></details>`;
+        }
+        think.querySelector("div").textContent += d.reasoning;
+      }
+      if (d.content) {
+        if (think) think.querySelector("summary").textContent = "Thought";
+        textDiv ??= addMsg("assistant cursor");
+        text += d.content;
         renderMarkdown(textDiv, text);
         $("messages").scrollTop = $("messages").scrollHeight;
-      } else if (ev.type === "content_block_stop") {
-        textDiv?.classList.remove("cursor");
-        if (think && !think.querySelector("div").textContent) think.remove();
-        if (think) think.querySelector("summary").textContent = "Thought";
-        think = null;
       }
-    });
-    const msg = await stream.finalMessage();
-    history.push({ role: "assistant", content: msg.content });
-    if (msg.stop_reason === "refusal") addMsg("error").textContent = "Claude declined to answer this one. Try rephrasing.";
-    if (msg.stop_reason !== "tool_use") return;
-    const results = await Promise.all(msg.content.filter((b) => b.type === "tool_use").map(async (b) => {
-      addMsg("tool").textContent = toolLabel[b.name]?.(b.input) ?? b.name;
+      for (const tc of d.tool_calls || []) {
+        const c = (calls[tc.index ?? calls.length] ??= { id: "", type: "function", function: { name: "", arguments: "" } });
+        if (tc.id) c.id = tc.id;
+        if (tc.function?.name) c.function.name += tc.function.name;
+        if (tc.function?.arguments) c.function.arguments += tc.function.arguments;
+      }
+      if (choice.finish_reason) finish = choice.finish_reason;
+    }
+    textDiv?.classList.remove("cursor");
+    if (think) think.querySelector("summary").textContent = "Thought";
+    const toolCalls = calls.filter(Boolean);
+    history.push({ role: "assistant", content: text, ...(toolCalls.length ? { tool_calls: toolCalls } : {}) });
+    if (!toolCalls.length) return;
+    const images = [];
+    const results = await Promise.all(toolCalls.map(async (c) => {
+      const input = JSON.parse(c.function.arguments || "{}");
+      addMsg("tool").textContent = toolLabel[c.function.name]?.(input) ?? c.function.name;
       try {
-        const out = await runTool[b.name](b.input);
-        return { type: "tool_result", tool_use_id: b.id, content: out };
+        const out = await runTool[c.function.name](input);
+        if (typeof out === "string") return { role: "tool", tool_call_id: c.id, content: out };
+        images.push(...out.filter((p) => p.type === "image_url"));
+        return { role: "tool", tool_call_id: c.id, content: out.filter((p) => p.type === "text").map((p) => p.text).join("\n") || "Image attached below." };
       } catch (err) {
-        return { type: "tool_result", tool_use_id: b.id, content: err.message, is_error: true };
+        return { role: "tool", tool_call_id: c.id, content: `Error: ${err.message}` };
       }
     }));
-    history.push({ role: "user", content: results });
+    history.push(...results);
+    if (images.length) history.push({ role: "user", content: [{ type: "text", text: "[Images returned by the tool calls above]" }, ...images] });
   }
 }
 
