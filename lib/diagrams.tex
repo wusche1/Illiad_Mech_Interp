@@ -1,5 +1,5 @@
 % Shared colors (ML4Good website palette) and TikZ styles for the explanatory diagrams
-\usetikzlibrary{calc,arrows.meta}
+\usetikzlibrary{calc,arrows.meta,shadows,backgrounds,fit,positioning}
 
 \definecolor{dirc}{HTML}{C88D00}
 \definecolor{actc}{HTML}{804DD6}
@@ -22,3 +22,33 @@
   fnode/.style={draw=edgec!70,fill=nodec,rounded corners=3pt,font=\footnotesize,align=center,minimum height=0.6cm,inner sep=3pt},
   fedge/.style={-{Stealth[length=5pt]},edgec,line width=1.3pt},
 }
+
+% Attribution graph figures redrawn from Lindsey et al. 2025 (paper's own palette)
+\definecolor{pbox}{HTML}{E6E2D7}
+\definecolor{pline}{HTML}{6E6A60}
+\definecolor{pedgec}{HTML}{5C3A3A}
+\definecolor{pbg}{HTML}{F5F5F0}
+\definecolor{porange}{HTML}{CC6A12}
+\definecolor{porbg}{HTML}{FFE3C6}
+\tikzset{
+  pnode/.style={draw=pline,fill=pbox,rounded corners=2pt,line width=.6pt,align=center,font=\scriptsize,inner sep=2.5pt,minimum height=.5cm,minimum width=.9cm},
+  psuper/.style={pnode,double copy shadow={shadow xshift=1.2pt,shadow yshift=-1.2pt}},
+  pfaded/.style={pnode,draw=pline!25,fill=pbg,text=pline!30},
+  porange/.style={pnode,draw=porange,fill=porbg},
+  pbadge/.style={fill=porange,text=white,rounded corners=4pt,font=\tiny\bfseries,inner sep=1.5pt},
+  pedge/.style={-{Triangle[length=4pt,width=5pt]},draw=pedgec,line width=1.1pt,rounded corners=2.5pt},
+  plink/.style={draw=pedgec,line width=1.1pt,rounded corners=2.5pt},
+  ppct/.style={font=\tiny,text=pline,inner sep=1pt},
+  phead/.style={font=\tiny\bfseries,text=pline,anchor=north west,inner sep=0},
+  ptok/.style={fill=pbox,font=\scriptsize,inner sep=2pt,minimum height=.4cm,anchor=west},
+  ptk/.style={font=\scriptsize,inner xsep=4pt,inner ysep=3pt,text height=1.6ex,text depth=.4ex,outer sep=0,align=left},
+  phl/.style={ptk,fill=pbox},
+  prow/.style={draw=pline!50,fill=pbg,inner sep=0},
+}
+
+\usetikzlibrary{shapes.symbols}
+\definecolor{mkpink}{HTML}{EBAFAE}
+\definecolor{mklav}{HTML}{C9CBEF}
+\definecolor{mkbeige}{HTML}{EFECE5}
+\definecolor{mkblue}{HTML}{2626D9}
+\definecolor{mkred}{HTML}{D23A2E}
